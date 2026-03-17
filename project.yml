@@ -1,0 +1,57 @@
+name: YabaiBar
+options:
+  createIntermediateGroups: true
+  minimumXcodeGenVersion: 2.45.3
+settings:
+  base:
+    SWIFT_VERSION: 6.0
+    MACOSX_DEPLOYMENT_TARGET: 14.0
+    CODE_SIGN_STYLE: Automatic
+targets:
+  YabaiBarCore:
+    type: framework
+    platform: macOS
+    sources:
+      - Sources/YabaiBarCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.kevinbarfleur.YabaiBarCore
+        PRODUCT_NAME: YabaiBarCore
+        GENERATE_INFOPLIST_FILE: YES
+        SKIP_INSTALL: YES
+        CODE_SIGNING_ALLOWED: NO
+  YabaiBar:
+    type: application
+    platform: macOS
+    sources:
+      - Sources/YabaiBar
+    dependencies:
+      - target: YabaiBarCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.kevinbarfleur.YabaiBar
+        PRODUCT_NAME: YabaiBar
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: YabaiBar
+        INFOPLIST_KEY_LSUIElement: YES
+        CURRENT_PROJECT_VERSION: 1
+        MARKETING_VERSION: 0.2.0
+        CODE_SIGN_IDENTITY: "-"
+        LD_RUNPATH_SEARCH_PATHS:
+          - $(inherited)
+          - "@executable_path/../Frameworks"
+    scheme:
+      testTargets:
+        - YabaiBarCoreTests
+  YabaiBarCoreTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - Tests/YabaiBarCoreTests
+    dependencies:
+      - target: YabaiBarCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.kevinbarfleur.YabaiBarTests
+        PRODUCT_NAME: YabaiBarTests
+        GENERATE_INFOPLIST_FILE: YES
