@@ -21,7 +21,20 @@ It shows the current space in the native menu bar, lists the existing spaces wit
 - macOS 14 or later
 - `yabai` installed and working
 - `yabai` available in `/opt/homebrew/bin/yabai` or `/usr/local/bin/yabai`
-- Xcode 16 or later for local builds
+- Apple's Xcode toolchain, via Xcode 16 or later, for local builds
+
+## Fastest Build Path
+
+If you just want the app and do not plan to edit the code, the shortest path is:
+
+```sh
+git clone git@github.com:kevinbarfleur/YabaiBar.git
+cd YabaiBar
+./scripts/build-app.sh
+open dist/YabaiBar.app
+```
+
+You do not need to open Xcode for this path, but the script still uses Apple's `xcodebuild` under the hood.
 
 ## Build In Xcode
 
@@ -81,6 +94,7 @@ xcodegen generate
 - YabaiBar queries `yabai` via the CLI and does not replace the native macOS menu bar.
 - `Launch at login` only works correctly from a real `.app` bundle in a stable location.
 - If macOS asks for login item approval, YabaiBar exposes a shortcut to the relevant system settings.
+- `./scripts/build-app.sh` is a thin wrapper around `xcodebuild`, so the CLI path is simple but still relies on Apple's Xcode toolchain being installed.
 
 ## CI
 

@@ -12,6 +12,7 @@
 		2DFF38A5E5B4E2ED882F94F3 /* YabaiBarCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD66A8E7A60EF9C785E2C6AF /* YabaiBarCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		47BF90C43B50D71530CE35B2 /* AppInstallationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D6DAEFB66BBE8612D5077F /* AppInstallationManager.swift */; };
 		5A0297B03400C44A9FD94AF9 /* LoginItemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B3C4C223D5DDF2A936ECD4 /* LoginItemManager.swift */; };
+		607F62098AE0559933CAD73D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 73CD4898F246BE62DA7BF6D6 /* Assets.xcassets */; };
 		8F52B5C4034546A022EDCA33 /* YabaiBarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C7953AFF2B0BC2C8F300FE /* YabaiBarApp.swift */; };
 		B917BC018CC97DCB12A2D780 /* YabaiBarCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD66A8E7A60EF9C785E2C6AF /* YabaiBarCore.framework */; };
 		DA0EEEE7CBB7B8D44BDDE780 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E84E57489E6D6C672272B00 /* AppDelegate.swift */; };
@@ -72,6 +73,7 @@
 		2E5098D87879B985DC17EE01 /* YabaiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiClient.swift; sourceTree = "<group>"; };
 		42B3BE24C7684BDFC3CF9D0B /* YabaiBarCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YabaiBarCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		71FA4F5D43336EE5EED6F772 /* YabaiBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YabaiBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		73CD4898F246BE62DA7BF6D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		74E88485B3CDC813106C696E /* MenuBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarContentView.swift; sourceTree = "<group>"; };
 		8E84E57489E6D6C672272B00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A3B3C4C223D5DDF2A936ECD4 /* LoginItemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItemManager.swift; sourceTree = "<group>"; };
@@ -117,9 +119,18 @@
 			path = YabaiBar;
 			sourceTree = "<group>";
 		};
+		8FE8EAD717E73F150DCC5DC7 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				73CD4898F246BE62DA7BF6D6 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		9825E5D2C8D316B245304229 = {
 			isa = PBXGroup;
 			children = (
+				8FE8EAD717E73F150DCC5DC7 /* Resources */,
 				A656E756FCE1DEC946E71E7A /* Sources */,
 				AC30B0A6F9AB25ED72D9E857 /* Tests */,
 				F145AD4D42783284F09F9D69 /* Products */,
@@ -216,6 +227,7 @@
 			buildConfigurationList = 642A4F9DEE114914FE8C5193 /* Build configuration list for PBXNativeTarget "YabaiBar" */;
 			buildPhases = (
 				B15ACAEDC351836BFC7A70AA /* Sources */,
+				D976D40DC980A55BCD434B2F /* Resources */,
 				F6BDF74EB6DEA291C7E6D8CA /* Frameworks */,
 				E51CEF59C351A36E9FC6BDD4 /* Embed Frameworks */,
 			);
@@ -271,6 +283,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D976D40DC980A55BCD434B2F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				607F62098AE0559933CAD73D /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		974D367DC5E22F3358268DD1 /* Sources */ = {

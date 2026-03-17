@@ -25,6 +25,7 @@ targets:
     platform: macOS
     sources:
       - Sources/YabaiBar
+      - Resources
     dependencies:
       - target: YabaiBarCore
     settings:
@@ -34,6 +35,7 @@ targets:
         GENERATE_INFOPLIST_FILE: YES
         INFOPLIST_KEY_CFBundleDisplayName: YabaiBar
         INFOPLIST_KEY_LSUIElement: YES
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         CURRENT_PROJECT_VERSION: 1
         MARKETING_VERSION: 0.2.0
         CODE_SIGN_IDENTITY: "-"
