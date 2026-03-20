@@ -2,12 +2,14 @@
 
 YabaiBar is a small native macOS menu bar app for `yabai`.
 
-It shows the current space in the native menu bar, lists the existing spaces with the apps inside them, and lets you switch spaces with one click without replacing the macOS menu bar.
+It shows the current space in the native macOS menu bar, adds a compact `2/4` badge when the active space uses `stack`, lists the existing spaces with the apps inside them, and lets you switch spaces with one click without replacing the macOS menu bar.
 
 ## Features
 
 - Shows the active `yabai` space in the native macOS menu bar
-- Updates the active space label immediately when macOS changes spaces
+- Shows the current stack position like `2/4` for the active stacked space
+- Tracks the active stacked window via native `yabai` signals instead of fast polling
+- Updates the active space label quickly when macOS changes spaces
 - Lists only real, existing spaces
 - Shows the apps currently present in each space
 - Focuses a space when you click it
@@ -22,10 +24,9 @@ It shows the current space in the native menu bar, lists the existing spaces wit
 - `yabai` installed and working
 - `yabai` available in `/opt/homebrew/bin/yabai` or `/usr/local/bin/yabai`
 - Apple's Xcode toolchain, via Xcode 16 or later, for local builds
+- permission to let YabaiBar manage a small labeled block inside `~/.config/yabai/yabairc`
 
 ## Fastest Build Path
-
-If you just want the app and do not plan to edit the code, the shortest path is:
 
 ```sh
 git clone git@github.com:kevinbarfleur/YabaiBar.git
@@ -46,28 +47,7 @@ open YabaiBar.xcodeproj
 
 Build and run the `YabaiBar` target.
 
-On first launch, the app can offer to:
-
-- move itself into `Applications`
-- enable launch at login
-
-## Build From Terminal
-
-```sh
-git clone git@github.com:kevinbarfleur/YabaiBar.git
-cd YabaiBar
-./scripts/build-app.sh
-```
-
-The app bundle is written to:
-
-```sh
-dist/YabaiBar.app
-```
-
 ## Development
-
-The Swift package stays available for local development and tests:
 
 ```sh
 swift build
@@ -87,13 +67,16 @@ xcodegen generate
 2. Launch the app.
 3. Accept the move to `Applications` if prompted.
 4. Let the app register for launch at login if you want it to start automatically.
-5. Click the menu bar item to see spaces and switch between them.
+5. Let the app install or repair its `yabai` signal integration if prompted by the menu state.
+6. Click the menu bar item to see spaces and switch between them.
 
 ## Notes
 
-- YabaiBar queries `yabai` via the CLI and does not replace the native macOS menu bar.
+- YabaiBar keeps the spaces menu based on `yabai` CLI queries.
+- The active stack badge is driven by `yabai signal` events written into a local runtime state file.
 - `Launch at login` only works correctly from a real `.app` bundle in a stable location.
 - If macOS asks for login item approval, YabaiBar exposes a shortcut to the relevant system settings.
+- YabaiBar manages a labeled block inside `~/.config/yabai/yabairc` so it can register and repair its own signal integration safely.
 - `./scripts/build-app.sh` is a thin wrapper around `xcodebuild`, so the CLI path is simple but still relies on Apple's Xcode toolchain being installed.
 
 ## CI

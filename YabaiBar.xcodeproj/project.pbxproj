@@ -7,26 +7,48 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0050F269BB88719CF87B39D9 /* MenuBarLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D703320858931D640DB56604 /* MenuBarLabelView.swift */; };
+		008131BEFD7A5A10AEC153A8 /* YabaiIntegrationRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4D1692E241245251375A9E /* YabaiIntegrationRenderer.swift */; };
 		0E879CE0155C435DBD1F6EED /* CommandRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002493D50E59600B718B0579 /* CommandRunner.swift */; };
 		2DFF38A5E5B4E2ED882F94F3 /* YabaiBarCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD66A8E7A60EF9C785E2C6AF /* YabaiBarCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		308350B35FBCE7038620D595 /* YabaiLiveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30333BD319AF040A7F271965 /* YabaiLiveState.swift */; };
+		438B012648F9BC492BE1B6BB /* YabaiRuntimeMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7218C7D440006D0EB3BE4750 /* YabaiRuntimeMonitor.swift */; };
+		45993C3CA31E849B2B586661 /* YabaiBarCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD66A8E7A60EF9C785E2C6AF /* YabaiBarCore.framework */; };
 		47BF90C43B50D71530CE35B2 /* AppInstallationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9D6DAEFB66BBE8612D5077F /* AppInstallationManager.swift */; };
 		5A0297B03400C44A9FD94AF9 /* LoginItemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B3C4C223D5DDF2A936ECD4 /* LoginItemManager.swift */; };
+		5A9400D4FA28B2B844DF7C1C /* YabaiIntegrationRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF4BC2C61F4B35DA45B1DB2 /* YabaiIntegrationRendererTests.swift */; };
 		607F62098AE0559933CAD73D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 73CD4898F246BE62DA7BF6D6 /* Assets.xcassets */; };
+		8315B392B9FCA5615014F8CD /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611CB135D9C33EFF92E25231 /* main.swift */; };
 		8F52B5C4034546A022EDCA33 /* YabaiBarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C7953AFF2B0BC2C8F300FE /* YabaiBarApp.swift */; };
+		A26F53F42CC1BFFA67A2A84F /* YabaiIntegrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A560E9799B3EE28F7DCB2540 /* YabaiIntegrationManager.swift */; };
 		B917BC018CC97DCB12A2D780 /* YabaiBarCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD66A8E7A60EF9C785E2C6AF /* YabaiBarCore.framework */; };
 		DA0EEEE7CBB7B8D44BDDE780 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E84E57489E6D6C672272B00 /* AppDelegate.swift */; };
 		DADEC75C02CF40032FAFC36C /* YabaiBarCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD66A8E7A60EF9C785E2C6AF /* YabaiBarCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		DBB59599D7F45B1DB463AB11 /* YabaiBarSignalHelper in Resources */ = {isa = PBXBuildFile; fileRef = FB7C6D056F9BEFAE7B4FEC6B /* YabaiBarSignalHelper */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		DBF2B98AD31AD65203292F05 /* YabaiModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6CE66943493C36DB5CD228A /* YabaiModels.swift */; };
+		E0F97F18CBCF82F12A5E86DC /* StatusItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86F414513434D88B5378A457 /* StatusItemController.swift */; };
 		E16E31C2D447EA7A71D9175E /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9296DC53EE35183F6E2F01A /* AppModel.swift */; };
-		E6F23736A5072EA370A80B55 /* MenuBarContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74E88485B3CDC813106C696E /* MenuBarContentView.swift */; };
 		EC68FD8B686F51279D407115 /* YabaiSnapshotBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13325C31B3E233FD8503E21 /* YabaiSnapshotBuilderTests.swift */; };
 		EC7041FD665451AF276897AD /* YabaiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E5098D87879B985DC17EE01 /* YabaiClient.swift */; };
 		FA1E7F11F8805BBD3E3E694C /* YabaiBarCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD66A8E7A60EF9C785E2C6AF /* YabaiBarCore.framework */; };
+		FA85E1235F3172B8A75A506C /* YabaiSignalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B57D710F0ACEF9D99C51ED /* YabaiSignalHandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		84430967902B27C9DA1F401D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 157342E8966D7986E8ADB996 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 22EA8011F6E6E57C9B666EF9;
+			remoteInfo = YabaiBarCore;
+		};
+		864CB7958A928399A603D465 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 157342E8966D7986E8ADB996 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4B5D47CCEBDE4613532064A6;
+			remoteInfo = YabaiBarSignalHelper;
+		};
+		A390A8FB54767B8E92C0DE2C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 157342E8966D7986E8ADB996 /* Project object */;
 			proxyType = 1;
@@ -70,22 +92,37 @@
 /* Begin PBXFileReference section */
 		002493D50E59600B718B0579 /* CommandRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandRunner.swift; sourceTree = "<group>"; };
 		20C7953AFF2B0BC2C8F300FE /* YabaiBarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiBarApp.swift; sourceTree = "<group>"; };
+		21B57D710F0ACEF9D99C51ED /* YabaiSignalHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiSignalHandler.swift; sourceTree = "<group>"; };
 		2E5098D87879B985DC17EE01 /* YabaiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiClient.swift; sourceTree = "<group>"; };
+		30333BD319AF040A7F271965 /* YabaiLiveState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiLiveState.swift; sourceTree = "<group>"; };
+		3DF4BC2C61F4B35DA45B1DB2 /* YabaiIntegrationRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiIntegrationRendererTests.swift; sourceTree = "<group>"; };
 		42B3BE24C7684BDFC3CF9D0B /* YabaiBarCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YabaiBarCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		611CB135D9C33EFF92E25231 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		71FA4F5D43336EE5EED6F772 /* YabaiBar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = YabaiBar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7218C7D440006D0EB3BE4750 /* YabaiRuntimeMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiRuntimeMonitor.swift; sourceTree = "<group>"; };
 		73CD4898F246BE62DA7BF6D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		74E88485B3CDC813106C696E /* MenuBarContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarContentView.swift; sourceTree = "<group>"; };
+		86F414513434D88B5378A457 /* StatusItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemController.swift; sourceTree = "<group>"; };
 		8E84E57489E6D6C672272B00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		9B4D1692E241245251375A9E /* YabaiIntegrationRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiIntegrationRenderer.swift; sourceTree = "<group>"; };
 		A3B3C4C223D5DDF2A936ECD4 /* LoginItemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItemManager.swift; sourceTree = "<group>"; };
+		A560E9799B3EE28F7DCB2540 /* YabaiIntegrationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiIntegrationManager.swift; sourceTree = "<group>"; };
 		B13325C31B3E233FD8503E21 /* YabaiSnapshotBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiSnapshotBuilderTests.swift; sourceTree = "<group>"; };
 		B6CE66943493C36DB5CD228A /* YabaiModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiModels.swift; sourceTree = "<group>"; };
 		B9296DC53EE35183F6E2F01A /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		BD66A8E7A60EF9C785E2C6AF /* YabaiBarCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YabaiBarCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D703320858931D640DB56604 /* MenuBarLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarLabelView.swift; sourceTree = "<group>"; };
 		D9D6DAEFB66BBE8612D5077F /* AppInstallationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInstallationManager.swift; sourceTree = "<group>"; };
+		FB7C6D056F9BEFAE7B4FEC6B /* YabaiBarSignalHelper */ = {isa = PBXFileReference; includeInIndex = 0; path = YabaiBarSignalHelper; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		72CE9050033FFA3D55B2F8ED /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				45993C3CA31E849B2B586661 /* YabaiBarCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		86DA6E1D6ED131733AA8C788 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -105,6 +142,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		605AD69A6B56D7A79530E252 /* YabaiBarSignalHelper */ = {
+			isa = PBXGroup;
+			children = (
+				611CB135D9C33EFF92E25231 /* main.swift */,
+			);
+			path = YabaiBarSignalHelper;
+			sourceTree = "<group>";
+		};
 		65A56A32285841457A167675 /* YabaiBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -112,9 +157,10 @@
 				D9D6DAEFB66BBE8612D5077F /* AppInstallationManager.swift */,
 				B9296DC53EE35183F6E2F01A /* AppModel.swift */,
 				A3B3C4C223D5DDF2A936ECD4 /* LoginItemManager.swift */,
-				74E88485B3CDC813106C696E /* MenuBarContentView.swift */,
-				D703320858931D640DB56604 /* MenuBarLabelView.swift */,
+				86F414513434D88B5378A457 /* StatusItemController.swift */,
 				20C7953AFF2B0BC2C8F300FE /* YabaiBarApp.swift */,
+				A560E9799B3EE28F7DCB2540 /* YabaiIntegrationManager.swift */,
+				7218C7D440006D0EB3BE4750 /* YabaiRuntimeMonitor.swift */,
 			);
 			path = YabaiBar;
 			sourceTree = "<group>";
@@ -142,6 +188,7 @@
 			children = (
 				65A56A32285841457A167675 /* YabaiBar */,
 				FEEF3DE44FBA678120A6487E /* YabaiBarCore */,
+				605AD69A6B56D7A79530E252 /* YabaiBarSignalHelper */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -160,6 +207,7 @@
 				71FA4F5D43336EE5EED6F772 /* YabaiBar.app */,
 				BD66A8E7A60EF9C785E2C6AF /* YabaiBarCore.framework */,
 				42B3BE24C7684BDFC3CF9D0B /* YabaiBarCoreTests.xctest */,
+				FB7C6D056F9BEFAE7B4FEC6B /* YabaiBarSignalHelper */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -167,6 +215,7 @@
 		FE54C2B769DB7F210B7A7994 /* YabaiBarCoreTests */ = {
 			isa = PBXGroup;
 			children = (
+				3DF4BC2C61F4B35DA45B1DB2 /* YabaiIntegrationRendererTests.swift */,
 				B13325C31B3E233FD8503E21 /* YabaiSnapshotBuilderTests.swift */,
 			);
 			path = YabaiBarCoreTests;
@@ -177,7 +226,10 @@
 			children = (
 				002493D50E59600B718B0579 /* CommandRunner.swift */,
 				2E5098D87879B985DC17EE01 /* YabaiClient.swift */,
+				9B4D1692E241245251375A9E /* YabaiIntegrationRenderer.swift */,
+				30333BD319AF040A7F271965 /* YabaiLiveState.swift */,
 				B6CE66943493C36DB5CD228A /* YabaiModels.swift */,
+				21B57D710F0ACEF9D99C51ED /* YabaiSignalHandler.swift */,
 			);
 			path = YabaiBarCore;
 			sourceTree = "<group>";
@@ -230,11 +282,13 @@
 				D976D40DC980A55BCD434B2F /* Resources */,
 				F6BDF74EB6DEA291C7E6D8CA /* Frameworks */,
 				E51CEF59C351A36E9FC6BDD4 /* Embed Frameworks */,
+				F1D53B429765F1A6022BF3F3 /* Copy YabaiBarSignalHelper */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				947987BD2620AEC7177FF81A /* PBXTargetDependency */,
+				0E0E76E77FA16C5B5467324F /* PBXTargetDependency */,
 			);
 			name = YabaiBar;
 			packageProductDependencies = (
@@ -242,6 +296,25 @@
 			productName = YabaiBar;
 			productReference = 71FA4F5D43336EE5EED6F772 /* YabaiBar.app */;
 			productType = "com.apple.product-type.application";
+		};
+		4B5D47CCEBDE4613532064A6 /* YabaiBarSignalHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0438C91726241781D5E0D162 /* Build configuration list for PBXNativeTarget "YabaiBarSignalHelper" */;
+			buildPhases = (
+				2CCB33A5A72D7738584FF111 /* Sources */,
+				72CE9050033FFA3D55B2F8ED /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3D3C1D011921A3B009ED9BC1 /* PBXTargetDependency */,
+			);
+			name = YabaiBarSignalHelper;
+			packageProductDependencies = (
+			);
+			productName = YabaiBarSignalHelper;
+			productReference = FB7C6D056F9BEFAE7B4FEC6B /* YabaiBarSignalHelper */;
+			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
@@ -259,6 +332,9 @@
 						ProvisioningStyle = Automatic;
 					};
 					350E2D4EE4BF021EF13EB6C0 = {
+						ProvisioningStyle = Automatic;
+					};
+					4B5D47CCEBDE4613532064A6 = {
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -280,6 +356,7 @@
 				350E2D4EE4BF021EF13EB6C0 /* YabaiBar */,
 				22EA8011F6E6E57C9B666EF9 /* YabaiBarCore */,
 				068075D9A337DB8C6F1ACDE3 /* YabaiBarCoreTests */,
+				4B5D47CCEBDE4613532064A6 /* YabaiBarSignalHelper */,
 			);
 		};
 /* End PBXProject section */
@@ -290,19 +367,52 @@
 			buildActionMask = 2147483647;
 			files = (
 				607F62098AE0559933CAD73D /* Assets.xcassets in Resources */,
+				DBB59599D7F45B1DB463AB11 /* YabaiBarSignalHelper in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		F1D53B429765F1A6022BF3F3 /* Copy YabaiBarSignalHelper */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy YabaiBarSignalHelper";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "HELPER=\"${BUILT_PRODUCTS_DIR}/YabaiBarSignalHelper\"\nDEST=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/YabaiBarSignalHelper\"\n/bin/rm -f \"${DEST}\"\n/usr/bin/ditto \"${HELPER}\" \"${DEST}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		2CCB33A5A72D7738584FF111 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8315B392B9FCA5615014F8CD /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		974D367DC5E22F3358268DD1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				0E879CE0155C435DBD1F6EED /* CommandRunner.swift in Sources */,
 				EC7041FD665451AF276897AD /* YabaiClient.swift in Sources */,
+				008131BEFD7A5A10AEC153A8 /* YabaiIntegrationRenderer.swift in Sources */,
+				308350B35FBCE7038620D595 /* YabaiLiveState.swift in Sources */,
 				DBF2B98AD31AD65203292F05 /* YabaiModels.swift in Sources */,
+				FA85E1235F3172B8A75A506C /* YabaiSignalHandler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -314,9 +424,10 @@
 				47BF90C43B50D71530CE35B2 /* AppInstallationManager.swift in Sources */,
 				E16E31C2D447EA7A71D9175E /* AppModel.swift in Sources */,
 				5A0297B03400C44A9FD94AF9 /* LoginItemManager.swift in Sources */,
-				E6F23736A5072EA370A80B55 /* MenuBarContentView.swift in Sources */,
-				0050F269BB88719CF87B39D9 /* MenuBarLabelView.swift in Sources */,
+				E0F97F18CBCF82F12A5E86DC /* StatusItemController.swift in Sources */,
 				8F52B5C4034546A022EDCA33 /* YabaiBarApp.swift in Sources */,
+				A26F53F42CC1BFFA67A2A84F /* YabaiIntegrationManager.swift in Sources */,
+				438B012648F9BC492BE1B6BB /* YabaiRuntimeMonitor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,6 +435,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A9400D4FA28B2B844DF7C1C /* YabaiIntegrationRendererTests.swift in Sources */,
 				EC68FD8B686F51279D407115 /* YabaiSnapshotBuilderTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -331,6 +443,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		0E0E76E77FA16C5B5467324F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4B5D47CCEBDE4613532064A6 /* YabaiBarSignalHelper */;
+			targetProxy = 864CB7958A928399A603D465 /* PBXContainerItemProxy */;
+		};
+		3D3C1D011921A3B009ED9BC1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 22EA8011F6E6E57C9B666EF9 /* YabaiBarCore */;
+			targetProxy = A390A8FB54767B8E92C0DE2C /* PBXContainerItemProxy */;
+		};
 		42B28B9D62E6FCB1ECD4E1F3 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 22EA8011F6E6E57C9B666EF9 /* YabaiBarCore */;
@@ -407,6 +529,22 @@
 				SWIFT_VERSION = 6.0;
 			};
 			name = Debug;
+		};
+		2F69AFBCCC085C6AE9CCC6D5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.kevinbarfleur.YabaiBarSignalHelper;
+				PRODUCT_NAME = YabaiBarSignalHelper;
+				SDKROOT = macosx;
+			};
+			name = Release;
 		};
 		3F85C9140CA27544F452FF48 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -563,7 +701,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.2.0;
+				MARKETING_VERSION = 0.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kevinbarfleur.YabaiBar;
 				PRODUCT_NAME = YabaiBar;
 				SDKROOT = macosx;
@@ -584,9 +722,25 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MARKETING_VERSION = 0.2.0;
+				MARKETING_VERSION = 0.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.kevinbarfleur.YabaiBar;
 				PRODUCT_NAME = YabaiBar;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		EA38034AA4D9BA3AA92A1A9C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.kevinbarfleur.YabaiBarSignalHelper;
+				PRODUCT_NAME = YabaiBarSignalHelper;
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -594,6 +748,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		0438C91726241781D5E0D162 /* Build configuration list for PBXNativeTarget "YabaiBarSignalHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EA38034AA4D9BA3AA92A1A9C /* Debug */,
+				2F69AFBCCC085C6AE9CCC6D5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		642A4F9DEE114914FE8C5193 /* Build configuration list for PBXNativeTarget "YabaiBar" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
