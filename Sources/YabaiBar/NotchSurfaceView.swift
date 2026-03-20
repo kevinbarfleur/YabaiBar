@@ -70,7 +70,7 @@ struct YabaiNotchSurfaceView: View {
     @State private var revealTask: Task<Void, Never>?
 
     private var state: DisplayNotchState? {
-        model.displayNotchState(for: viewModel.screenUUID)
+        viewModel.displayState
     }
 
     var body: some View {

@@ -22,6 +22,7 @@ final class YabaiNotchViewModel: ObservableObject {
 
     @Published private(set) var notchState: YabaiNotchState = .closed
     @Published private(set) var isHovering = false
+    @Published private(set) var displayState: DisplayNotchState?
     @Published private(set) var hasHardwareNotch = true
     @Published private(set) var centerWidth: CGFloat = 184
     @Published private(set) var leadingWidth: CGFloat = 92
@@ -41,6 +42,10 @@ final class YabaiNotchViewModel: ObservableObject {
 
     init(screenUUID: String) {
         self.screenUUID = screenUUID
+    }
+
+    func setDisplayState(_ state: DisplayNotchState?) {
+        displayState = state
     }
 
     var closedVisibleWidth: CGFloat {
@@ -330,6 +335,7 @@ private final class DisplayNotchWindowController {
     private let displayUUID: String
     private let viewModel: YabaiNotchViewModel
     private let window: YabaiNotchWindow
+    private var lastStableState: DisplayNotchState?
 
     init(model: AppModel, displayUUID: String) {
         self.model = model
@@ -358,18 +364,52 @@ private final class DisplayNotchWindowController {
 
     func refresh(animated: Bool) {
         guard model.indicatorPresentationState.showsNotchSurface,
-              !model.isUnavailable,
-              let screen = NSScreen.matchingDisplayUUID(displayUUID),
-              let state = model.displayNotchState(for: displayUUID),
-              !state.isNativeFullscreen else {
+              let screen = NSScreen.matchingDisplayUUID(displayUUID) else {
             viewModel.forceClosed()
+            viewModel.setDisplayState(nil)
+            lastStableState = nil
             window.orderOut(nil)
             return
         }
 
+        if let freshState = model.displayNotchState(for: displayUUID) {
+            if freshState.isNativeFullscreen {
+                viewModel.forceClosed()
+                viewModel.setDisplayState(freshState)
+                lastStableState = freshState
+                window.orderOut(nil)
+                return
+            }
+
+            lastStableState = freshState
+            viewModel.setDisplayState(freshState)
+            viewModel.update(
+                for: screen,
+                state: freshState,
+                openNotchOnHover: model.openNotchOnHover,
+                minimumHoverDuration: model.minimumHoverDuration,
+                enableHaptics: model.enableHaptics
+            )
+
+            layoutWindow(animated: animated)
+            if !window.isVisible {
+                window.orderFrontRegardless()
+            }
+            return
+        }
+
+        guard let lastStableState, !lastStableState.isNativeFullscreen else {
+            viewModel.forceClosed()
+            viewModel.setDisplayState(nil)
+            self.lastStableState = nil
+            window.orderOut(nil)
+            return
+        }
+
+        viewModel.setDisplayState(lastStableState)
         viewModel.update(
             for: screen,
-            state: state,
+            state: lastStableState,
             openNotchOnHover: model.openNotchOnHover,
             minimumHoverDuration: model.minimumHoverDuration,
             enableHaptics: model.enableHaptics
@@ -383,6 +423,8 @@ private final class DisplayNotchWindowController {
 
     func invalidate() {
         viewModel.invalidate()
+        viewModel.setDisplayState(nil)
+        lastStableState = nil
         window.orderOut(nil)
     }
 
