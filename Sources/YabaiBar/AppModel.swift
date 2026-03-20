@@ -2,13 +2,105 @@ import AppKit
 import Foundation
 import YabaiBarCore
 
+enum IndicatorSurfaceMode: String, CaseIterable, Identifiable {
+    case topBar
+    case notch
+    case both
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .topBar:
+            return "Top Bar"
+        case .notch:
+            return "Notch"
+        case .both:
+            return "Both"
+        }
+    }
+
+    var summary: String {
+        switch self {
+        case .topBar:
+            return "Indicators stay next to the menu bar icon. The notch surface is hidden."
+        case .notch:
+            return "Indicators move into the notch. The menu bar keeps a small icon only."
+        case .both:
+            return "Indicators are shown in both the menu bar and the notch."
+        }
+    }
+}
+
+enum MenuBarLabelMode: String, CaseIterable, Identifiable {
+    case iconAndNumber
+    case numberOnly
+    case iconOnly
+
+    var id: String { rawValue }
+
+    var title: String {
+        switch self {
+        case .iconAndNumber:
+            return "Icon + number"
+        case .numberOnly:
+            return "Number only"
+        case .iconOnly:
+            return "Icon only"
+        }
+    }
+}
+
+struct IndicatorPresentationState: Equatable {
+    let showsStatusItem: Bool
+    let showsNotchSurface: Bool
+    let statusItemShowsIconOnly: Bool
+    let statusItemShowsText: Bool
+    let statusItemShowsImage: Bool
+}
+
+struct DisplayNotchState: Identifiable, Equatable {
+    let id: String
+    let displayUUID: String
+    let displayIndex: Int
+    let isActiveDisplay: Bool
+    let spaceIndexes: [Int]
+    let visibleSpaceIndex: Int?
+    let stackSummary: ActiveStackSummary?
+    let stackItems: [ActiveStackItemSummary]
+    let isNativeFullscreen: Bool
+}
+
 @MainActor
 final class AppModel: ObservableObject {
+    private enum DefaultsKey {
+        static let indicatorSurfaceMode = "YabaiBar.indicatorSurfaceMode"
+        static let menuBarLabelMode = "YabaiBar.menuBarLabelMode"
+        static let showAppNamesInMenu = "YabaiBar.showAppNamesInMenu"
+        static let maxAppsShownPerSpace = "YabaiBar.maxAppsShownPerSpace"
+        static let groupSpacesByDisplay = "YabaiBar.groupSpacesByDisplay"
+        static let openNotchOnHover = "YabaiBar.openNotchOnHover"
+        static let minimumHoverDuration = "YabaiBar.minimumHoverDuration"
+        static let enableHaptics = "YabaiBar.enableHaptics"
+        static let legacyNotchEnabled = "YabaiBar.notchEnabled"
+    }
+
     @Published private(set) var snapshot: YabaiSnapshot?
     @Published private(set) var statusMessage: String?
     @Published private(set) var isUnavailable = false
     @Published private(set) var activeSpaceIndex: Int?
+    @Published private(set) var activeDisplayUUID: String?
+    @Published private(set) var activeSpaceType: String?
+    @Published private(set) var activeSpaceIsNativeFullscreen = false
     @Published private(set) var activeStackSummary: ActiveStackSummary?
+    @Published private(set) var indicatorSurfaceMode: IndicatorSurfaceMode
+    @Published private(set) var menuBarLabelMode: MenuBarLabelMode
+    @Published private(set) var showAppNamesInMenu: Bool
+    @Published private(set) var maxAppsShownPerSpace: Int
+    @Published private(set) var groupSpacesByDisplay: Bool
+    @Published private(set) var openNotchOnHover: Bool
+    @Published private(set) var minimumHoverDuration: Double
+    @Published private(set) var enableHaptics: Bool
     @Published private(set) var installationState: InstallationState
     @Published private(set) var loginItemState: LoginItemState
     @Published private(set) var integrationState: YabaiIntegrationState
@@ -20,6 +112,7 @@ final class AppModel: ObservableObject {
     private let runtimeMonitor: YabaiRuntimeMonitor
     private let configFileURL: URL
     private let configDirectoryURL: URL
+    private var openSettingsHandler: (() -> Void)?
 
     private var hasStarted = false
     private var hasPromptedForInstallation = false
@@ -28,10 +121,12 @@ final class AppModel: ObservableObject {
     private var displayReconcileTask: Task<Void, Never>?
     private var integrationTask: Task<Void, Never>?
     private var liveState: YabaiLiveState?
+    private var openNotchDisplayUUIDs = Set<String>()
 
     private struct ReconciledDisplayState: Sendable {
         let activeSpaceIndex: Int?
         let activeStackSummary: ActiveStackSummary?
+        let activeDisplayUUID: String?
     }
 
     init(
@@ -45,6 +140,25 @@ final class AppModel: ObservableObject {
             .appendingPathComponent("yabairc", isDirectory: false)
     ) {
         let initialInstallationState = installationManager.state
+        let defaults = UserDefaults.standard
+        let storedIndicatorSurfaceMode = defaults.string(forKey: DefaultsKey.indicatorSurfaceMode)
+            .flatMap(IndicatorSurfaceMode.init(rawValue:))
+            ?? {
+                if let legacyNotchEnabled = defaults.object(forKey: DefaultsKey.legacyNotchEnabled) as? Bool {
+                    return legacyNotchEnabled ? .both : .topBar
+                }
+
+                return .both
+            }()
+        let storedMenuBarLabelMode = defaults.string(forKey: DefaultsKey.menuBarLabelMode)
+            .flatMap(MenuBarLabelMode.init(rawValue:))
+            ?? .iconAndNumber
+        let storedShowAppNamesInMenu: Bool = defaults.object(forKey: DefaultsKey.showAppNamesInMenu) as? Bool ?? true
+        let storedMaxAppsShownPerSpace = min(3, max(1, defaults.object(forKey: DefaultsKey.maxAppsShownPerSpace) as? Int ?? 2))
+        let storedGroupSpacesByDisplay: Bool = defaults.object(forKey: DefaultsKey.groupSpacesByDisplay) as? Bool ?? true
+        let storedOpenNotchOnHover: Bool = defaults.object(forKey: DefaultsKey.openNotchOnHover) as? Bool ?? true
+        let storedMinimumHoverDuration = min(1, max(0, defaults.object(forKey: DefaultsKey.minimumHoverDuration) as? Double ?? 0.3))
+        let storedEnableHaptics: Bool = defaults.object(forKey: DefaultsKey.enableHaptics) as? Bool ?? true
         self.client = client
         self.installationManager = installationManager
         self.loginItemManager = loginItemManager
@@ -52,6 +166,14 @@ final class AppModel: ObservableObject {
         self.configFileURL = configFileURL
         configDirectoryURL = configFileURL.deletingLastPathComponent()
         runtimeMonitor = YabaiRuntimeMonitor(stateURL: integrationManager.runtimeStateURL)
+        indicatorSurfaceMode = storedIndicatorSurfaceMode
+        menuBarLabelMode = storedMenuBarLabelMode
+        showAppNamesInMenu = storedShowAppNamesInMenu
+        maxAppsShownPerSpace = storedMaxAppsShownPerSpace
+        groupSpacesByDisplay = storedGroupSpacesByDisplay
+        openNotchOnHover = storedOpenNotchOnHover
+        minimumHoverDuration = storedMinimumHoverDuration
+        enableHaptics = storedEnableHaptics
         installationState = initialInstallationState
         loginItemState = loginItemManager.currentState(isEligibleForRegistration: initialInstallationState == .installed)
         integrationState = integrationManager.state(isEligible: initialInstallationState == .installed)
@@ -107,6 +229,24 @@ final class AppModel: ObservableObject {
         }
     }
 
+    func focusWindow(_ id: Int) {
+        Task { [weak self] in
+            guard let self else { return }
+
+            do {
+                try await Task.detached(priority: .userInitiated) { [client] in
+                    try client.focusWindow(id: id)
+                }.value
+
+                reconcileDisplayedState(afterDelays: [30, 100, 240])
+                refreshSnapshot(after: 120)
+            } catch {
+                statusMessage = error.localizedDescription
+                isUnavailable = snapshot == nil && liveState == nil
+            }
+        }
+    }
+
     func openConfig() {
         NSWorkspace.shared.open(configFileURL)
     }
@@ -117,6 +257,84 @@ final class AppModel: ObservableObject {
 
     func repairIntegration() {
         ensureIntegrationIfNeeded(force: true)
+    }
+
+    func setIndicatorSurfaceMode(_ mode: IndicatorSurfaceMode) {
+        indicatorSurfaceMode = mode
+        UserDefaults.standard.set(mode.rawValue, forKey: DefaultsKey.indicatorSurfaceMode)
+    }
+
+    func setMenuBarLabelMode(_ mode: MenuBarLabelMode) {
+        menuBarLabelMode = mode
+        UserDefaults.standard.set(mode.rawValue, forKey: DefaultsKey.menuBarLabelMode)
+    }
+
+    func setShowAppNamesInMenu(_ enabled: Bool) {
+        showAppNamesInMenu = enabled
+        UserDefaults.standard.set(enabled, forKey: DefaultsKey.showAppNamesInMenu)
+    }
+
+    func setMaxAppsShownPerSpace(_ count: Int) {
+        let resolvedCount = min(3, max(1, count))
+        maxAppsShownPerSpace = resolvedCount
+        UserDefaults.standard.set(resolvedCount, forKey: DefaultsKey.maxAppsShownPerSpace)
+    }
+
+    func setGroupSpacesByDisplay(_ enabled: Bool) {
+        groupSpacesByDisplay = enabled
+        UserDefaults.standard.set(enabled, forKey: DefaultsKey.groupSpacesByDisplay)
+    }
+
+    func setOpenNotchOnHover(_ enabled: Bool) {
+        openNotchOnHover = enabled
+        UserDefaults.standard.set(enabled, forKey: DefaultsKey.openNotchOnHover)
+    }
+
+    func setMinimumHoverDuration(_ duration: Double) {
+        let resolvedDuration = min(1, max(0, duration))
+        minimumHoverDuration = resolvedDuration
+        UserDefaults.standard.set(resolvedDuration, forKey: DefaultsKey.minimumHoverDuration)
+    }
+
+    func setEnableHaptics(_ enabled: Bool) {
+        enableHaptics = enabled
+        UserDefaults.standard.set(enabled, forKey: DefaultsKey.enableHaptics)
+    }
+
+    func openSettings() {
+        if let openSettingsHandler {
+            openSettingsHandler()
+            return
+        }
+
+        NSApp.activate(ignoringOtherApps: true)
+        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+    }
+
+    func setOpenSettingsHandler(_ handler: @escaping () -> Void) {
+        openSettingsHandler = handler
+    }
+
+    func notchSurfaceDidChangeOpenState(displayUUID: String, isOpen: Bool) {
+        if isOpen {
+            openNotchDisplayUUIDs.insert(displayUUID)
+        } else {
+            openNotchDisplayUUIDs.remove(displayUUID)
+        }
+
+        if isOpen {
+            reconcileDisplayedState(afterDelays: [0, 70, 180])
+            refreshSnapshot()
+        }
+    }
+
+    func setLaunchAtLoginEnabled(_ enabled: Bool) {
+        let eligibleForRegistration = installationState == .installed
+        loginItemState = loginItemManager.setEnabled(enabled, isEligibleForRegistration: eligibleForRegistration)
+
+        if case let .unavailable(message) = loginItemState {
+            statusMessage = message
+        }
     }
 
     func quit() {
@@ -163,16 +381,157 @@ final class AppModel: ObservableObject {
         return "Current space \(activeSpaceLabel)"
     }
 
-    var groupedSpaces: [(display: Int, spaces: [SpaceSummary])] {
+    var shouldShowStatusIndicators: Bool {
+        indicatorPresentationState.showsStatusItem
+    }
+
+    var shouldShowStatusItem: Bool {
+        indicatorPresentationState.showsStatusItem
+    }
+
+    var shouldShowNotchSurface: Bool {
+        indicatorPresentationState.showsNotchSurface
+    }
+
+    var shouldShowIconOnlyInStatusItem: Bool {
+        indicatorPresentationState.statusItemShowsIconOnly
+    }
+
+    var shouldShowTextInStatusItem: Bool {
+        indicatorPresentationState.statusItemShowsText
+    }
+
+    var shouldShowImageInStatusItem: Bool {
+        indicatorPresentationState.statusItemShowsImage
+    }
+
+    var indicatorPresentationState: IndicatorPresentationState {
+        switch indicatorSurfaceMode {
+        case .topBar:
+            return IndicatorPresentationState(
+                showsStatusItem: true,
+                showsNotchSurface: false,
+                statusItemShowsIconOnly: menuBarLabelMode == .iconOnly,
+                statusItemShowsText: menuBarLabelMode != .iconOnly,
+                statusItemShowsImage: menuBarLabelMode != .numberOnly
+            )
+        case .notch:
+            return IndicatorPresentationState(
+                showsStatusItem: false,
+                showsNotchSurface: true,
+                statusItemShowsIconOnly: false,
+                statusItemShowsText: false,
+                statusItemShowsImage: false
+            )
+        case .both:
+            return IndicatorPresentationState(
+                showsStatusItem: true,
+                showsNotchSurface: true,
+                statusItemShowsIconOnly: menuBarLabelMode == .iconOnly,
+                statusItemShowsText: menuBarLabelMode != .iconOnly,
+                statusItemShowsImage: menuBarLabelMode != .numberOnly
+            )
+        }
+    }
+
+    var activeDisplay: DisplaySummary? {
+        if let activeDisplayUUID,
+           let matchedDisplay = snapshot?.displays.first(where: { $0.uuid == activeDisplayUUID }) {
+            return matchedDisplay
+        }
+
+        return snapshot?.displays.first(where: \.hasFocus)
+    }
+
+    var activeDisplayLabel: String {
+        if let activeDisplay {
+            return "Display \(activeDisplay.index)"
+        }
+
+        return "Display"
+    }
+
+    var activeDisplaySpaces: [Int] {
+        activeDisplay?.spaces ?? []
+    }
+
+    var activeStackItems: [ActiveStackItemSummary] {
+        snapshot?.activeStackItems ?? []
+    }
+
+    var activeSpaceTypeLabel: String? {
+        if let activeStackSummary {
+            return activeStackSummary.badgeLabel
+        }
+
+        switch activeSpaceType?.lowercased() {
+        case "bsp":
+            return "BSP"
+        case "float":
+            return "FLOAT"
+        case "stack":
+            return "STACK"
+        default:
+            return nil
+        }
+    }
+
+    var menuSpaceSections: [(title: String?, spaces: [SpaceSummary])] {
         let spaces = snapshot?.spaces ?? []
+        guard groupSpacesByDisplay else {
+            return [(title: nil, spaces: spaces.sorted { $0.index < $1.index })]
+        }
+
         let groups = Dictionary(grouping: spaces, by: \.display)
         return groups.keys.sorted().map { display in
-            (display: display, spaces: groups[display, default: []].sorted { $0.index < $1.index })
+            (title: "Display \(display)", spaces: groups[display, default: []].sorted { $0.index < $1.index })
         }
     }
 
     var spaces: [SpaceSummary] {
         snapshot?.spaces ?? []
+    }
+
+    var launchAtLoginEnabled: Bool {
+        loginItemState == .enabled
+    }
+
+    var displayNotchStates: [DisplayNotchState] {
+        let displays = snapshot?.displays ?? []
+        return displays.compactMap { display in
+            displayNotchState(for: display.uuid)
+        }
+        .sorted { $0.displayIndex < $1.displayIndex }
+    }
+
+    func displayNotchState(for displayUUID: String?) -> DisplayNotchState? {
+        guard let displayUUID,
+              let display = snapshot?.displays.first(where: { $0.uuid == displayUUID }) else {
+            return nil
+        }
+
+        let visibleSpace = visibleSpace(for: display)
+        let stackSummary = stackSummary(for: visibleSpace)
+
+        return DisplayNotchState(
+            id: displayUUID,
+            displayUUID: displayUUID,
+            displayIndex: display.index,
+            isActiveDisplay: activeDisplayUUID == displayUUID || display.hasFocus,
+            spaceIndexes: display.spaces,
+            visibleSpaceIndex: visibleSpace?.index,
+            stackSummary: stackSummary,
+            stackItems: stackItems(for: visibleSpace, using: stackSummary),
+            isNativeFullscreen: visibleSpace?.isNativeFullscreen ?? false
+        )
+    }
+
+    func menuSpaceTitle(for space: SpaceSummary) -> String {
+        if showAppNamesInMenu {
+            return "Space \(space.index) · \(space.appSummary(maxApps: maxAppsShownPerSpace))"
+        }
+
+        return "Space \(space.index)"
     }
 
     var canMoveToApplications: Bool {
@@ -219,14 +578,78 @@ final class AppModel: ObservableObject {
         NSWorkspace.shared.open(url)
     }
 
+    private func visibleSpace(for display: DisplaySummary) -> SpaceSummary? {
+        let spaces = snapshot?.spaces.filter { $0.display == display.index } ?? []
+        if let focusedVisibleSpace = spaces.first(where: { $0.isVisible && $0.hasFocus }) {
+            return focusedVisibleSpace
+        }
+
+        if let visibleSpace = spaces.first(where: \.isVisible) {
+            return visibleSpace
+        }
+
+        if let firstDisplaySpaceIndex = display.spaces.first {
+            return spaces.first(where: { $0.index == firstDisplaySpaceIndex })
+        }
+
+        return spaces.first
+    }
+
+    private func stackSummary(for space: SpaceSummary?) -> ActiveStackSummary? {
+        guard let space, space.isStack else {
+            return nil
+        }
+
+        if let trackedSummary = liveState?.spaces[space.index]?.activeStackSummary {
+            return trackedSummary
+        }
+
+        if let stackSummary = space.stackSummary {
+            return stackSummary
+        }
+
+        guard space.stackItems.count >= 2 else {
+            return nil
+        }
+
+        let focusedItem = space.stackItems.first(where: \.isFocused) ?? space.stackItems.first
+        guard let focusedItem else {
+            return nil
+        }
+
+        return ActiveStackSummary(
+            spaceIndex: space.index,
+            currentIndex: focusedItem.position,
+            total: space.stackItems.count,
+            focusedWindowID: focusedItem.id,
+            focusedAppName: focusedItem.app
+        )
+    }
+
+    private func stackItems(for space: SpaceSummary?, using summary: ActiveStackSummary?) -> [ActiveStackItemSummary] {
+        guard let space else {
+            return []
+        }
+
+        guard let summary else {
+            return space.stackItems
+        }
+
+        return space.stackItems.map { item in
+            ActiveStackItemSummary(
+                id: item.id,
+                position: item.position,
+                app: item.app,
+                title: item.title,
+                isFocused: item.id == summary.focusedWindowID
+            )
+        }
+    }
+
     private func refreshInstallationAndLoginItemState() {
         installationState = installationManager.state
         let eligibleForRegistration = installationState == .installed
         loginItemState = loginItemManager.currentState(isEligibleForRegistration: eligibleForRegistration)
-
-        if eligibleForRegistration, loginItemState == .notRegistered {
-            loginItemState = loginItemManager.ensureEnabled(isEligibleForRegistration: eligibleForRegistration)
-        }
 
         integrationState = integrationManager.state(isEligible: eligibleForRegistration)
     }
@@ -246,6 +669,7 @@ final class AppModel: ObservableObject {
         guard installationState == .installed else {
             runtimeMonitor.stop()
             liveState = nil
+            activeDisplayUUID = snapshot?.activeDisplayUUID
             integrationState = integrationManager.state(isEligible: false)
             return
         }
@@ -291,7 +715,7 @@ final class AppModel: ObservableObject {
                 guard let self else { return }
 
                 reconcileDisplayedState(afterDelays: [0, 80, 220])
-                refreshSnapshot(after: liveState == nil ? 220 : 140)
+                refreshSnapshot(after: liveState == nil ? 220 : (openNotchDisplayUUIDs.isEmpty ? 120 : 60))
             }
         }
     }
@@ -300,9 +724,12 @@ final class AppModel: ObservableObject {
         liveState = state
 
         guard let state else {
+            activeDisplayUUID = snapshot?.activeDisplayUUID
             reconcileDisplayedState(afterDelays: [0, 80, 220])
             return
         }
+
+        activeDisplayUUID = state.activeDisplayUUID ?? snapshot?.activeDisplayUUID
 
         if snapshot != nil || state.activeSpaceIndex != nil {
             isUnavailable = false
@@ -312,6 +739,8 @@ final class AppModel: ObservableObject {
         reconcileDisplayedState(
             afterDelays: state.activeStackSummary == nil ? [0, 80, 220] : [0, 60, 160]
         )
+
+        refreshSnapshot(after: state.activeStackSummary == nil ? 80 : 30)
     }
 
     private func reconcileDisplayedState(afterDelays delays: [Int] = [0, 140, 360]) {
@@ -332,9 +761,11 @@ final class AppModel: ObservableObject {
                     let reconciledState = try await Task.detached(priority: .userInitiated) { [client] in
                         let activeSpaceIndex = try client.fetchActiveSpaceIndex()
                         let activeStackSummary = try client.fetchActiveStackSummary()
+                        let activeDisplayUUID = try client.fetchActiveDisplayUUID()
                         return ReconciledDisplayState(
                             activeSpaceIndex: activeSpaceIndex,
-                            activeStackSummary: activeStackSummary
+                            activeStackSummary: activeStackSummary,
+                            activeDisplayUUID: activeDisplayUUID
                         )
                     }.value
 
@@ -354,6 +785,7 @@ final class AppModel: ObservableObject {
 
     private func applyReconciledDisplayState(_ reconciledState: ReconciledDisplayState, isFinalAttempt: Bool) {
         activeSpaceIndex = reconciledState.activeSpaceIndex
+        activeDisplayUUID = liveState?.activeDisplayUUID ?? reconciledState.activeDisplayUUID ?? snapshot?.activeDisplayUUID
 
         if let activeStackSummary = reconciledState.activeStackSummary {
             self.activeStackSummary = activeStackSummary
@@ -386,6 +818,9 @@ final class AppModel: ObservableObject {
                 }.value
 
                 snapshot = fetchedSnapshot
+                activeSpaceType = fetchedSnapshot.activeSpaceType
+                activeSpaceIsNativeFullscreen = fetchedSnapshot.activeSpaceIsNativeFullscreen
+                activeDisplayUUID = liveState?.activeDisplayUUID ?? fetchedSnapshot.activeDisplayUUID
 
                 statusMessage = nil
                 isUnavailable = false

@@ -38,17 +38,20 @@ public struct TrackedStackState: Codable, Equatable, Sendable {
 public struct YabaiLiveState: Codable, Equatable, Sendable {
     public let version: Int
     public let activeSpaceIndex: Int?
+    public let activeDisplayUUID: String?
     public let spaces: [Int: TrackedStackState]
     public let updatedAt: Date
 
     public init(
         version: Int = 1,
         activeSpaceIndex: Int? = nil,
+        activeDisplayUUID: String? = nil,
         spaces: [Int: TrackedStackState] = [:],
         updatedAt: Date = Date()
     ) {
         self.version = version
         self.activeSpaceIndex = activeSpaceIndex
+        self.activeDisplayUUID = activeDisplayUUID
         self.spaces = spaces
         self.updatedAt = updatedAt
     }
@@ -92,9 +95,19 @@ public enum YabaiLiveStateReducer {
         in state: YabaiLiveState,
         now: Date = Date()
     ) -> YabaiLiveState {
+        spaceChanged(activeSpaceIndex, activeDisplayUUID: state.activeDisplayUUID, in: state, now: now)
+    }
+
+    public static func spaceChanged(
+        _ activeSpaceIndex: Int?,
+        activeDisplayUUID: String?,
+        in state: YabaiLiveState,
+        now: Date = Date()
+    ) -> YabaiLiveState {
         YabaiLiveState(
             version: state.version,
             activeSpaceIndex: activeSpaceIndex,
+            activeDisplayUUID: activeDisplayUUID,
             spaces: state.spaces,
             updatedAt: now
         )
@@ -125,6 +138,7 @@ public enum YabaiLiveStateReducer {
         return YabaiLiveState(
             version: state.version,
             activeSpaceIndex: activeSpaceIndex,
+            activeDisplayUUID: state.activeDisplayUUID,
             spaces: spaces,
             updatedAt: now
         )

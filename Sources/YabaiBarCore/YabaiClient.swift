@@ -15,9 +15,11 @@ public struct YabaiClient: Sendable {
     public func fetchSnapshot() throws -> YabaiSnapshot {
         let spacesOutput = try run(arguments: ["-m", "query", "--spaces"])
         let windowsOutput = try run(arguments: ["-m", "query", "--windows"])
+        let displaysOutput = try run(arguments: ["-m", "query", "--displays"])
         return try YabaiSnapshotBuilder.build(
             spacesData: spacesOutput.stdout,
             windowsData: windowsOutput.stdout,
+            displaysData: displaysOutput.stdout,
             focusedWindowData: try? run(arguments: ["-m", "query", "--windows", "--window"]).stdout
         )
     }
@@ -35,6 +37,15 @@ public struct YabaiClient: Sendable {
             windowsData: windowsOutput.stdout,
             focusedWindowData: try? run(arguments: ["-m", "query", "--windows", "--window"]).stdout
         )
+    }
+
+    public func fetchActiveDisplayUUID() throws -> String? {
+        let displaysOutput = try run(arguments: ["-m", "query", "--displays"])
+        return try YabaiSnapshotBuilder.activeDisplayUUID(from: displaysOutput.stdout)
+    }
+
+    public func fetchDisplaysData() throws -> Data {
+        try run(arguments: ["-m", "query", "--displays"]).stdout
     }
 
     public func fetchSpaceData(index: Int) throws -> Data {
@@ -55,6 +66,10 @@ public struct YabaiClient: Sendable {
 
     public func focusSpace(index: Int) throws {
         _ = try run(arguments: ["-m", "space", "--focus", String(index)])
+    }
+
+    public func focusWindow(id: Int) throws {
+        _ = try run(arguments: ["-m", "window", "--focus", String(id)])
     }
 
     public func restartService() throws {

@@ -6,7 +6,7 @@ import YabaiBarCore
 @MainActor
 final class StatusItemController: NSObject, NSMenuDelegate {
     private let model: AppModel
-    private let statusItem: NSStatusItem
+    private var statusItem: NSStatusItem?
     private let menu = NSMenu()
 
     private var cancellables = Set<AnyCancellable>()
@@ -14,11 +14,9 @@ final class StatusItemController: NSObject, NSMenuDelegate {
 
     init(model: AppModel) {
         self.model = model
-        statusItem = NSStatusBar.system.statusItem(withLength: 48)
         super.init()
 
         menu.delegate = self
-        statusItem.menu = menu
 
         bind()
         updateStatusItemButton()
@@ -78,17 +76,91 @@ final class StatusItemController: NSObject, NSMenuDelegate {
                 self?.rebuildMenuIfNeeded()
             }
             .store(in: &cancellables)
+
+        model.$indicatorSurfaceMode
+            .sink { [weak self] _ in
+                self?.updateStatusItemButton()
+                self?.rebuildMenuIfNeeded()
+            }
+            .store(in: &cancellables)
+
+        model.$menuBarLabelMode
+            .sink { [weak self] _ in
+                self?.updateStatusItemButton()
+            }
+            .store(in: &cancellables)
+
+        model.$showAppNamesInMenu
+            .sink { [weak self] _ in
+                self?.rebuildMenuIfNeeded()
+            }
+            .store(in: &cancellables)
+
+        model.$maxAppsShownPerSpace
+            .sink { [weak self] _ in
+                self?.rebuildMenuIfNeeded()
+            }
+            .store(in: &cancellables)
+
+        model.$groupSpacesByDisplay
+            .sink { [weak self] _ in
+                self?.rebuildMenuIfNeeded()
+            }
+            .store(in: &cancellables)
     }
 
     private func updateStatusItemButton() {
-        guard let button = statusItem.button else { return }
+        syncStatusItemVisibility()
+        guard let statusItem,
+              let button = statusItem.button else { return }
+
+        if model.shouldShowIconOnlyInStatusItem {
+            statusItem.length = NSStatusItem.squareLength
+            button.title = ""
+            button.attributedTitle = NSAttributedString(string: "")
+            button.image = statusItemImage()
+            button.imagePosition = .imageOnly
+            button.toolTip = model.activeSpaceTooltip
+            return
+        }
 
         statusItem.length = statusItemLength()
         button.title = ""
-        button.attributedTitle = attributedLabel(model.activeSpaceDisplayLabel)
-        button.image = statusItemImage()
-        button.imagePosition = .imageLeading
+        button.attributedTitle = model.shouldShowTextInStatusItem
+            ? attributedLabel(model.activeSpaceDisplayLabel)
+            : NSAttributedString(string: "")
+        button.image = model.shouldShowImageInStatusItem ? statusItemImage() : nil
+        button.imagePosition = model.shouldShowTextInStatusItem && model.shouldShowImageInStatusItem ? .imageLeading : .noImage
         button.toolTip = model.activeSpaceTooltip
+    }
+
+    private func syncStatusItemVisibility() {
+        if model.shouldShowStatusItem {
+            ensureStatusItem()
+        } else {
+            removeStatusItem()
+        }
+    }
+
+    private func ensureStatusItem() {
+        guard statusItem == nil else { return }
+
+        let statusItem = NSStatusBar.system.statusItem(withLength: 48)
+        statusItem.menu = menu
+        self.statusItem = statusItem
+    }
+
+    private func removeStatusItem() {
+        guard let statusItem else { return }
+
+        if isMenuOpen {
+            menu.cancelTracking()
+            isMenuOpen = false
+        }
+
+        statusItem.menu = nil
+        NSStatusBar.system.removeStatusItem(statusItem)
+        self.statusItem = nil
     }
 
     private func rebuildMenuIfNeeded() {
@@ -165,19 +237,27 @@ final class StatusItemController: NSObject, NSMenuDelegate {
             return
         }
 
-        for (offset, group) in model.groupedSpaces.enumerated() {
+        for (offset, section) in model.menuSpaceSections.enumerated() {
             if offset > 0 {
                 menu.addItem(.separator())
             }
 
-            menu.addItem(disabledItem("Display \(group.display)"))
-            group.spaces.forEach { space in
+            if let title = section.title {
+                menu.addItem(disabledItem(title))
+            }
+
+            section.spaces.forEach { space in
                 menu.addItem(spaceItem(for: space))
             }
         }
     }
 
     private func addUtilityItems() {
+        let settingsItem = actionItem("Settings…", action: #selector(openSettings))
+        settingsItem.keyEquivalent = ","
+        settingsItem.keyEquivalentModifierMask = [.command]
+        menu.addItem(settingsItem)
+        menu.addItem(.separator())
         menu.addItem(actionItem("Open yabairc", action: #selector(openConfig)))
         menu.addItem(actionItem("Open Yabai Folder", action: #selector(openConfigDirectory)))
         menu.addItem(actionItem("Refresh", action: #selector(refresh)))
@@ -198,7 +278,7 @@ final class StatusItemController: NSObject, NSMenuDelegate {
     }
 
     private func spaceItem(for space: SpaceSummary) -> NSMenuItem {
-        let item = NSMenuItem(title: "Space \(space.index) · \(space.appSummary)", action: #selector(focusSpace(_:)), keyEquivalent: "")
+        let item = NSMenuItem(title: model.menuSpaceTitle(for: space), action: #selector(focusSpace(_:)), keyEquivalent: "")
         item.target = self
         item.representedObject = space.index
         item.state = model.isSpaceFocused(space.index) ? .on : .off
@@ -213,8 +293,13 @@ final class StatusItemController: NSObject, NSMenuDelegate {
     }
 
     private func statusItemLength() -> CGFloat {
+        guard model.shouldShowTextInStatusItem else {
+            return NSStatusItem.squareLength
+        }
+
         let template = statusItemLabelTemplate()
-        return attributedLabel(template).size().width + 22
+        let baseWidth = attributedLabel(template).size().width
+        return baseWidth + (model.shouldShowImageInStatusItem ? 22 : 12)
     }
 
     private func statusItemLabelTemplate() -> String {
@@ -265,6 +350,11 @@ final class StatusItemController: NSObject, NSMenuDelegate {
     @objc
     private func refresh() {
         model.refresh()
+    }
+
+    @objc
+    private func openSettings() {
+        model.openSettings()
     }
 
     @objc

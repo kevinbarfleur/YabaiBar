@@ -58,10 +58,11 @@ struct YabaiIntegrationRendererTests {
             updatedAt: now
         )
 
-        let state = YabaiLiveState(activeSpaceIndex: 1, spaces: [3: trackedState], updatedAt: now)
-        let updated = YabaiLiveStateReducer.spaceChanged(3, in: state, now: now.addingTimeInterval(1))
+        let state = YabaiLiveState(activeSpaceIndex: 1, activeDisplayUUID: "display-a", spaces: [3: trackedState], updatedAt: now)
+        let updated = YabaiLiveStateReducer.spaceChanged(3, activeDisplayUUID: "display-b", in: state, now: now.addingTimeInterval(1))
 
         #expect(updated.activeSpaceIndex == 3)
+        #expect(updated.activeDisplayUUID == "display-b")
         #expect(updated.spaces[3] == trackedState)
         #expect(updated.activeStackSummary?.badgeLabel == "2/4")
     }

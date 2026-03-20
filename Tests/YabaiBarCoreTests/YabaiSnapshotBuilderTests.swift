@@ -17,9 +17,9 @@ struct YabaiSnapshotBuilderTests {
         let windowsData = Data(
             """
             [
-              { "id": 11, "app": "Warp", "space": 2, "stack-index": 1, "has-focus": true, "is-hidden": false, "is-minimized": false, "is-floating": false },
-              { "id": 12, "app": "Claude", "space": 4, "stack-index": 1, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false },
-              { "id": 13, "app": "Messages", "space": 4, "stack-index": 2, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false }
+              { "id": 11, "app": "Warp", "title": "Terminal", "space": 2, "stack-index": 1, "has-focus": true, "is-hidden": false, "is-minimized": false, "is-floating": false },
+              { "id": 12, "app": "Claude", "title": "Chat", "space": 4, "stack-index": 1, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false },
+              { "id": 13, "app": "Messages", "title": "Messages", "space": 4, "stack-index": 2, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false }
             ]
             """.utf8
         )
@@ -34,6 +34,43 @@ struct YabaiSnapshotBuilderTests {
     }
 
     @Test
+    func buildsDisplaysAndActiveDisplayUUID() throws {
+        let spacesData = Data(
+            """
+            [
+              { "index": 1, "display": 1, "has-focus": false, "is-visible": false },
+              { "index": 2, "display": 2, "has-focus": true, "is-visible": true }
+            ]
+            """.utf8
+        )
+        let windowsData = Data(
+            """
+            [
+              { "id": 21, "app": "Warp", "title": "Terminal", "space": 2, "stack-index": 1, "has-focus": true, "is-hidden": false, "is-minimized": false, "is-floating": false }
+            ]
+            """.utf8
+        )
+        let displaysData = Data(
+            """
+            [
+              { "index": 1, "uuid": "display-a", "spaces": [1], "has-focus": false },
+              { "index": 2, "uuid": "display-b", "spaces": [2], "has-focus": true }
+            ]
+            """.utf8
+        )
+
+        let snapshot = try YabaiSnapshotBuilder.build(
+            spacesData: spacesData,
+            windowsData: windowsData,
+            displaysData: displaysData
+        )
+
+        #expect(snapshot.activeDisplayUUID == "display-b")
+        #expect(snapshot.displays.map(\.index) == [1, 2])
+        #expect(snapshot.displays[1].uuid == "display-b")
+    }
+
+    @Test
     func filtersHiddenAndMinimizedWindowsFromSummary() throws {
         let spacesData = Data(
             """
@@ -45,9 +82,9 @@ struct YabaiSnapshotBuilderTests {
         let windowsData = Data(
             """
             [
-              { "id": 21, "app": "Finder", "space": 3, "stack-index": 1, "has-focus": false, "is-hidden": true, "is-minimized": false, "is-floating": false },
-              { "id": 22, "app": "Warp", "space": 3, "stack-index": 2, "has-focus": false, "is-hidden": false, "is-minimized": true, "is-floating": false },
-              { "id": 23, "app": "Claude", "space": 3, "stack-index": 3, "has-focus": true, "is-hidden": false, "is-minimized": false, "is-floating": false }
+              { "id": 21, "app": "Finder", "title": "Finder", "space": 3, "stack-index": 1, "has-focus": false, "is-hidden": true, "is-minimized": false, "is-floating": false },
+              { "id": 22, "app": "Warp", "title": "Terminal", "space": 3, "stack-index": 2, "has-focus": false, "is-hidden": false, "is-minimized": true, "is-floating": false },
+              { "id": 23, "app": "Claude", "title": "Chat", "space": 3, "stack-index": 3, "has-focus": true, "is-hidden": false, "is-minimized": false, "is-floating": false }
             ]
             """.utf8
         )
@@ -65,6 +102,8 @@ struct YabaiSnapshotBuilderTests {
             display: 2,
             hasFocus: false,
             isVisible: false,
+            type: "bsp",
+            isNativeFullscreen: false,
             apps: ["Claude", "Messages", "Warp"]
         )
 
@@ -90,6 +129,22 @@ struct YabaiSnapshotBuilderTests {
     }
 
     @Test
+    func extractsActiveDisplayUUIDFromDisplaysPayload() throws {
+        let displaysData = Data(
+            """
+            [
+              { "index": 1, "uuid": "display-a", "spaces": [1, 2], "has-focus": false },
+              { "index": 2, "uuid": "display-b", "spaces": [3], "has-focus": true }
+            ]
+            """.utf8
+        )
+
+        let activeDisplayUUID = try YabaiSnapshotBuilder.activeDisplayUUID(from: displaysData)
+
+        #expect(activeDisplayUUID == "display-b")
+    }
+
+    @Test
     func buildsActiveStackSummaryForFocusedStackSpace() throws {
         let spacesData = Data(
             """
@@ -101,9 +156,9 @@ struct YabaiSnapshotBuilderTests {
         let windowsData = Data(
             """
             [
-              { "id": 31, "app": "Warp", "space": 3, "stack-index": 20, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false },
-              { "id": 32, "app": "Safari", "space": 3, "stack-index": 10, "has-focus": true, "is-hidden": false, "is-minimized": false, "is-floating": false },
-              { "id": 33, "app": "Claude", "space": 3, "stack-index": 30, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false }
+              { "id": 31, "app": "Warp", "title": "Terminal", "space": 3, "stack-index": 20, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false },
+              { "id": 32, "app": "Safari", "title": "Docs", "space": 3, "stack-index": 10, "has-focus": true, "is-hidden": false, "is-minimized": false, "is-floating": false },
+              { "id": 33, "app": "Claude", "title": "Chat", "space": 3, "stack-index": 30, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false }
             ]
             """.utf8
         )
@@ -112,6 +167,31 @@ struct YabaiSnapshotBuilderTests {
 
         #expect(snapshot.activeStackSummary == ActiveStackSummary(spaceIndex: 3, currentIndex: 1, total: 3, focusedWindowID: 32, focusedAppName: "Safari"))
         #expect(snapshot.activeStackSummary?.badgeLabel == "1/3")
+        #expect(snapshot.activeStackItems.map(\.position) == [1, 2, 3])
+        #expect(snapshot.activeStackItems.first?.title == "Docs")
+    }
+
+    @Test
+    func includesActiveSpaceTypeAndFullscreenFlag() throws {
+        let spacesData = Data(
+            """
+            [
+              { "index": 6, "type": "bsp", "display": 1, "has-focus": true, "is-visible": true, "is-native-fullscreen": true }
+            ]
+            """.utf8
+        )
+        let windowsData = Data(
+            """
+            [
+              { "id": 61, "app": "Warp", "title": "Terminal", "space": 6, "stack-index": 1, "has-focus": true, "is-hidden": false, "is-minimized": false, "is-floating": false }
+            ]
+            """.utf8
+        )
+
+        let snapshot = try YabaiSnapshotBuilder.build(spacesData: spacesData, windowsData: windowsData)
+
+        #expect(snapshot.activeSpaceType == "bsp")
+        #expect(snapshot.activeSpaceIsNativeFullscreen)
     }
 
     @Test
@@ -124,11 +204,11 @@ struct YabaiSnapshotBuilderTests {
         let windowsData = Data(
             """
             [
-              { "id": 41, "app": "Warp", "space": 5, "stack-index": 1, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": true },
-              { "id": 42, "app": "Safari", "space": 5, "stack-index": 2, "has-focus": false, "is-hidden": true, "is-minimized": false, "is-floating": false },
-              { "id": 43, "app": "Claude", "space": 5, "stack-index": 3, "has-focus": true, "is-hidden": false, "is-minimized": false, "is-floating": false },
-              { "id": 44, "app": "Messages", "space": 5, "stack-index": 4, "has-focus": false, "is-hidden": false, "is-minimized": true, "is-floating": false },
-              { "id": 45, "app": "Notion", "space": 5, "stack-index": 5, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false }
+              { "id": 41, "app": "Warp", "title": "Terminal", "space": 5, "stack-index": 1, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": true },
+              { "id": 42, "app": "Safari", "title": "Docs", "space": 5, "stack-index": 2, "has-focus": false, "is-hidden": true, "is-minimized": false, "is-floating": false },
+              { "id": 43, "app": "Claude", "title": "Chat", "space": 5, "stack-index": 3, "has-focus": true, "is-hidden": false, "is-minimized": false, "is-floating": false },
+              { "id": 44, "app": "Messages", "title": "Inbox", "space": 5, "stack-index": 4, "has-focus": false, "is-hidden": false, "is-minimized": true, "is-floating": false },
+              { "id": 45, "app": "Notion", "title": "Notes", "space": 5, "stack-index": 5, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false }
             ]
             """.utf8
         )
@@ -148,15 +228,15 @@ struct YabaiSnapshotBuilderTests {
         let windowsData = Data(
             """
             [
-              { "id": 71, "app": "Warp", "space": 7, "stack-index": 1, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false },
-              { "id": 72, "app": "Safari", "space": 7, "stack-index": 2, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false },
-              { "id": 73, "app": "Claude", "space": 7, "stack-index": 3, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false }
+              { "id": 71, "app": "Warp", "title": "Terminal", "space": 7, "stack-index": 1, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false },
+              { "id": 72, "app": "Safari", "title": "Docs", "space": 7, "stack-index": 2, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false },
+              { "id": 73, "app": "Claude", "title": "Chat", "space": 7, "stack-index": 3, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false }
             ]
             """.utf8
         )
         let focusedWindowData = Data(
             """
-            { "id": 72, "app": "Safari", "space": 7, "stack-index": 2, "has-focus": true, "is-hidden": false, "is-minimized": false, "is-floating": false }
+            { "id": 72, "app": "Safari", "title": "Docs", "space": 7, "stack-index": 2, "has-focus": true, "is-hidden": false, "is-minimized": false, "is-floating": false }
             """.utf8
         )
 
@@ -179,9 +259,9 @@ struct YabaiSnapshotBuilderTests {
         let windowsData = Data(
             """
             [
-              { "id": 81, "app": "Warp", "space": 8, "stack-index": 1, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false },
-              { "id": 82, "app": "Safari", "space": 8, "stack-index": 2, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false },
-              { "id": 83, "app": "Claude", "space": 8, "stack-index": 3, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false }
+              { "id": 81, "app": "Warp", "title": "Terminal", "space": 8, "stack-index": 1, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false },
+              { "id": 82, "app": "Safari", "title": "Docs", "space": 8, "stack-index": 2, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false },
+              { "id": 83, "app": "Claude", "title": "Chat", "space": 8, "stack-index": 3, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false }
             ]
             """.utf8
         )

@@ -58,4 +58,22 @@ final class LoginItemManager {
 
         return currentState(isEligibleForRegistration: isEligibleForRegistration)
     }
+
+    func setEnabled(_ enabled: Bool, isEligibleForRegistration: Bool) -> LoginItemState {
+        guard isEligibleForRegistration else {
+            return .unavailable("Install the app in Applications first")
+        }
+
+        do {
+            if enabled {
+                try SMAppService.mainApp.register()
+            } else {
+                try SMAppService.mainApp.unregister()
+            }
+        } catch {
+            return .unavailable(error.localizedDescription)
+        }
+
+        return currentState(isEligibleForRegistration: isEligibleForRegistration)
+    }
 }

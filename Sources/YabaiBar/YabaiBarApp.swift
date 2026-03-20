@@ -17,7 +17,6 @@ struct YabaiBarApp: App {
     var body: some Scene {
         Settings {
             EmptyView()
-                .frame(width: 0, height: 0)
         }
     }
 }

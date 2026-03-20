@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		008131BEFD7A5A10AEC153A8 /* YabaiIntegrationRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B4D1692E241245251375A9E /* YabaiIntegrationRenderer.swift */; };
+		04D86DCEAA19138DEBED8BC3 /* NotchSurfaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F66822BB4F137E61CBC27DE1 /* NotchSurfaceView.swift */; };
+		09F3BD8E60FFE91635F0A090 /* NSScreen+DisplayUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08EECCCC5D8B2071152AB1E /* NSScreen+DisplayUUID.swift */; };
 		0E879CE0155C435DBD1F6EED /* CommandRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002493D50E59600B718B0579 /* CommandRunner.swift */; };
 		2DFF38A5E5B4E2ED882F94F3 /* YabaiBarCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD66A8E7A60EF9C785E2C6AF /* YabaiBarCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		308350B35FBCE7038620D595 /* YabaiLiveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30333BD319AF040A7F271965 /* YabaiLiveState.swift */; };
@@ -17,10 +19,13 @@
 		5A0297B03400C44A9FD94AF9 /* LoginItemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3B3C4C223D5DDF2A936ECD4 /* LoginItemManager.swift */; };
 		5A9400D4FA28B2B844DF7C1C /* YabaiIntegrationRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DF4BC2C61F4B35DA45B1DB2 /* YabaiIntegrationRendererTests.swift */; };
 		607F62098AE0559933CAD73D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 73CD4898F246BE62DA7BF6D6 /* Assets.xcassets */; };
+		75400691E78EBFA278FB20E1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFC73AF91C55B356E5ED2D2 /* SettingsView.swift */; };
 		8315B392B9FCA5615014F8CD /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 611CB135D9C33EFF92E25231 /* main.swift */; };
 		8F52B5C4034546A022EDCA33 /* YabaiBarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20C7953AFF2B0BC2C8F300FE /* YabaiBarApp.swift */; };
 		A26F53F42CC1BFFA67A2A84F /* YabaiIntegrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A560E9799B3EE28F7DCB2540 /* YabaiIntegrationManager.swift */; };
+		B7A609703C11A078A4A78EE6 /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE98806168AEC9F71D5BC4EA /* SettingsWindowController.swift */; };
 		B917BC018CC97DCB12A2D780 /* YabaiBarCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD66A8E7A60EF9C785E2C6AF /* YabaiBarCore.framework */; };
+		C75FDD672DC6BABD31FC889E /* NotchSurfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EF80E469CB42B6ED78E599D /* NotchSurfaceController.swift */; };
 		DA0EEEE7CBB7B8D44BDDE780 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E84E57489E6D6C672272B00 /* AppDelegate.swift */; };
 		DADEC75C02CF40032FAFC36C /* YabaiBarCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = BD66A8E7A60EF9C785E2C6AF /* YabaiBarCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		DBB59599D7F45B1DB463AB11 /* YabaiBarSignalHelper in Resources */ = {isa = PBXBuildFile; fileRef = FB7C6D056F9BEFAE7B4FEC6B /* YabaiBarSignalHelper */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -103,6 +108,7 @@
 		73CD4898F246BE62DA7BF6D6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		86F414513434D88B5378A457 /* StatusItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemController.swift; sourceTree = "<group>"; };
 		8E84E57489E6D6C672272B00 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		8EF80E469CB42B6ED78E599D /* NotchSurfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchSurfaceController.swift; sourceTree = "<group>"; };
 		9B4D1692E241245251375A9E /* YabaiIntegrationRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiIntegrationRenderer.swift; sourceTree = "<group>"; };
 		A3B3C4C223D5DDF2A936ECD4 /* LoginItemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItemManager.swift; sourceTree = "<group>"; };
 		A560E9799B3EE28F7DCB2540 /* YabaiIntegrationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiIntegrationManager.swift; sourceTree = "<group>"; };
@@ -110,8 +116,12 @@
 		B6CE66943493C36DB5CD228A /* YabaiModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiModels.swift; sourceTree = "<group>"; };
 		B9296DC53EE35183F6E2F01A /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		BD66A8E7A60EF9C785E2C6AF /* YabaiBarCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = YabaiBarCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D08EECCCC5D8B2071152AB1E /* NSScreen+DisplayUUID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSScreen+DisplayUUID.swift"; sourceTree = "<group>"; };
 		D9D6DAEFB66BBE8612D5077F /* AppInstallationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInstallationManager.swift; sourceTree = "<group>"; };
+		DBFC73AF91C55B356E5ED2D2 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		F66822BB4F137E61CBC27DE1 /* NotchSurfaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchSurfaceView.swift; sourceTree = "<group>"; };
 		FB7C6D056F9BEFAE7B4FEC6B /* YabaiBarSignalHelper */ = {isa = PBXFileReference; includeInIndex = 0; path = YabaiBarSignalHelper; sourceTree = BUILT_PRODUCTS_DIR; };
+		FE98806168AEC9F71D5BC4EA /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +167,11 @@
 				D9D6DAEFB66BBE8612D5077F /* AppInstallationManager.swift */,
 				B9296DC53EE35183F6E2F01A /* AppModel.swift */,
 				A3B3C4C223D5DDF2A936ECD4 /* LoginItemManager.swift */,
+				8EF80E469CB42B6ED78E599D /* NotchSurfaceController.swift */,
+				F66822BB4F137E61CBC27DE1 /* NotchSurfaceView.swift */,
+				D08EECCCC5D8B2071152AB1E /* NSScreen+DisplayUUID.swift */,
+				DBFC73AF91C55B356E5ED2D2 /* SettingsView.swift */,
+				FE98806168AEC9F71D5BC4EA /* SettingsWindowController.swift */,
 				86F414513434D88B5378A457 /* StatusItemController.swift */,
 				20C7953AFF2B0BC2C8F300FE /* YabaiBarApp.swift */,
 				A560E9799B3EE28F7DCB2540 /* YabaiIntegrationManager.swift */,
@@ -424,6 +439,11 @@
 				47BF90C43B50D71530CE35B2 /* AppInstallationManager.swift in Sources */,
 				E16E31C2D447EA7A71D9175E /* AppModel.swift in Sources */,
 				5A0297B03400C44A9FD94AF9 /* LoginItemManager.swift in Sources */,
+				09F3BD8E60FFE91635F0A090 /* NSScreen+DisplayUUID.swift in Sources */,
+				C75FDD672DC6BABD31FC889E /* NotchSurfaceController.swift in Sources */,
+				04D86DCEAA19138DEBED8BC3 /* NotchSurfaceView.swift in Sources */,
+				75400691E78EBFA278FB20E1 /* SettingsView.swift in Sources */,
+				B7A609703C11A078A4A78EE6 /* SettingsWindowController.swift in Sources */,
 				E0F97F18CBCF82F12A5E86DC /* StatusItemController.swift in Sources */,
 				8F52B5C4034546A022EDCA33 /* YabaiBarApp.swift in Sources */,
 				A26F53F42CC1BFFA67A2A84F /* YabaiIntegrationManager.swift in Sources */,

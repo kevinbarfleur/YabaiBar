@@ -164,7 +164,12 @@ public struct YabaiSignalHandler: Sendable {
             return try refreshActiveSpace(in: state, allowRememberedWindow: false)
         case .spaceChanged:
             guard let spaceIndex = event.spaceIndex else {
-                return YabaiLiveStateReducer.spaceChanged(nil, in: state, now: dateProvider())
+                return YabaiLiveStateReducer.spaceChanged(
+                    nil,
+                    activeDisplayUUID: try? client.fetchActiveDisplayUUID(),
+                    in: state,
+                    now: dateProvider()
+                )
             }
 
             return try reconcileSpaceChange(spaceIndex: spaceIndex, in: state)
@@ -180,7 +185,12 @@ public struct YabaiSignalHandler: Sendable {
     }
 
     private func reconcileSpaceChange(spaceIndex: Int, in state: YabaiLiveState) throws -> YabaiLiveState {
-        var latestState = YabaiLiveStateReducer.spaceChanged(spaceIndex, in: state, now: dateProvider())
+        var latestState = YabaiLiveStateReducer.spaceChanged(
+            spaceIndex,
+            activeDisplayUUID: try? client.fetchActiveDisplayUUID(),
+            in: state,
+            now: dateProvider()
+        )
 
         for attempt in 0..<8 {
             let activeSpaceIndex = try client.fetchActiveSpaceIndex()
@@ -192,6 +202,13 @@ public struct YabaiSignalHandler: Sendable {
                 usleep(50_000)
                 continue
             }
+
+            latestState = YabaiLiveStateReducer.spaceChanged(
+                spaceIndex,
+                activeDisplayUUID: try? client.fetchActiveDisplayUUID(),
+                in: latestState,
+                now: dateProvider()
+            )
 
             let preferredWindowData = currentFocusedWindowData(for: spaceIndex)
             latestState = try refreshSpace(
@@ -218,7 +235,12 @@ public struct YabaiSignalHandler: Sendable {
                 let updatedState = try refreshSpace(
                     index: window.space,
                     preferredWindowData: windowData,
-                    in: YabaiLiveStateReducer.spaceChanged(window.space, in: state, now: dateProvider())
+                    in: YabaiLiveStateReducer.spaceChanged(
+                        window.space,
+                        activeDisplayUUID: try? client.fetchActiveDisplayUUID(),
+                        in: state,
+                        now: dateProvider()
+                    )
                 )
                 return updatedState
             } catch {
@@ -235,13 +257,23 @@ public struct YabaiSignalHandler: Sendable {
 
     private func refreshActiveSpace(in state: YabaiLiveState, allowRememberedWindow: Bool = true) throws -> YabaiLiveState {
         guard let activeSpaceIndex = try client.fetchActiveSpaceIndex() else {
-            return YabaiLiveStateReducer.spaceChanged(nil, in: state, now: dateProvider())
+            return YabaiLiveStateReducer.spaceChanged(
+                nil,
+                activeDisplayUUID: try? client.fetchActiveDisplayUUID(),
+                in: state,
+                now: dateProvider()
+            )
         }
 
         return try refreshSpace(
             index: activeSpaceIndex,
             preferredWindowData: preferredWindowData(for: activeSpaceIndex, in: state, allowRememberedWindow: allowRememberedWindow),
-            in: YabaiLiveStateReducer.spaceChanged(activeSpaceIndex, in: state, now: dateProvider())
+            in: YabaiLiveStateReducer.spaceChanged(
+                activeSpaceIndex,
+                activeDisplayUUID: try? client.fetchActiveDisplayUUID(),
+                in: state,
+                now: dateProvider()
+            )
         )
     }
 
