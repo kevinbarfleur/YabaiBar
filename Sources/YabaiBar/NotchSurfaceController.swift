@@ -392,9 +392,7 @@ private final class DisplayNotchWindowController {
             )
 
             layoutWindow(animated: animated)
-            if !window.isVisible {
-                window.orderFrontRegardless()
-            }
+            window.orderFrontRegardless()
             return
         }
 
@@ -416,9 +414,7 @@ private final class DisplayNotchWindowController {
         )
 
         layoutWindow(animated: animated)
-        if !window.isVisible {
-            window.orderFrontRegardless()
-        }
+        window.orderFrontRegardless()
     }
 
     func invalidate() {

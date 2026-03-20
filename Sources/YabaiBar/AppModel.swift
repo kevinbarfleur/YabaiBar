@@ -483,9 +483,16 @@ final class AppModel: ObservableObject {
         }
 
         let groups = Dictionary(grouping: spaces, by: \.display)
-        return groups.keys.sorted().map { display in
-            (title: "Display \(display)", spaces: groups[display, default: []].sorted { $0.index < $1.index })
+        let sortedDisplays = groups.keys.sorted()
+        var sections: [(title: String?, spaces: [SpaceSummary])] = []
+        sections.reserveCapacity(sortedDisplays.count)
+
+        for display in sortedDisplays {
+            let sortedSpaces = (groups[display] ?? []).sorted { $0.index < $1.index }
+            sections.append((title: "Display \(display)", spaces: sortedSpaces))
         }
+
+        return sections
     }
 
     var spaces: [SpaceSummary] {
