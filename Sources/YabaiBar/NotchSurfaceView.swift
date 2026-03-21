@@ -501,12 +501,14 @@ struct YabaiNotchSurfaceView: View {
 
     private func openBody(for state: DisplayNotchState) -> some View {
         VStack(alignment: .leading, spacing: 0) {
-            headerRow(for: state)
-            spacesRow(for: state)
+            focusedAppHeader(for: state)
 
             if !state.stackItems.isEmpty {
                 stackRows(for: state)
-                    .padding(.top, 10)
+                    .padding(.top, 8)
+            } else if !state.visibleSpaceApps.isEmpty {
+                bspAppList(for: state)
+                    .padding(.top, 8)
             }
         }
         .padding(.horizontal, 14)
@@ -515,66 +517,134 @@ struct YabaiNotchSurfaceView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 
-    private func headerRow(for state: DisplayNotchState) -> some View {
-        HStack(spacing: 8) {
-            HStack(spacing: 6) {
-                Text("Display \(state.displayIndex)")
-                    .font(.system(size: 10, weight: .medium))
-                    .foregroundStyle(.white.opacity(0.34))
+    private func focusedAppHeader(for state: DisplayNotchState) -> some View {
+        let focusedItem = state.stackItems.first(where: \.isFocused)
 
-                Circle()
-                    .fill(.white.opacity(0.18))
-                    .frame(width: 2.5, height: 2.5)
+        return VStack(alignment: .leading, spacing: 2) {
+            HStack(spacing: 8) {
+                if let focusedItem {
+                    AppIconView(appName: focusedItem.app)
 
-                Text("Space \(state.visibleSpaceIndex.map(String.init) ?? "--")")
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(.white.opacity(0.96))
+                    HStack(spacing: 5) {
+                        Text(focusedItem.app)
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundStyle(.white.opacity(0.96))
+                            .lineLimit(1)
 
-                if let badgeLabel = state.stackSummary?.badgeLabel {
-                    Text(badgeLabel)
+                        let trimmedTitle = focusedItem.title.trimmingCharacters(in: .whitespacesAndNewlines)
+                        if !trimmedTitle.isEmpty, trimmedTitle != focusedItem.app {
+                            Text(trimmedTitle)
+                                .font(.system(size: 11, weight: .regular))
+                                .foregroundStyle(.white.opacity(0.34))
+                                .lineLimit(1)
+                        }
+                    }
+                } else {
+                    HStack(spacing: 6) {
+                        Text("Space \(state.visibleSpaceIndex.map(String.init) ?? "--")")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundStyle(.white.opacity(0.96))
+
+                        if let type = state.visibleSpaceType?.uppercased(), !state.visibleSpaceApps.isEmpty {
+                            Circle()
+                                .fill(.white.opacity(0.18))
+                                .frame(width: 2.5, height: 2.5)
+
+                            Text(type)
+                                .font(.system(size: 10, weight: .medium))
+                                .foregroundStyle(.white.opacity(0.34))
+                        }
+                    }
+                }
+
+                Spacer(minLength: 0)
+
+                HStack(spacing: 10) {
+                    NotchActionButton(systemImage: "slider.horizontal.3", action: model.openSettings)
+                    NotchActionButton(systemImage: "arrow.clockwise", action: model.refresh)
+                }
+            }
+
+            if let stackSummary = state.stackSummary {
+                HStack(spacing: 4) {
+                    Text("Stack")
+                        .font(.system(size: 10, weight: .medium))
+                        .foregroundStyle(.white.opacity(0.28))
+
+                    Circle()
+                        .fill(.white.opacity(0.14))
+                        .frame(width: 2, height: 2)
+
+                    Text(stackSummary.badgeLabel)
                         .font(.system(size: 10, weight: .semibold))
                         .monospacedDigit()
-                        .foregroundStyle(.white.opacity(0.46))
+                        .foregroundStyle(.white.opacity(0.34))
                 }
-            }
-
-            Spacer(minLength: 0)
-
-            HStack(spacing: 10) {
-                NotchActionButton(systemImage: "slider.horizontal.3", action: model.openSettings)
-                NotchActionButton(systemImage: "arrow.clockwise", action: model.refresh)
+                .padding(.top, 2)
+            } else if state.visibleSpaceApps.isEmpty, state.visibleSpaceIndex != nil {
+                Text("No windows")
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundStyle(.white.opacity(0.22))
+                    .padding(.top, 2)
             }
         }
-    }
-
-    private func spacesRow(for state: DisplayNotchState) -> some View {
-        let sortedSpaces = state.spaceIndexes.sorted()
-
-        return HStack(spacing: 8) {
-            ForEach(sortedSpaces, id: \.self) { spaceIndex in
-                Button {
-                    model.focusSpace(spaceIndex)
-                } label: {
-                    Text("\(spaceIndex)")
-                        .font(.system(size: 11, weight: state.visibleSpaceIndex == spaceIndex ? .semibold : .medium))
-                        .monospacedDigit()
-                        .foregroundStyle(state.visibleSpaceIndex == spaceIndex ? .white.opacity(0.97) : .white.opacity(0.42))
-                        .frame(width: 22, height: 20)
-                }
-                .buttonStyle(.plain)
-            }
-        }
-        .padding(.top, 10)
     }
 
     private func stackRows(for state: DisplayNotchState) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            ForEach(Array(state.stackItems.prefix(3))) { item in
+        let maxItems = 6
+        let displayedItems = Array(state.stackItems.prefix(maxItems))
+        let remaining = state.stackItems.count - maxItems
+
+        return VStack(alignment: .leading, spacing: 4) {
+            ForEach(displayedItems) { item in
                 StackListRow(item: item) {
                     model.focusWindow(item.id)
                 }
             }
+
+            if remaining > 0 {
+                Text("+\(remaining)")
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundStyle(.white.opacity(0.22))
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.top, 2)
+            }
         }
+    }
+
+    private func bspAppList(for state: DisplayNotchState) -> some View {
+        let maxApps = 6
+        let displayedApps = Array(state.visibleSpaceApps.prefix(maxApps))
+        let remaining = state.visibleSpaceApps.count - maxApps
+
+        return VStack(alignment: .leading, spacing: 4) {
+            ForEach(displayedApps, id: \.self) { appName in
+                bspAppRow(appName)
+            }
+
+            if remaining > 0 {
+                Text("+\(remaining)")
+                    .font(.system(size: 10, weight: .medium))
+                    .foregroundStyle(.white.opacity(0.22))
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.top, 2)
+            }
+        }
+    }
+
+    private func bspAppRow(_ appName: String) -> some View {
+        HStack(spacing: 8) {
+            AppIconView(appName: appName)
+
+            Text(appName)
+                .font(.system(size: 11, weight: .medium))
+                .foregroundStyle(.white.opacity(0.72))
+                .lineLimit(1)
+
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 8)
+        .padding(.vertical, 5)
     }
 
     private func syncExpandedContent(with notchState: YabaiNotchState, animated: Bool) {

@@ -34,6 +34,7 @@ final class StatusItemController: NSObject, NSMenuDelegate {
 
     private func bind() {
         model.$activeSpaceIndex
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.updateStatusItemButton()
                 self?.rebuildMenuIfNeeded()
@@ -41,6 +42,7 @@ final class StatusItemController: NSObject, NSMenuDelegate {
             .store(in: &cancellables)
 
         model.$activeStackSummary
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.updateStatusItemButton()
                 self?.rebuildMenuIfNeeded()
@@ -48,36 +50,42 @@ final class StatusItemController: NSObject, NSMenuDelegate {
             .store(in: &cancellables)
 
         model.$snapshot
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.rebuildMenuIfNeeded()
             }
             .store(in: &cancellables)
 
         model.$statusMessage
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.rebuildMenuIfNeeded()
             }
             .store(in: &cancellables)
 
         model.$installationState
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.rebuildMenuIfNeeded()
             }
             .store(in: &cancellables)
 
         model.$loginItemState
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.rebuildMenuIfNeeded()
             }
             .store(in: &cancellables)
 
         model.$integrationState
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.rebuildMenuIfNeeded()
             }
             .store(in: &cancellables)
 
         model.$indicatorSurfaceMode
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.updateStatusItemButton()
                 self?.rebuildMenuIfNeeded()
@@ -85,24 +93,28 @@ final class StatusItemController: NSObject, NSMenuDelegate {
             .store(in: &cancellables)
 
         model.$menuBarLabelMode
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.updateStatusItemButton()
             }
             .store(in: &cancellables)
 
         model.$showAppNamesInMenu
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.rebuildMenuIfNeeded()
             }
             .store(in: &cancellables)
 
         model.$maxAppsShownPerSpace
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.rebuildMenuIfNeeded()
             }
             .store(in: &cancellables)
 
         model.$groupSpacesByDisplay
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.rebuildMenuIfNeeded()
             }

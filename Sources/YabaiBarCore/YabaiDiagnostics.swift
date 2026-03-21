@@ -79,6 +79,7 @@ public struct SpaceDiagnosticSummary: Identifiable, Equatable, Sendable {
 
 public struct WindowDiagnosticItem: Identifiable, Equatable, Sendable {
     public let id: Int
+    public let pid: Int
     public let app: String
     public let title: String
     public let stackIndex: Int?
@@ -91,6 +92,7 @@ public struct WindowDiagnosticItem: Identifiable, Equatable, Sendable {
 
     public init(
         id: Int,
+        pid: Int,
         app: String,
         title: String,
         stackIndex: Int?,
@@ -102,6 +104,7 @@ public struct WindowDiagnosticItem: Identifiable, Equatable, Sendable {
         countedPosition: Int?
     ) {
         self.id = id
+        self.pid = pid
         self.app = app
         self.title = title
         self.stackIndex = stackIndex
@@ -185,6 +188,7 @@ public enum YabaiDiagnosticsBuilder {
 
             return WindowDiagnosticItem(
                 id: window.id,
+                pid: window.pid ?? 0,
                 app: window.app,
                 title: window.title,
                 stackIndex: window.stackIndex,

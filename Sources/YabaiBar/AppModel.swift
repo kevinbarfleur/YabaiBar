@@ -66,6 +66,8 @@ struct DisplayNotchState: Identifiable, Equatable {
     let isActiveDisplay: Bool
     let spaceIndexes: [Int]
     let visibleSpaceIndex: Int?
+    let visibleSpaceType: String?
+    let visibleSpaceApps: [String]
     let stackSummary: ActiveStackSummary?
     let stackItems: [ActiveStackItemSummary]
     let isNativeFullscreen: Bool
@@ -142,6 +144,8 @@ final class AppModel: ObservableObject {
     @Published private(set) var openNotchOnHover: Bool
     @Published private(set) var minimumHoverDuration: Double
     @Published private(set) var enableHaptics: Bool
+    @Published private(set) var yabaiConfigContent: String?
+    @Published private(set) var skhdConfigContent: String?
     @Published private(set) var installationState: InstallationState
     @Published private(set) var loginItemState: LoginItemState
     @Published private(set) var integrationState: YabaiIntegrationState
@@ -153,6 +157,7 @@ final class AppModel: ObservableObject {
     private let runtimeMonitor: YabaiRuntimeMonitor
     private let configFileURL: URL
     private let configDirectoryURL: URL
+    private let skhdConfigFileURL: URL
     private var openSettingsHandler: (() -> Void)?
 
     private var hasStarted = false
@@ -207,6 +212,10 @@ final class AppModel: ObservableObject {
         self.integrationManager = integrationManager
         self.configFileURL = configFileURL
         configDirectoryURL = configFileURL.deletingLastPathComponent()
+        skhdConfigFileURL = FileManager.default.homeDirectoryForCurrentUser
+            .appendingPathComponent(".config", isDirectory: true)
+            .appendingPathComponent("skhd", isDirectory: true)
+            .appendingPathComponent("skhdrc", isDirectory: false)
         runtimeMonitor = YabaiRuntimeMonitor(stateURL: integrationManager.runtimeStateURL)
         indicatorSurfaceMode = storedIndicatorSurfaceMode
         menuBarLabelMode = storedMenuBarLabelMode
@@ -298,6 +307,27 @@ final class AppModel: ObservableObject {
         NSWorkspace.shared.open(configDirectoryURL)
     }
 
+    func quitApplication(pid: Int, spaceIndex: Int) {
+        guard pid > 0 else { return }
+        guard let app = NSRunningApplication(processIdentifier: pid_t(pid)) else { return }
+        app.terminate()
+        Task { [weak self] in
+            try? await Task.sleep(for: .milliseconds(500))
+            guard let self else { return }
+            self.recheckSpace(spaceIndex)
+            self.refreshDiagnostics()
+        }
+    }
+
+    func openSkhdConfig() {
+        NSWorkspace.shared.open(skhdConfigFileURL)
+    }
+
+    func loadConfigFiles() {
+        yabaiConfigContent = try? String(contentsOf: configFileURL, encoding: .utf8)
+        skhdConfigContent = try? String(contentsOf: skhdConfigFileURL, encoding: .utf8)
+    }
+
     func repairIntegration() {
         ensureIntegrationIfNeeded(force: true)
     }
@@ -346,6 +376,7 @@ final class AppModel: ObservableObject {
 
     func openSettings() {
         refreshDiagnostics()
+        loadConfigFiles()
 
         if let openSettingsHandler {
             openSettingsHandler()
@@ -580,6 +611,8 @@ final class AppModel: ObservableObject {
             isActiveDisplay: activeDisplayUUID == displayUUID || display.hasFocus,
             spaceIndexes: display.spaces,
             visibleSpaceIndex: visibleSpace?.index,
+            visibleSpaceType: visibleSpace?.type,
+            visibleSpaceApps: visibleSpace?.apps ?? [],
             stackSummary: stackSummary,
             stackItems: stackItems(for: visibleSpace, using: stackSummary),
             isNativeFullscreen: visibleSpace?.isNativeFullscreen ?? false

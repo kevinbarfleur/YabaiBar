@@ -182,6 +182,7 @@ public struct RawDisplay: Decodable, Equatable, Sendable {
 
 public struct RawWindow: Decodable, Equatable, Sendable {
     public let id: Int
+    public let pid: Int?
     public let app: String
     public let title: String
     public let space: Int
@@ -193,6 +194,7 @@ public struct RawWindow: Decodable, Equatable, Sendable {
 
     enum CodingKeys: String, CodingKey {
         case id
+        case pid
         case app
         case title
         case space

@@ -107,9 +107,14 @@ final class YabaiNotchViewModel: ObservableObject {
             height: closedHeight
         )
 
-        let stackRowCount = min(state.stackItems.count, 3)
-        let stackHeight = stackRowCount > 0 ? CGFloat(stackRowCount) * 19 + 8 : 0
-        openContentHeight = 46 + 22 + stackHeight
+        let listItemCount: Int
+        if !state.stackItems.isEmpty {
+            listItemCount = min(state.stackItems.count, 6)
+        } else {
+            listItemCount = min(state.visibleSpaceApps.count, 6)
+        }
+        let listHeight = CGFloat(listItemCount) * 30
+        openContentHeight = closedHeight + 60 + listHeight
 
         let availableWidth = max(closedNotchSize.width, screen.frame.width - 48)
         let resolvedWidth = max(closedNotchSize.width, min(availableWidth, notchOpenMinimumWidth))
@@ -263,48 +268,56 @@ final class NotchSurfaceCoordinator {
 
     private func bind() {
         model.$snapshot
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.reconcileControllers(animated: false)
             }
             .store(in: &cancellables)
 
         model.$activeSpaceIndex
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.reconcileControllers(animated: true)
             }
             .store(in: &cancellables)
 
         model.$activeStackSummary
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.reconcileControllers(animated: true)
             }
             .store(in: &cancellables)
 
         model.$indicatorSurfaceMode
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.reconcileControllers(animated: false)
             }
             .store(in: &cancellables)
 
         model.$openNotchOnHover
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.reconcileControllers(animated: false)
             }
             .store(in: &cancellables)
 
         model.$minimumHoverDuration
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.reconcileControllers(animated: false)
             }
             .store(in: &cancellables)
 
         model.$enableHaptics
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.reconcileControllers(animated: false)
             }
             .store(in: &cancellables)
 
         model.$isUnavailable
+            .receive(on: RunLoop.main)
             .sink { [weak self] _ in
                 self?.reconcileControllers(animated: false)
             }

@@ -15,10 +15,10 @@ struct YabaiDiagnosticsTests {
         let windowsData = Data(
             """
             [
-              { "id": 11, "app": "Warp", "title": "Terminal", "space": 1, "stack-index": 10, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false },
-              { "id": 12, "app": "Safari", "title": "Docs", "space": 1, "stack-index": 20, "has-focus": true, "is-hidden": false, "is-minimized": false, "is-floating": false },
-              { "id": 13, "app": "Slack", "title": "Team", "space": 1, "stack-index": 30, "has-focus": false, "is-hidden": true, "is-minimized": false, "is-floating": false },
-              { "id": 14, "app": "Notes", "title": "Quick", "space": 1, "stack-index": 40, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": true }
+              { "id": 11, "pid": 100, "app": "Warp", "title": "Terminal", "space": 1, "stack-index": 10, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false },
+              { "id": 12, "pid": 101, "app": "Safari", "title": "Docs", "space": 1, "stack-index": 20, "has-focus": true, "is-hidden": false, "is-minimized": false, "is-floating": false },
+              { "id": 13, "pid": 102, "app": "Slack", "title": "Team", "space": 1, "stack-index": 30, "has-focus": false, "is-hidden": true, "is-minimized": false, "is-floating": false },
+              { "id": 14, "pid": 103, "app": "Notes", "title": "Quick", "space": 1, "stack-index": 40, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": true }
             ]
             """.utf8
         )
@@ -63,9 +63,9 @@ struct YabaiDiagnosticsTests {
         let windowsData = Data(
             """
             [
-              { "id": 21, "app": "Warp", "title": "Terminal", "space": 1, "stack-index": 1, "has-focus": true, "is-hidden": false, "is-minimized": false, "is-floating": false },
-              { "id": 22, "app": "Safari", "title": "Docs", "space": 1, "stack-index": 2, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false },
-              { "id": 23, "app": "Notes", "title": "Notes", "space": 2, "stack-index": 1, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false }
+              { "id": 21, "pid": 200, "app": "Warp", "title": "Terminal", "space": 1, "stack-index": 1, "has-focus": true, "is-hidden": false, "is-minimized": false, "is-floating": false },
+              { "id": 22, "pid": 201, "app": "Safari", "title": "Docs", "space": 1, "stack-index": 2, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false },
+              { "id": 23, "pid": 202, "app": "Notes", "title": "Notes", "space": 2, "stack-index": 1, "has-focus": false, "is-hidden": false, "is-minimized": false, "is-floating": false }
             ]
             """.utf8
         )
