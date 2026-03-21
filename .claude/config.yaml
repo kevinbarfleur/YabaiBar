@@ -1,0 +1,20 @@
+model_strategy:
+  tier_1:
+    model: opus
+    agents:
+      - senior-reviewer
+      - swift-architect
+      - macos-engineer
+    usage: "Décisions architecturales, reviews critiques, patterns macOS complexes"
+
+  tier_2:
+    model: sonnet
+    agents:
+      - test-runner
+      - security-reviewer
+    usage: "Tests, validation, audits de sécurité"
+
+  fallback:
+    from: opus
+    to: sonnet
+    warning: "⚠️ Opus quota exceeded — falling back to Sonnet"
