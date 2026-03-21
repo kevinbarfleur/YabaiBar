@@ -71,6 +71,44 @@ struct DisplayNotchState: Identifiable, Equatable {
     let isNativeFullscreen: Bool
 }
 
+enum SpaceDiagnosticsStatus: Equatable {
+    case notStack
+    case notTracked
+    case liveOnly
+    case unresolvedFocus
+    case synced
+    case countMismatch
+    case focusMismatch
+    case staleLocal
+
+    var title: String {
+        switch self {
+        case .notStack:
+            return "Not a stack"
+        case .notTracked:
+            return "Not tracked"
+        case .liveOnly:
+            return "Live only"
+        case .unresolvedFocus:
+            return "Focus unresolved"
+        case .synced:
+            return "Synced"
+        case .countMismatch:
+            return "Count mismatch"
+        case .focusMismatch:
+            return "Focus mismatch"
+        case .staleLocal:
+            return "Stale local state"
+        }
+    }
+}
+
+struct SpaceDiagnosticsComparison: Equatable {
+    let trackedState: TrackedStackState?
+    let liveSummary: ActiveStackSummary?
+    let status: SpaceDiagnosticsStatus
+}
+
 @MainActor
 final class AppModel: ObservableObject {
     private enum DefaultsKey {
@@ -93,6 +131,9 @@ final class AppModel: ObservableObject {
     @Published private(set) var activeSpaceType: String?
     @Published private(set) var activeSpaceIsNativeFullscreen = false
     @Published private(set) var activeStackSummary: ActiveStackSummary?
+    @Published private(set) var diagnosticsSnapshot: YabaiDiagnosticsSnapshot?
+    @Published private(set) var diagnosticsUpdatedAt: Date?
+    @Published private(set) var diagnosticsStatusMessage: String?
     @Published private(set) var indicatorSurfaceMode: IndicatorSurfaceMode
     @Published private(set) var menuBarLabelMode: MenuBarLabelMode
     @Published private(set) var showAppNamesInMenu: Bool
@@ -118,6 +159,7 @@ final class AppModel: ObservableObject {
     private var hasPromptedForInstallation = false
     private var activeSpaceObserver: NSObjectProtocol?
     private var snapshotRefreshTask: Task<Void, Never>?
+    private var diagnosticsRefreshTask: Task<Void, Never>?
     private var displayReconcileTask: Task<Void, Never>?
     private var integrationTask: Task<Void, Never>?
     private var liveState: YabaiLiveState?
@@ -202,6 +244,7 @@ final class AppModel: ObservableObject {
     func refresh() {
         reconcileDisplayedState()
         refreshSnapshot()
+        refreshDiagnostics()
     }
 
     func focusSpace(_ index: Int) {
@@ -302,6 +345,8 @@ final class AppModel: ObservableObject {
     }
 
     func openSettings() {
+        refreshDiagnostics()
+
         if let openSettingsHandler {
             openSettingsHandler()
             return
@@ -499,6 +544,14 @@ final class AppModel: ObservableObject {
         snapshot?.spaces ?? []
     }
 
+    var diagnosticDisplays: [DisplayDiagnosticSummary] {
+        diagnosticsSnapshot?.displays ?? []
+    }
+
+    var runtimeStatePath: String {
+        integrationManager.runtimeStateURL.path
+    }
+
     var launchAtLoginEnabled: Bool {
         loginItemState == .enabled
     }
@@ -583,6 +636,143 @@ final class AppModel: ObservableObject {
         }
 
         NSWorkspace.shared.open(url)
+    }
+
+    func refreshDiagnostics() {
+        refreshDiagnostics(after: 0)
+    }
+
+    func recheckAllSpaces() {
+        guard installationState == .installed else {
+            diagnosticsStatusMessage = "Install the app in Applications first"
+            return
+        }
+
+        let client = self.client
+        let runtimeStateURL = integrationManager.runtimeStateURL
+
+        Task { [weak self] in
+            guard let self else { return }
+
+            do {
+                let rebuilt = try await Task.detached(priority: .userInitiated) { () throws -> (YabaiSnapshot, YabaiLiveState) in
+                    let snapshot = try client.fetchSnapshot()
+                    let rebuiltState = YabaiLiveStateMaintenance.rebuildAll(from: snapshot)
+                    try YabaiLiveStateStore.save(rebuiltState, to: runtimeStateURL)
+                    return (snapshot, rebuiltState)
+                }.value
+
+                applySnapshot(rebuilt.0)
+                applyLiveState(rebuilt.1)
+                diagnosticsStatusMessage = nil
+                statusMessage = "Rechecked all spaces"
+                refreshDiagnostics(after: 40)
+            } catch {
+                let message = error.localizedDescription
+                diagnosticsStatusMessage = message
+                statusMessage = message
+            }
+        }
+    }
+
+    func recheckSpace(_ index: Int) {
+        guard installationState == .installed else {
+            diagnosticsStatusMessage = "Install the app in Applications first"
+            return
+        }
+
+        let client = self.client
+        let runtimeStateURL = integrationManager.runtimeStateURL
+        let fallbackState = liveState
+
+        Task { [weak self] in
+            guard let self else { return }
+
+            do {
+                let rebuiltState = try await Task.detached(priority: .userInitiated) {
+                    let baseState = try YabaiLiveStateStore.load(from: runtimeStateURL) ?? fallbackState ?? YabaiLiveState()
+                    let nextState = try YabaiLiveStateMaintenance.rebuildSpace(index, in: baseState, using: client)
+                    try YabaiLiveStateStore.save(nextState, to: runtimeStateURL)
+                    return nextState
+                }.value
+
+                applyLiveState(rebuiltState)
+                diagnosticsStatusMessage = nil
+                statusMessage = "Rechecked space \(index)"
+                reconcileDisplayedState(afterDelays: [0, 60, 160])
+                refreshSnapshot(after: 40)
+                refreshDiagnostics(after: 40)
+            } catch {
+                let message = error.localizedDescription
+                diagnosticsStatusMessage = message
+                statusMessage = message
+            }
+        }
+    }
+
+    func purgeLocalTrackedState(for spaceIndex: Int) {
+        guard installationState == .installed else {
+            diagnosticsStatusMessage = "Install the app in Applications first"
+            return
+        }
+
+        let runtimeStateURL = integrationManager.runtimeStateURL
+        let fallbackState = liveState
+
+        Task { [weak self] in
+            guard let self else { return }
+
+            do {
+                let purgedState = try await Task.detached(priority: .userInitiated) {
+                    let baseState = try YabaiLiveStateStore.load(from: runtimeStateURL) ?? fallbackState ?? YabaiLiveState()
+                    let nextState = YabaiLiveStateMaintenance.purgeSpace(spaceIndex, from: baseState)
+                    try YabaiLiveStateStore.save(nextState, to: runtimeStateURL)
+                    return nextState
+                }.value
+
+                applyLiveState(purgedState)
+                diagnosticsStatusMessage = nil
+                statusMessage = "Purged local state for space \(spaceIndex)"
+                reconcileDisplayedState(afterDelays: [0, 60, 160])
+                refreshSnapshot(after: 40)
+                refreshDiagnostics(after: 40)
+            } catch {
+                let message = error.localizedDescription
+                diagnosticsStatusMessage = message
+                statusMessage = message
+            }
+        }
+    }
+
+    func diagnosticsComparison(for space: SpaceDiagnosticSummary) -> SpaceDiagnosticsComparison {
+        let trackedState = liveState?.spaces[space.index]
+        let liveSummary = space.liveStackSummary
+        let liveCount = space.countedStackWindowCount
+
+        let status: SpaceDiagnosticsStatus
+
+        if !space.isStack {
+            status = .notStack
+        } else if trackedState == nil {
+            status = liveCount >= 2 ? .liveOnly : .notTracked
+        } else if liveCount < 2 {
+            status = .staleLocal
+        } else if trackedState?.total != liveCount {
+            status = .countMismatch
+        } else if liveSummary == nil {
+            status = .unresolvedFocus
+        } else if trackedState?.focusedWindowID != liveSummary?.focusedWindowID
+            || trackedState?.currentIndex != liveSummary?.currentIndex {
+            status = .focusMismatch
+        } else {
+            status = .synced
+        }
+
+        return SpaceDiagnosticsComparison(
+            trackedState: trackedState,
+            liveSummary: liveSummary,
+            status: status
+        )
     }
 
     private func visibleSpace(for display: DisplaySummary) -> SpaceSummary? {
@@ -824,16 +1014,44 @@ final class AppModel: ObservableObject {
                     try client.fetchSnapshot()
                 }.value
 
-                snapshot = fetchedSnapshot
-                activeSpaceType = fetchedSnapshot.activeSpaceType
-                activeSpaceIsNativeFullscreen = fetchedSnapshot.activeSpaceIsNativeFullscreen
-                activeDisplayUUID = liveState?.activeDisplayUUID ?? fetchedSnapshot.activeDisplayUUID
-
+                applySnapshot(fetchedSnapshot)
                 statusMessage = nil
                 isUnavailable = false
             } catch {
                 statusMessage = error.localizedDescription
                 isUnavailable = snapshot == nil && liveState == nil
+            }
+        }
+    }
+
+    private func applySnapshot(_ fetchedSnapshot: YabaiSnapshot) {
+        snapshot = fetchedSnapshot
+        activeSpaceType = fetchedSnapshot.activeSpaceType
+        activeSpaceIsNativeFullscreen = fetchedSnapshot.activeSpaceIsNativeFullscreen
+        activeDisplayUUID = liveState?.activeDisplayUUID ?? fetchedSnapshot.activeDisplayUUID
+    }
+
+    private func refreshDiagnostics(after delayMilliseconds: Int = 0) {
+        diagnosticsRefreshTask?.cancel()
+        diagnosticsRefreshTask = Task { [weak self] in
+            guard let self else { return }
+
+            if delayMilliseconds > 0 {
+                try? await Task.sleep(for: .milliseconds(delayMilliseconds))
+            }
+
+            guard !Task.isCancelled else { return }
+
+            do {
+                let fetchedDiagnostics = try await Task.detached(priority: .userInitiated) { [client] in
+                    try client.fetchDiagnosticsSnapshot()
+                }.value
+
+                diagnosticsSnapshot = fetchedDiagnostics
+                diagnosticsUpdatedAt = Date()
+                diagnosticsStatusMessage = nil
+            } catch {
+                diagnosticsStatusMessage = error.localizedDescription
             }
         }
     }

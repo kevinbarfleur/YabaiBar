@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 import YabaiBarCore
 
@@ -53,13 +54,141 @@ private struct NotchShape: Shape {
     }
 }
 
-private struct DotGlyph: View {
+private struct ClosedRailSpaceTokenView: View {
     let isActive: Bool
+    let namespace: Namespace.ID
 
     var body: some View {
-        Capsule(style: .continuous)
-            .fill(isActive ? Color.white : Color.white.opacity(0.22))
-            .frame(width: isActive ? 16 : 6, height: 6)
+        Group {
+            if isActive {
+                Capsule(style: .continuous)
+                    .fill(Color.white)
+                    .frame(width: 16, height: 6)
+                    .matchedGeometryEffect(id: "closed-rail-active-indicator", in: namespace)
+            } else {
+                Circle()
+                    .fill(Color.white.opacity(0.22))
+                    .frame(width: 6, height: 6)
+            }
+        }
+        .frame(height: 8)
+    }
+}
+
+private struct NotchActionButton: View {
+    let systemImage: String
+    let action: () -> Void
+
+    @State private var isHovered = false
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: systemImage)
+                .font(.system(size: 10, weight: .semibold))
+                .foregroundStyle(.white.opacity(isHovered ? 0.9 : 0.48))
+                .frame(width: 22, height: 22)
+                .background {
+                    Circle()
+                        .fill(.white.opacity(isHovered ? 0.09 : 0))
+                }
+                .contentShape(Circle())
+        }
+        .buttonStyle(.plain)
+        .onHover { hovering in
+            withAnimation(.easeOut(duration: 0.12)) {
+                isHovered = hovering
+            }
+        }
+    }
+}
+
+private struct AppIconView: View {
+    let appName: String
+
+    private var icon: NSImage? {
+        NSWorkspace.shared.runningApplications.first(where: { $0.localizedName == appName })?.icon
+    }
+
+    var body: some View {
+        Group {
+            if let icon {
+                Image(nsImage: icon)
+                    .resizable()
+                    .interpolation(.high)
+            } else {
+                RoundedRectangle(cornerRadius: 4, style: .continuous)
+                    .fill(.white.opacity(0.08))
+                    .overlay {
+                        Text(String(appName.prefix(1)).uppercased())
+                            .font(.system(size: 8, weight: .bold, design: .rounded))
+                            .foregroundStyle(.white.opacity(0.72))
+                    }
+            }
+        }
+        .frame(width: 14, height: 14)
+        .clipShape(RoundedRectangle(cornerRadius: 4, style: .continuous))
+    }
+}
+
+private struct StackListRow: View {
+    let item: ActiveStackItemSummary
+    let action: () -> Void
+
+    @State private var isHovered = false
+
+    private var trimmedTitle: String {
+        let candidate = item.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !candidate.isEmpty, candidate != item.app else {
+            return ""
+        }
+        return candidate
+    }
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 8) {
+                AppIconView(appName: item.app)
+
+                HStack(spacing: 5) {
+                    Text(item.app)
+                        .font(.system(size: 11, weight: item.isFocused ? .semibold : .medium))
+                        .foregroundStyle(.white.opacity(item.isFocused ? 0.94 : 0.72))
+                        .lineLimit(1)
+
+                    if !trimmedTitle.isEmpty {
+                        Text(trimmedTitle)
+                            .font(.system(size: 10, weight: .regular))
+                            .foregroundStyle(.white.opacity(item.isFocused ? 0.34 : 0.24))
+                            .lineLimit(1)
+                    }
+                }
+
+                Spacer(minLength: 0)
+
+                Text("\(item.position)")
+                    .font(.system(size: 10, weight: .semibold))
+                    .monospacedDigit()
+                    .foregroundStyle(.white.opacity(item.isFocused ? 0.5 : 0.28))
+                    .frame(width: 14, alignment: .trailing)
+            }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
+            .background {
+                RoundedRectangle(cornerRadius: 9, style: .continuous)
+                    .fill(.white.opacity(item.isFocused ? 0.08 : (isHovered ? 0.05 : 0)))
+            }
+            .overlay {
+                RoundedRectangle(cornerRadius: 9, style: .continuous)
+                    .stroke(.white.opacity(item.isFocused ? 0.05 : 0), lineWidth: 0.5)
+            }
+            .contentShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
+        }
+        .buttonStyle(.plain)
+        .onHover { hovering in
+            withAnimation(.easeOut(duration: 0.12)) {
+                isHovered = hovering
+            }
+        }
     }
 }
 
@@ -68,6 +197,7 @@ struct YabaiNotchSurfaceView: View {
     @ObservedObject var viewModel: YabaiNotchViewModel
     @State private var showsExpandedContent = false
     @State private var revealTask: Task<Void, Never>?
+    @Namespace private var closedRailIndicatorNamespace
 
     private var state: DisplayNotchState? {
         viewModel.displayState
@@ -203,23 +333,28 @@ struct YabaiNotchSurfaceView: View {
     }
 
     private func closedSpaceRail(for state: DisplayNotchState) -> some View {
-        HStack(spacing: 5) {
+        HStack(spacing: 4) {
             ForEach(Array(spaceRailTokens(for: state, maxVisibleSpaces: 4).enumerated()), id: \.offset) { _, token in
                 switch token {
                 case .ellipsis:
-                    HStack(spacing: 2) {
+                    HStack(spacing: 1.5) {
                         Circle().frame(width: 2, height: 2)
                         Circle().frame(width: 2, height: 2)
                         Circle().frame(width: 2, height: 2)
                     }
                     .foregroundStyle(.white.opacity(0.18))
                 case let .space(_, isActive):
-                    DotGlyph(isActive: isActive)
+                    ClosedRailSpaceTokenView(
+                        isActive: isActive,
+                        namespace: closedRailIndicatorNamespace
+                    )
                 }
             }
         }
         .padding(.leading, 14)
         .frame(maxWidth: .infinity, alignment: .leading)
+        .fixedSize(horizontal: true, vertical: false)
+        .animation(.interactiveSpring(response: 0.28, dampingFraction: 0.82, blendDuration: 0.08), value: state.visibleSpaceIndex)
     }
 
     private func openBody(for state: DisplayNotchState) -> some View {
@@ -228,110 +363,73 @@ struct YabaiNotchSurfaceView: View {
             spacesRow(for: state)
 
             if !state.stackItems.isEmpty {
-                Divider()
-                    .overlay(Color.white.opacity(0.05))
-                    .padding(.top, 8)
-                    .padding(.bottom, 6)
-
                 stackRows(for: state)
+                    .padding(.top, 10)
             }
         }
-        .padding(.horizontal, 12)
-        .padding(.top, 10)
-        .padding(.bottom, 10)
+        .padding(.horizontal, 14)
+        .padding(.top, 11)
+        .padding(.bottom, 12)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
     }
 
     private func headerRow(for state: DisplayNotchState) -> some View {
         HStack(spacing: 8) {
-            Text("Space \(state.visibleSpaceIndex.map(String.init) ?? "--")")
-                .font(.system(size: 12, weight: .semibold))
-                .foregroundStyle(.white.opacity(0.94))
-
-            if let badgeLabel = state.stackSummary?.badgeLabel {
-                Text(badgeLabel)
+            HStack(spacing: 6) {
+                Text("Display \(state.displayIndex)")
                     .font(.system(size: 10, weight: .medium))
-                    .monospacedDigit()
-                    .foregroundStyle(.white.opacity(0.46))
+                    .foregroundStyle(.white.opacity(0.34))
+
+                Circle()
+                    .fill(.white.opacity(0.18))
+                    .frame(width: 2.5, height: 2.5)
+
+                Text("Space \(state.visibleSpaceIndex.map(String.init) ?? "--")")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(.white.opacity(0.96))
+
+                if let badgeLabel = state.stackSummary?.badgeLabel {
+                    Text(badgeLabel)
+                        .font(.system(size: 10, weight: .semibold))
+                        .monospacedDigit()
+                        .foregroundStyle(.white.opacity(0.46))
+                }
             }
 
             Spacer(minLength: 0)
 
             HStack(spacing: 10) {
-                Button(action: model.openSettings) {
-                    Image(systemName: "slider.horizontal.3")
-                        .font(.system(size: 10, weight: .medium))
-                }
-                .buttonStyle(.plain)
-
-                Button(action: model.refresh) {
-                    Image(systemName: "arrow.clockwise")
-                        .font(.system(size: 10, weight: .medium))
-                }
-                .buttonStyle(.plain)
+                NotchActionButton(systemImage: "slider.horizontal.3", action: model.openSettings)
+                NotchActionButton(systemImage: "arrow.clockwise", action: model.refresh)
             }
-            .foregroundStyle(.white.opacity(0.46))
         }
     }
 
     private func spacesRow(for state: DisplayNotchState) -> some View {
-        HStack(spacing: 12) {
-            ForEach(state.spaceIndexes.sorted(), id: \.self) { spaceIndex in
+        let sortedSpaces = state.spaceIndexes.sorted()
+
+        return HStack(spacing: 8) {
+            ForEach(sortedSpaces, id: \.self) { spaceIndex in
                 Button {
                     model.focusSpace(spaceIndex)
                 } label: {
-                    VStack(spacing: 4) {
-                        Text("\(spaceIndex)")
-                            .font(.system(size: 11, weight: .semibold))
-                            .monospacedDigit()
-                            .foregroundStyle(state.visibleSpaceIndex == spaceIndex ? .white.opacity(0.96) : .white.opacity(0.38))
-
-                        Capsule(style: .continuous)
-                            .fill(state.visibleSpaceIndex == spaceIndex ? Color.white.opacity(0.9) : Color.clear)
-                            .frame(width: 12, height: 1.5)
-                    }
+                    Text("\(spaceIndex)")
+                        .font(.system(size: 11, weight: state.visibleSpaceIndex == spaceIndex ? .semibold : .medium))
+                        .monospacedDigit()
+                        .foregroundStyle(state.visibleSpaceIndex == spaceIndex ? .white.opacity(0.97) : .white.opacity(0.42))
+                        .frame(width: 22, height: 20)
                 }
                 .buttonStyle(.plain)
             }
         }
-        .padding(.top, 9)
+        .padding(.top, 10)
     }
 
     private func stackRows(for state: DisplayNotchState) -> some View {
-        VStack(spacing: 0) {
-            ForEach(Array(state.stackItems.prefix(3).enumerated()), id: \.element.id) { index, item in
-                Button {
+        VStack(alignment: .leading, spacing: 4) {
+            ForEach(Array(state.stackItems.prefix(3))) { item in
+                StackListRow(item: item) {
                     model.focusWindow(item.id)
-                } label: {
-                    HStack(spacing: 8) {
-                        Text("\(item.position)")
-                            .font(.system(size: 10, weight: .semibold))
-                            .monospacedDigit()
-                            .foregroundStyle(item.isFocused ? .white.opacity(0.52) : .white.opacity(0.22))
-                            .frame(width: 14, alignment: .leading)
-
-                        Text(item.app)
-                            .font(.system(size: 11, weight: item.isFocused ? .semibold : .medium))
-                            .foregroundStyle(item.isFocused ? .white.opacity(0.95) : .white.opacity(0.7))
-                            .lineLimit(1)
-
-                        let trimmedTitle = stackItemTitle(item)
-                        if !trimmedTitle.isEmpty {
-                            Text(trimmedTitle)
-                                .font(.system(size: 10, weight: .regular))
-                                .foregroundStyle(item.isFocused ? .white.opacity(0.34) : .white.opacity(0.18))
-                                .lineLimit(1)
-                        }
-
-                        Spacer(minLength: 0)
-                    }
-                    .padding(.vertical, 5)
-                }
-                .buttonStyle(.plain)
-
-                if index < min(state.stackItems.count, 3) - 1 {
-                    Divider()
-                        .overlay(Color.white.opacity(0.04))
                 }
             }
         }
@@ -367,15 +465,6 @@ struct YabaiNotchSurfaceView: View {
                 }
             }
         }
-    }
-
-    private func stackItemTitle(_ item: ActiveStackItemSummary) -> String {
-        let trimmedTitle = item.title.trimmingCharacters(in: .whitespacesAndNewlines)
-        if trimmedTitle.isEmpty || trimmedTitle == item.app {
-            return ""
-        }
-
-        return trimmedTitle
     }
 
     private func spaceRailTokens(for state: DisplayNotchState, maxVisibleSpaces: Int) -> [SpaceRailToken] {

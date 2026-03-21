@@ -24,6 +24,18 @@ public struct YabaiClient: Sendable {
         )
     }
 
+    public func fetchDiagnosticsSnapshot() throws -> YabaiDiagnosticsSnapshot {
+        let spacesOutput = try run(arguments: ["-m", "query", "--spaces"])
+        let windowsOutput = try run(arguments: ["-m", "query", "--windows"])
+        let displaysOutput = try run(arguments: ["-m", "query", "--displays"])
+        return try YabaiDiagnosticsBuilder.build(
+            spacesData: spacesOutput.stdout,
+            windowsData: windowsOutput.stdout,
+            displaysData: displaysOutput.stdout,
+            focusedWindowData: try? run(arguments: ["-m", "query", "--windows", "--window"]).stdout
+        )
+    }
+
     public func fetchActiveSpaceIndex() throws -> Int? {
         let spacesOutput = try run(arguments: ["-m", "query", "--spaces"])
         return try YabaiSnapshotBuilder.activeSpaceIndex(from: spacesOutput.stdout)

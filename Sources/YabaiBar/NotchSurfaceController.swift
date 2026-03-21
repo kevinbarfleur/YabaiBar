@@ -249,7 +249,11 @@ final class YabaiNotchViewModel: ObservableObject {
 final class NotchSurfaceCoordinator {
     private let model: AppModel
     private var controllers: [String: DisplayNotchWindowController] = [:]
+    private var zombieControllers: [String: (controller: DisplayNotchWindowController, deadline: Date)] = [:]
     private var cancellables = Set<AnyCancellable>()
+    private var wakeRecoveryTask: Task<Void, Never>?
+
+    private static let zombieGracePeriod: TimeInterval = 8
 
     init(model: AppModel) {
         self.model = model
@@ -311,16 +315,49 @@ final class NotchSurfaceCoordinator {
                 self?.reconcileControllers(animated: false)
             }
             .store(in: &cancellables)
+
+        NSWorkspace.shared.notificationCenter.publisher(for: NSWorkspace.didWakeNotification)
+            .sink { [weak self] _ in
+                self?.handleSystemWake()
+            }
+            .store(in: &cancellables)
+    }
+
+    private func handleSystemWake() {
+        wakeRecoveryTask?.cancel()
+        wakeRecoveryTask = Task { [weak self] in
+            for delayMs in [300, 800, 1500, 3000] {
+                try? await Task.sleep(for: .milliseconds(delayMs))
+                guard !Task.isCancelled else { return }
+                self?.reconcileControllers(animated: false)
+            }
+        }
     }
 
     private func reconcileControllers(animated: Bool) {
         let screenUUIDs = Set(NSScreen.screens.compactMap(\.displayUUID))
+        let now = Date()
 
+        // Move disappeared controllers to zombie pool instead of destroying them
         for (displayUUID, controller) in controllers where !screenUUIDs.contains(displayUUID) {
-            controller.invalidate()
+            controller.hide()
+            zombieControllers[displayUUID] = (controller, now.addingTimeInterval(Self.zombieGracePeriod))
             controllers.removeValue(forKey: displayUUID)
         }
 
+        // Revive zombies whose displays came back
+        for (displayUUID, entry) in zombieControllers where screenUUIDs.contains(displayUUID) {
+            controllers[displayUUID] = entry.controller
+            zombieControllers.removeValue(forKey: displayUUID)
+        }
+
+        // Purge expired zombies
+        for (displayUUID, entry) in zombieControllers where now > entry.deadline {
+            entry.controller.invalidate()
+            zombieControllers.removeValue(forKey: displayUUID)
+        }
+
+        // Create new controllers for truly new displays
         for displayUUID in screenUUIDs where controllers[displayUUID] == nil {
             controllers[displayUUID] = DisplayNotchWindowController(model: model, displayUUID: displayUUID)
         }
@@ -415,6 +452,11 @@ private final class DisplayNotchWindowController {
 
         layoutWindow(animated: animated)
         window.orderFrontRegardless()
+    }
+
+    func hide() {
+        viewModel.forceClosed()
+        window.orderOut(nil)
     }
 
     func invalidate() {
