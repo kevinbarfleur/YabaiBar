@@ -1,4 +1,4 @@
-name: YabaiBar
+name: OpenNotch
 options:
   createIntermediateGroups: true
   minimumXcodeGenVersion: 2.45.3
@@ -8,15 +8,15 @@ settings:
     MACOSX_DEPLOYMENT_TARGET: 14.0
     CODE_SIGN_STYLE: Automatic
 targets:
-  YabaiBarCore:
+  OpenNotchCore:
     type: framework
     platform: macOS
     sources:
-      - Sources/YabaiBarCore
+      - Sources/OpenNotchCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.kevinbarfleur.YabaiBarCore
-        PRODUCT_NAME: YabaiBarCore
+        PRODUCT_BUNDLE_IDENTIFIER: com.kevinbarfleur.OpenNotchCore
+        PRODUCT_NAME: OpenNotchCore
         GENERATE_INFOPLIST_FILE: YES
         SKIP_INSTALL: YES
         CODE_SIGNING_ALLOWED: NO
@@ -26,7 +26,7 @@ targets:
     sources:
       - Sources/YabaiBarSignalHelper
     dependencies:
-      - target: YabaiBarCore
+      - target: OpenNotchCore
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.kevinbarfleur.YabaiBarSignalHelper
@@ -36,25 +36,25 @@ targets:
         LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
           - "@executable_path/../Frameworks"
-  YabaiBar:
+  OpenNotch:
     type: application
     platform: macOS
     sources:
-      - Sources/YabaiBar
+      - Sources/OpenNotch
       - Resources
     dependencies:
-      - target: YabaiBarCore
+      - target: OpenNotchCore
       - target: YabaiBarSignalHelper
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.kevinbarfleur.YabaiBar
-        PRODUCT_NAME: YabaiBar
+        PRODUCT_BUNDLE_IDENTIFIER: com.kevinbarfleur.OpenNotch
+        PRODUCT_NAME: OpenNotch
         GENERATE_INFOPLIST_FILE: YES
-        INFOPLIST_KEY_CFBundleDisplayName: YabaiBar
+        INFOPLIST_KEY_CFBundleDisplayName: OpenNotch
         INFOPLIST_KEY_LSUIElement: YES
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         CURRENT_PROJECT_VERSION: 1
-        MARKETING_VERSION: 0.4.0
+        MARKETING_VERSION: 0.5.0
         CODE_SIGN_IDENTITY: "-"
         LD_RUNPATH_SEARCH_PATHS:
           - $(inherited)
@@ -68,16 +68,16 @@ targets:
           /usr/bin/ditto "${HELPER}" "${DEST}"
     scheme:
       testTargets:
-        - YabaiBarCoreTests
-  YabaiBarCoreTests:
+        - OpenNotchCoreTests
+  OpenNotchCoreTests:
     type: bundle.unit-test
     platform: macOS
     sources:
-      - Tests/YabaiBarCoreTests
+      - Tests/OpenNotchCoreTests
     dependencies:
-      - target: YabaiBarCore
+      - target: OpenNotchCore
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.kevinbarfleur.YabaiBarTests
-        PRODUCT_NAME: YabaiBarTests
+        PRODUCT_BUNDLE_IDENTIFIER: com.kevinbarfleur.OpenNotchTests
+        PRODUCT_NAME: OpenNotchTests
         GENERATE_INFOPLIST_FILE: YES

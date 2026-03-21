@@ -4,25 +4,25 @@
 import PackageDescription
 
 let package = Package(
-    name: "YabaiBar",
+    name: "OpenNotch",
     platforms: [
         .macOS(.v14),
     ],
     products: [
-        .executable(name: "YabaiBar", targets: ["YabaiBar"]),
-        .library(name: "YabaiBarCore", targets: ["YabaiBarCore"]),
+        .executable(name: "OpenNotch", targets: ["OpenNotch"]),
+        .library(name: "OpenNotchCore", targets: ["OpenNotchCore"]),
     ],
     targets: [
         .target(
-            name: "YabaiBarCore"
+            name: "OpenNotchCore"
         ),
         .executableTarget(
-            name: "YabaiBar",
-            dependencies: ["YabaiBarCore"]
+            name: "OpenNotch",
+            dependencies: ["OpenNotchCore"]
         ),
         .testTarget(
-            name: "YabaiBarCoreTests",
-            dependencies: ["YabaiBarCore"]
+            name: "OpenNotchCoreTests",
+            dependencies: ["OpenNotchCore"]
         ),
     ]
 )

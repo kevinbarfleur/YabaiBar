@@ -1,5 +1,5 @@
 import Foundation
-import YabaiBarCore
+import OpenNotchCore
 
 if let exitCode = YabaiSignalHandler.runIfNeeded(arguments: CommandLine.arguments) {
     exit(exitCode)

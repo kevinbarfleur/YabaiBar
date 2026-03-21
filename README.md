@@ -1,6 +1,6 @@
-# YabaiBar
+# OpenNotch
 
-YabaiBar is a native macOS companion for `yabai`.
+OpenNotch is a modular notch platform for macOS. It turns the MacBook notch into a configurable hub that can display content from built-in modules.
 
 It shows the current space in the native macOS menu bar, adds a compact `2/4` badge when the active space uses `stack`, lists the existing spaces with the apps inside them, and adds a notch surface inspired by `TheBoredTeam/boring.notch` for a more integrated overview.
 
@@ -22,6 +22,7 @@ It shows the current space in the native macOS menu bar, adds a compact `2/4` ba
 - Stays alive with a degraded status if `yabai` is unavailable
 - Exposes notch behavior settings, including hover open, hover delay, and haptics
 - Lets you recheck all spaces or a single space when local stack tracking drifts
+- Monitors Claude Code and Codex subscription usage with auto-detected credentials
 
 ## Requirements
 
@@ -29,15 +30,15 @@ It shows the current space in the native macOS menu bar, adds a compact `2/4` ba
 - `yabai` installed and working
 - `yabai` available in `/opt/homebrew/bin/yabai` or `/usr/local/bin/yabai`
 - Apple's Xcode toolchain, via Xcode 16 or later, for local builds
-- permission to let YabaiBar manage a small labeled block inside `~/.config/yabai/yabairc`
+- Permission to let OpenNotch manage a small labeled block inside `~/.config/yabai/yabairc`
 
 ## Fastest Build Path
 
 ```sh
-git clone git@github.com:kevinbarfleur/YabaiBar.git
-cd YabaiBar
+git clone git@github.com:kevinbarfleur/OpenNotch.git
+cd OpenNotch
 ./scripts/build-app.sh
-open dist/YabaiBar.app
+open dist/OpenNotch.app
 ```
 
 You do not need to open Xcode for this path, but the script still uses Apple's `xcodebuild` under the hood.
@@ -45,12 +46,12 @@ You do not need to open Xcode for this path, but the script still uses Apple's `
 ## Build In Xcode
 
 ```sh
-git clone git@github.com:kevinbarfleur/YabaiBar.git
-cd YabaiBar
-open YabaiBar.xcodeproj
+git clone git@github.com:kevinbarfleur/OpenNotch.git
+cd OpenNotch
+open OpenNotch.xcodeproj
 ```
 
-Build and run the `YabaiBar` target.
+Build and run the `OpenNotch` target.
 
 ## Development
 
@@ -68,24 +69,24 @@ xcodegen generate
 
 ## Install And Use
 
-1. Build `YabaiBar.app`.
+1. Build `OpenNotch.app`.
 2. Launch the app.
 3. Accept the move to `Applications` if prompted.
 4. Let the app register for launch at login if you want it to start automatically.
 5. Let the app install or repair its `yabai` signal integration if prompted by the menu state.
 6. Click the menu bar item to see spaces and switch between them.
 7. Hover the notch surface to open the compact overview panel, or disable it from the menu if you prefer menu bar only.
-8. Open `Settings → Diagnostics` to inspect stack counts, compare live `yabai` data with YabaiBar's local runtime state, recheck a space, or purge stale local entries.
+8. Open `Settings > Diagnostics` to inspect stack counts, compare live `yabai` data with OpenNotch's local runtime state, recheck a space, or purge stale local entries.
 
 ## Notes
 
-- YabaiBar keeps the spaces menu based on `yabai` CLI queries.
+- OpenNotch keeps the spaces menu based on `yabai` CLI queries.
 - The active stack badge is driven by `yabai signal` events written into a local runtime state file.
-- `Refresh` updates the visible UI state. `Recheck` rebuilds YabaiBar's local stack runtime state from fresh `yabai` queries.
+- `Refresh` updates the visible UI state. `Recheck` rebuilds OpenNotch's local stack runtime state from fresh `yabai` queries.
 - The notch companion renders once per display. On screens without a hardware notch it falls back to a centered pill.
 - `Launch at login` only works correctly from a real `.app` bundle in a stable location.
-- If macOS asks for login item approval, YabaiBar exposes a shortcut to the relevant system settings.
-- YabaiBar manages a labeled block inside `~/.config/yabai/yabairc` so it can register and repair its own signal integration safely.
+- If macOS asks for login item approval, OpenNotch exposes a shortcut to the relevant system settings.
+- OpenNotch manages a labeled block inside `~/.config/yabai/yabairc` so it can register and repair its own signal integration safely.
 - `./scripts/build-app.sh` is a thin wrapper around `xcodebuild`, so the CLI path is simple but still relies on Apple's Xcode toolchain being installed.
 
 ## Attribution
