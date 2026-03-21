@@ -97,7 +97,7 @@ final class YabaiNotchViewModel: ObservableObject {
         }
 
         trailingReservedWidth = 64
-        withAnimation(.easeOut(duration: 0.16)) {
+        withAnimation(.spring(response: 0.35, dampingFraction: 0.72)) {
             trailingVisibleWidth = min(trailingReservedWidth, targetTrailingWidth)
         }
 

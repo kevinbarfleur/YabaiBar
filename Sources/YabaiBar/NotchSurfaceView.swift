@@ -54,24 +54,150 @@ private struct NotchShape: Shape {
     }
 }
 
-private struct ClosedRailSpaceTokenView: View {
-    let isActive: Bool
-    let namespace: Namespace.ID
+@MainActor
+private struct MetaballSpaceRailView: View, Animatable {
+    nonisolated var animatableData: CGFloat {
+        get { animatedActiveX }
+        set { animatedActiveX = newValue }
+    }
+    let tokens: [SpaceRailToken]
+    var animatedActiveX: CGFloat
+
+    static let dotSize: CGFloat = 6
+    static let capsuleWidth: CGFloat = 14
+    private static let dotDiameter: CGFloat = dotSize
+    private static let activeCapsuleWidth: CGFloat = capsuleWidth
+    private static let activeCapsuleHeight: CGFloat = 6
+    private static let spacing: CGFloat = 6
+    private static let proximityRadius: CGFloat = 10
+    private static let maxProximityScale: CGFloat = 2.0
+
+    static func slotCenterX(for index: Int) -> CGFloat {
+        CGFloat(index) * (dotDiameter + spacing) + dotDiameter / 2
+    }
+
+    private var contentWidth: CGFloat {
+        guard !tokens.isEmpty else { return Self.dotDiameter }
+        return CGFloat(tokens.count) * Self.dotDiameter + CGFloat(tokens.count - 1) * Self.spacing
+    }
+
+    private var hasActiveToken: Bool {
+        tokens.contains(where: {
+            if case .space(_, true) = $0 { return true }
+            return false
+        })
+    }
 
     var body: some View {
-        Group {
-            if isActive {
-                Capsule(style: .continuous)
-                    .fill(Color.white)
-                    .frame(width: 16, height: 6)
-                    .matchedGeometryEffect(id: "closed-rail-active-indicator", in: namespace)
-            } else {
-                Circle()
-                    .fill(Color.white.opacity(0.22))
-                    .frame(width: 6, height: 6)
+        LiquidBlobShape(
+            tokens: tokens,
+            activeX: animatedActiveX,
+            dotDiameter: Self.dotDiameter,
+            activeCapsuleWidth: Self.activeCapsuleWidth,
+            activeCapsuleHeight: Self.activeCapsuleHeight,
+            spacing: Self.spacing,
+            proximityRadius: Self.proximityRadius,
+            maxProximityScale: Self.maxProximityScale,
+            hasActiveToken: hasActiveToken
+        )
+        .fill(Color.white)
+        .frame(width: contentWidth, height: 8)
+        .overlay {
+            // Inactive dots: visible at rest, fade out when blob covers them
+            ForEach(Array(tokens.enumerated()), id: \.offset) { index, token in
+                if case .space(_, let isActive) = token, !isActive {
+                    let cx = Self.slotCenterX(for: index)
+                    let distance = abs(cx - animatedActiveX)
+                    // Fade out earlier and more aggressively so dots disappear before blob arrives
+                    let fadeRadius = Self.proximityRadius + 2
+                    let fadeT = max(0, 1 - distance / fadeRadius)
+                    let dotOpacity = 0.22 * (1 - fadeT * fadeT)
+
+                    Circle()
+                        .fill(Color.white.opacity(dotOpacity))
+                        .frame(width: Self.dotDiameter, height: Self.dotDiameter)
+                        .position(x: cx, y: 4)
+                }
             }
         }
-        .frame(height: 8)
+        .overlay {
+            ellipsisOverlay
+        }
+    }
+
+    private var ellipsisOverlay: some View {
+        ZStack {
+            ForEach(Array(tokens.enumerated()), id: \.offset) { index, token in
+                if case .ellipsis = token {
+                    HStack(spacing: 1.5) {
+                        Circle().frame(width: 2, height: 2)
+                        Circle().frame(width: 2, height: 2)
+                        Circle().frame(width: 2, height: 2)
+                    }
+                    .foregroundStyle(.white.opacity(0.18))
+                    .position(x: Self.slotCenterX(for: index), y: 4)
+                }
+            }
+        }
+        .frame(width: contentWidth, height: 8)
+        .allowsHitTesting(false)
+    }
+}
+
+// Custom Shape: a single stretchy capsule that extends to absorb nearby dots
+private struct LiquidBlobShape: Shape {
+    let tokens: [SpaceRailToken]
+    let activeX: CGFloat
+    let dotDiameter: CGFloat
+    let activeCapsuleWidth: CGFloat
+    let activeCapsuleHeight: CGFloat
+    let spacing: CGFloat
+    let proximityRadius: CGFloat
+    let maxProximityScale: CGFloat
+    let hasActiveToken: Bool
+
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        guard hasActiveToken else { return path }
+
+        let cy = rect.midY
+        let hh = activeCapsuleHeight / 2
+        var leftEdge = activeX - activeCapsuleWidth / 2
+        var rightEdge = activeX + activeCapsuleWidth / 2
+
+        // Extend capsule edges to cover nearby dots
+        for (index, token) in tokens.enumerated() {
+            guard case .space(_, let isActive) = token, !isActive else { continue }
+
+            let cx = slotCenterX(for: index)
+            let distance = abs(cx - activeX)
+            let proximityT = max(0, 1 - distance / proximityRadius)
+
+            guard proximityT > 0.08 else { continue }
+
+            // Smoothly extend the blob edge toward the dot
+            let dotR = dotDiameter / 2
+            let reach = proximityT * proximityT // ease-in: gentle at distance, strong up close
+            let dotLeft = cx - dotR * reach
+            let dotRight = cx + dotR * reach
+
+            leftEdge = min(leftEdge, dotLeft)
+            rightEdge = max(rightEdge, dotRight)
+        }
+
+        let blobWidth = rightEdge - leftEdge
+        let cornerRadius = min(hh, blobWidth / 2)
+        path.addRoundedRect(
+            in: CGRect(x: leftEdge, y: cy - hh, width: blobWidth, height: activeCapsuleHeight),
+            cornerSize: CGSize(width: cornerRadius, height: cornerRadius),
+            style: .continuous
+        )
+
+        return path
+    }
+
+    private func slotCenterX(for index: Int) -> CGFloat {
+        CGFloat(index) * (dotDiameter + spacing) + dotDiameter / 2
     }
 }
 
@@ -197,7 +323,8 @@ struct YabaiNotchSurfaceView: View {
     @ObservedObject var viewModel: YabaiNotchViewModel
     @State private var showsExpandedContent = false
     @State private var revealTask: Task<Void, Never>?
-    @Namespace private var closedRailIndicatorNamespace
+    @State private var activeSlotX: CGFloat = 0
+    @State private var railHasAppeared = false
 
     private var state: DisplayNotchState? {
         viewModel.displayState
@@ -309,22 +436,28 @@ struct YabaiNotchSurfaceView: View {
     }
 
     private func trailingStackSlot(for state: DisplayNotchState) -> some View {
-        let badgeLabel = state.stackSummary?.badgeLabel ?? ""
+        let badgeLabel = state.stackSummary?.badgeLabel
 
         return ZStack(alignment: .trailing) {
-            Text(badgeLabel)
-                .font(.system(size: 11, weight: .semibold, design: .rounded))
-                .monospacedDigit()
-                .foregroundStyle(.white.opacity(0.9))
-                .lineLimit(1)
-                .padding(.trailing, 12)
-                .frame(width: viewModel.trailingReservedWidth, alignment: .trailing)
-                .mask(alignment: .trailing) {
-                    Rectangle()
-                        .frame(width: max(0, viewModel.trailingVisibleWidth), alignment: .trailing)
-                }
-                .opacity(viewModel.trailingVisibleWidth > 0.5 ? 1 : 0)
+            if let badgeLabel {
+                Text(badgeLabel)
+                    .font(.system(size: 11, weight: .semibold, design: .rounded))
+                    .monospacedDigit()
+                    .foregroundStyle(.white.opacity(0.9))
+                    .lineLimit(1)
+                    .padding(.trailing, 12)
+                    .frame(width: viewModel.trailingReservedWidth, alignment: .trailing)
+                    .transition(
+                        .asymmetric(
+                            insertion: .scale(scale: 0.6, anchor: .trailing)
+                                .combined(with: .opacity),
+                            removal: .scale(scale: 0.8, anchor: .trailing)
+                                .combined(with: .opacity)
+                        )
+                    )
+            }
         }
+        .animation(.spring(response: 0.35, dampingFraction: 0.72), value: badgeLabel != nil)
         .frame(
             width: viewModel.trailingReservedWidth,
             height: viewModel.closedNotchSize.height,
@@ -333,28 +466,37 @@ struct YabaiNotchSurfaceView: View {
     }
 
     private func closedSpaceRail(for state: DisplayNotchState) -> some View {
-        HStack(spacing: 4) {
-            ForEach(Array(spaceRailTokens(for: state, maxVisibleSpaces: 4).enumerated()), id: \.offset) { _, token in
-                switch token {
-                case .ellipsis:
-                    HStack(spacing: 1.5) {
-                        Circle().frame(width: 2, height: 2)
-                        Circle().frame(width: 2, height: 2)
-                        Circle().frame(width: 2, height: 2)
+        let tokens = spaceRailTokens(for: state, maxVisibleSpaces: 4)
+
+        return MetaballSpaceRailView(tokens: tokens, animatedActiveX: activeSlotX)
+            .padding(.leading, 18)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .onAppear {
+                if let slot = activeSlotIndex(in: tokens) {
+                    activeSlotX = MetaballSpaceRailView.slotCenterX(for: slot)
+                }
+                railHasAppeared = true
+            }
+            .onChange(of: state.visibleSpaceIndex) { _, _ in
+                let fresh = spaceRailTokens(for: state, maxVisibleSpaces: 4)
+                guard let slot = activeSlotIndex(in: fresh) else { return }
+                let targetX = MetaballSpaceRailView.slotCenterX(for: slot)
+                if railHasAppeared {
+                    withAnimation(.spring(response: 0.28, dampingFraction: 0.58)) {
+                        activeSlotX = targetX
                     }
-                    .foregroundStyle(.white.opacity(0.18))
-                case let .space(_, isActive):
-                    ClosedRailSpaceTokenView(
-                        isActive: isActive,
-                        namespace: closedRailIndicatorNamespace
-                    )
+                } else {
+                    activeSlotX = targetX
+                    railHasAppeared = true
                 }
             }
-        }
-        .padding(.leading, 14)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .fixedSize(horizontal: true, vertical: false)
-        .animation(.interactiveSpring(response: 0.28, dampingFraction: 0.82, blendDuration: 0.08), value: state.visibleSpaceIndex)
+    }
+
+    private func activeSlotIndex(in tokens: [SpaceRailToken]) -> Int? {
+        tokens.firstIndex(where: {
+            if case .space(_, true) = $0 { return true }
+            return false
+        })
     }
 
     private func openBody(for state: DisplayNotchState) -> some View {
