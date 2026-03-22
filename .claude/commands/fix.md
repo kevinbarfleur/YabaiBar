@@ -1,6 +1,6 @@
-# /opennotch:fix — Correction de bug
+# /vibenotch:fix — Correction de bug
 
-Tu démarres un **fix** pour OpenNotch.
+Tu démarres un **fix** pour VibeNotch.
 
 ## Workflow
 
@@ -15,12 +15,12 @@ Tu démarres un **fix** pour OpenNotch.
 
 ### Phase 3: Deploy & Test
 ```bash
-pkill -9 -f "OpenNotch" 2>/dev/null; sleep 1
+pkill -9 -f "VibeNotch" 2>/dev/null; sleep 1
 bash scripts/build-app.sh
-rm -rf /Applications/OpenNotch.app
-cp -R dist/OpenNotch.app /Applications/OpenNotch.app
-open /Applications/OpenNotch.app
+rm -rf /Applications/VibeNotch.app
+cp -R dist/VibeNotch.app /Applications/VibeNotch.app
+open /Applications/VibeNotch.app
 ```
 
 ### Phase 4: Land
-`/opennotch:land`
+`/vibenotch:land`

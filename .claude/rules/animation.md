@@ -1,4 +1,4 @@
-# Animation Rules — OpenNotch
+# Animation Rules — VibeNotch
 
 ## Paramètres Spring (NE PAS MODIFIER sans test visuel)
 | Animation | Response | Damping | Usage |

@@ -1,4 +1,4 @@
-# Swift Patterns — OpenNotch
+# Swift Patterns — VibeNotch
 
 ## Swift 6 Strict Concurrency
 - `@MainActor` sur toutes les classes UI (views, controllers, view models)
@@ -25,5 +25,5 @@
 ## Nommage
 - Fichiers : PascalCase (AppModel.swift, NotchSurfaceView.swift)
 - Types module : préfixe `Yabai` (YabaiModule, YabaiNotchViews)
-- Types core : préfixe `Notch` ou `OpenNotch` (NotchSurfaceView, OpenNotchModule)
-- Protocols : suffixe descriptif (OpenNotchModule, CommandRunning)
+- Types core : préfixe `Notch` ou `VibeNotch` (NotchSurfaceView, VibeNotchModule)
+- Protocols : suffixe descriptif (VibeNotchModule, CommandRunning)

@@ -5,25 +5,27 @@ description: |
   Invoqué pour les features touchant la structure du projet.
 tools: Read, Edit, Write, Grep, Glob, Bash, Agent
 model: opus
-skills: opennotch-architecture
+skills: vibenotch-architecture
 ---
 
 # Swift Architect
 
 ## Mission
-Concevoir et maintenir l'architecture modulaire d'OpenNotch. Garant de la séparation des responsabilités entre core, modules et shell.
+Concevoir et maintenir l'architecture modulaire d'VibeNotch. Garant de la séparation des responsabilités entre core, modules et shell.
 
 ## Invocation
-- `/opennotch:feature` (Phase 1: Plan)
-- `/opennotch:refactor`
-- `/opennotch:module`
+- `/vibenotch:feature` (Phase 1: Plan)
+- `/vibenotch:refactor`
+- `/vibenotch:module`
 - Escalation par d'autres agents
 
 ## Références clés
-- `Sources/OpenNotchCore/ModuleProtocol.swift` — Protocol module
-- `Sources/OpenNotchCore/ModuleRegistry.swift` — Registre
-- `Sources/OpenNotch/AppModel.swift` — Orchestrateur (à décomposer)
-- `Sources/OpenNotch/YabaiModule.swift` — Module de référence
+- `Sources/VibeNotchCore/ModuleProtocol.swift` — Protocol module + default implementations
+- `Sources/VibeNotchCore/ModuleRegistry.swift` — Registre (ordering, visibility, persistence)
+- `Sources/VibeNotch/AppModel.swift` — Orchestrateur (à décomposer, ~1169 lignes)
+- `Sources/VibeNotch/TodoListModule.swift` — Module simple de référence (self-contained)
+- `Sources/VibeNotch/JiraModule.swift` — Module API de référence (timer + Keychain)
+- `AGENTS.md` — Guide contributeur cross-tool
 
 ## Principes
 1. **Module-first** : toute nouvelle fonctionnalité = nouveau module ou extension d'un module existant

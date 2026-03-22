@@ -1,0 +1,883 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		066EA08C4FC8193CBBBB9044 /* YabaiSnapshotBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17575BC96B0E5454200442FB /* YabaiSnapshotBuilderTests.swift */; };
+		06AE826849AAF2CB8430526E /* SettingsBackupManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0B9E7C5A12EC6B8913803AE /* SettingsBackupManager.swift */; };
+		06BEDBD792121208D4D0955A /* VibeNotchCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F74BB27546599A9A726AEBFA /* VibeNotchCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		0DBAEEB357C8CAD6CF0A571E /* JiraModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB2BE24FF689C05740F3090 /* JiraModule.swift */; };
+		222F66FDE36CC49D4E908844 /* YabaiNotchViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = F8AC25BE00726C89F48FB749 /* YabaiNotchViews.swift */; };
+		2A0F947854098A0FA86EBDA0 /* TodoListViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08003C62659AA39A7CB95FDD /* TodoListViews.swift */; };
+		2D2D7E8E39E3AE2B09AAEBD5 /* YabaiDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCBE5D65751B35DAE9D95282 /* YabaiDiagnostics.swift */; };
+		373EBC73E2C6478171158A97 /* YabaiModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B3FD949372B00671E7E5D13 /* YabaiModels.swift */; };
+		3B0CB1FB5910B254322A1ED0 /* YabaiLiveStateMaintenance.swift in Sources */ = {isa = PBXBuildFile; fileRef = D72BFAA1AC7E3EC14FF03E96 /* YabaiLiveStateMaintenance.swift */; };
+		3B1F129F6D1A1AC3BDA3D63B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9049079C15A068C243CE2A9D /* main.swift */; };
+		3BA40076C97FDEF2182C063D /* YabaiIntegrationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 153227BBF9DCD455FD617D83 /* YabaiIntegrationManager.swift */; };
+		3C5BEF4620F39011AF01BD5D /* JiraViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB8C106A681B4FCAFCEF7BF /* JiraViews.swift */; };
+		4BA2CBB5D1BF29473BFBB1BB /* NotchSurfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FF7D3D828221ED17B832B4C /* NotchSurfaceController.swift */; };
+		4C83846A347F86D7D69D6A1C /* YabaiBarSignalHelper in Resources */ = {isa = PBXBuildFile; fileRef = 90AAFF70D4C2D4FF1647993E /* YabaiBarSignalHelper */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		56B5E0963CEA0B04B16E3F6D /* JiraClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EFE9E630DE6C3C8D83D5584 /* JiraClient.swift */; };
+		5910EAAECEA0B9292AD06DB4 /* YabaiRuntimeMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74C4E57FA1B5397947B82BD2 /* YabaiRuntimeMonitor.swift */; };
+		5A449EFA1588EBC185C50873 /* AIQuotaViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 275CAC034865A5FB5C9C9004 /* AIQuotaViews.swift */; };
+		5A97655743BF98F4B44B1C67 /* VibeNotchCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F74BB27546599A9A726AEBFA /* VibeNotchCore.framework */; };
+		5C1432810A46F99ED6F1B5D0 /* ModuleRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5419029CC31214D96530E1A /* ModuleRegistry.swift */; };
+		5C2C74F259E3DA5DB615DAF8 /* YabaiIntegrationRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67E75F536E2053A64ED04F0 /* YabaiIntegrationRendererTests.swift */; };
+		623118A4D471CCB3528D09E1 /* CommandRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3656FEAC2FAACCA28B7A26B5 /* CommandRunner.swift */; };
+		6A270FB394AA52F210DF74C6 /* YabaiLiveState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31614FD55ECD9C4C0FBC4006 /* YabaiLiveState.swift */; };
+		6E5C614C9C3D69C6B6AB4EC4 /* NotchSurfaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBD6CE9E54225E845AF1FC76 /* NotchSurfaceView.swift */; };
+		6FDDF23D3FA1FF653899224D /* YabaiClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16942D9A02A5CC125DAA0C63 /* YabaiClient.swift */; };
+		7708CDCD1B90EA277124A624 /* NSScreen+DisplayUUID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 997D2AD8D25A3F9EA96FBF55 /* NSScreen+DisplayUUID.swift */; };
+		7FCAF02FD20AB8142F5046C5 /* YabaiDiagnosticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A30A668B12853D19BD71AB8 /* YabaiDiagnosticsTests.swift */; };
+		819F499DBEEF0FF209AD5376 /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE549E5FDA090E336A47333D /* SettingsWindowController.swift */; };
+		85FFE151BEA1D950207891B2 /* AIQuotaClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A52D0945E07786AD30701FD /* AIQuotaClient.swift */; };
+		862B8E9599E9E7CD619E02A9 /* VibeNotchCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F74BB27546599A9A726AEBFA /* VibeNotchCore.framework */; };
+		8DFAD701A814E1BB21DE2A66 /* ModuleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7285D1779E022C5DD1F9127 /* ModuleProtocol.swift */; };
+		93C0DD1A918B0DA2E403B749 /* TodoListModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22B7717D0F0B9BB86C905CF /* TodoListModule.swift */; };
+		951030643CE0C163B6AECF1E /* YabaiIntegrationRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47382822F9F26BDF7AEE37F2 /* YabaiIntegrationRenderer.swift */; };
+		99B9D903010A950B491693F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F97AF6DB96E290BABDA8C38 /* AppDelegate.swift */; };
+		A44AAE2D46111009DA6723ED /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58AB7E8D36E3D9AC8338380 /* SettingsView.swift */; };
+		A8BA8375F921E57C3F0DE6CF /* YabaiSignalHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B60F33256C7B7ECB43BDA0A /* YabaiSignalHandler.swift */; };
+		B09EEAC5B6C7FA63A6031D78 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DFFC7519054867CA277F12 /* AppModel.swift */; };
+		B6194C487EE2855FC16CAFAA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2CE20AB36698E439DBC60EAC /* Assets.xcassets */; };
+		B8C2BC51220ECC316853F74B /* StatusItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF73BBDF86941985868CE88B /* StatusItemController.swift */; };
+		BAE2BB8EC478C50A368862DC /* VibeNotchCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F74BB27546599A9A726AEBFA /* VibeNotchCore.framework */; };
+		BD3F40CF265BAB834937C321 /* VibeNotchCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = F74BB27546599A9A726AEBFA /* VibeNotchCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		CC2F34D7BBAADFFA81E14C13 /* LoginItemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC2BD86EB6FF25F0677DA82 /* LoginItemManager.swift */; };
+		E0F5E91E36D10D087578F503 /* AppInstallationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3C31411BEFE60113FBC775F /* AppInstallationManager.swift */; };
+		E7DF3135673DDA9F83DA6F40 /* YabaiModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5011C2BC692D2787C2BBED2 /* YabaiModule.swift */; };
+		EA09A04DEEE8AECC3F8C3DCA /* AIQuotaModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 13130CECD862DBCA87EEA7D4 /* AIQuotaModule.swift */; };
+		F72AF3B7DF661C56D5714741 /* VibeNotchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E060F06467177F6E5230DD4 /* VibeNotchApp.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		16028706DCED9C85A91AD1A3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BA9446F7B5895EA6738BD5B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 832B724D0F0D9474CF59388E;
+			remoteInfo = VibeNotchCore;
+		};
+		2D1FBBABFCA54BADED8AE5AA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BA9446F7B5895EA6738BD5B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 529581F02D96CA7ABBD35023;
+			remoteInfo = YabaiBarSignalHelper;
+		};
+		C38EF0F99A5EDC012E82D12C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BA9446F7B5895EA6738BD5B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 832B724D0F0D9474CF59388E;
+			remoteInfo = VibeNotchCore;
+		};
+		C56625B4752AA700170B87E6 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BA9446F7B5895EA6738BD5B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 832B724D0F0D9474CF59388E;
+			remoteInfo = VibeNotchCore;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		294EED53505554DB44C86CE7 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				06BEDBD792121208D4D0955A /* VibeNotchCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D5DA997DA7B29EEB71BC9D07 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				BD3F40CF265BAB834937C321 /* VibeNotchCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		08003C62659AA39A7CB95FDD /* TodoListViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViews.swift; sourceTree = "<group>"; };
+		0A52D0945E07786AD30701FD /* AIQuotaClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIQuotaClient.swift; sourceTree = "<group>"; };
+		13130CECD862DBCA87EEA7D4 /* AIQuotaModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIQuotaModule.swift; sourceTree = "<group>"; };
+		153227BBF9DCD455FD617D83 /* YabaiIntegrationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiIntegrationManager.swift; sourceTree = "<group>"; };
+		16942D9A02A5CC125DAA0C63 /* YabaiClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiClient.swift; sourceTree = "<group>"; };
+		17575BC96B0E5454200442FB /* YabaiSnapshotBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiSnapshotBuilderTests.swift; sourceTree = "<group>"; };
+		275CAC034865A5FB5C9C9004 /* AIQuotaViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIQuotaViews.swift; sourceTree = "<group>"; };
+		28DFFC7519054867CA277F12 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		2CE20AB36698E439DBC60EAC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2FF7D3D828221ED17B832B4C /* NotchSurfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchSurfaceController.swift; sourceTree = "<group>"; };
+		31614FD55ECD9C4C0FBC4006 /* YabaiLiveState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiLiveState.swift; sourceTree = "<group>"; };
+		3656FEAC2FAACCA28B7A26B5 /* CommandRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommandRunner.swift; sourceTree = "<group>"; };
+		47382822F9F26BDF7AEE37F2 /* YabaiIntegrationRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiIntegrationRenderer.swift; sourceTree = "<group>"; };
+		5D22A21BBE9B8F06C231C7F9 /* VibeNotch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VibeNotch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E060F06467177F6E5230DD4 /* VibeNotchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VibeNotchApp.swift; sourceTree = "<group>"; };
+		5EFE9E630DE6C3C8D83D5584 /* JiraClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JiraClient.swift; sourceTree = "<group>"; };
+		6A30A668B12853D19BD71AB8 /* YabaiDiagnosticsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiDiagnosticsTests.swift; sourceTree = "<group>"; };
+		6B3FD949372B00671E7E5D13 /* YabaiModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiModels.swift; sourceTree = "<group>"; };
+		74C4E57FA1B5397947B82BD2 /* YabaiRuntimeMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiRuntimeMonitor.swift; sourceTree = "<group>"; };
+		8FB2BE24FF689C05740F3090 /* JiraModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JiraModule.swift; sourceTree = "<group>"; };
+		8FB8C106A681B4FCAFCEF7BF /* JiraViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JiraViews.swift; sourceTree = "<group>"; };
+		9049079C15A068C243CE2A9D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		90AAFF70D4C2D4FF1647993E /* YabaiBarSignalHelper */ = {isa = PBXFileReference; includeInIndex = 0; path = YabaiBarSignalHelper; sourceTree = BUILT_PRODUCTS_DIR; };
+		997D2AD8D25A3F9EA96FBF55 /* NSScreen+DisplayUUID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSScreen+DisplayUUID.swift"; sourceTree = "<group>"; };
+		9B60F33256C7B7ECB43BDA0A /* YabaiSignalHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiSignalHandler.swift; sourceTree = "<group>"; };
+		9F97AF6DB96E290BABDA8C38 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A22B7717D0F0B9BB86C905CF /* TodoListModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListModule.swift; sourceTree = "<group>"; };
+		A3C31411BEFE60113FBC775F /* AppInstallationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInstallationManager.swift; sourceTree = "<group>"; };
+		A7285D1779E022C5DD1F9127 /* ModuleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleProtocol.swift; sourceTree = "<group>"; };
+		B5419029CC31214D96530E1A /* ModuleRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleRegistry.swift; sourceTree = "<group>"; };
+		B58AB7E8D36E3D9AC8338380 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C5011C2BC692D2787C2BBED2 /* YabaiModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiModule.swift; sourceTree = "<group>"; };
+		C67E75F536E2053A64ED04F0 /* YabaiIntegrationRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiIntegrationRendererTests.swift; sourceTree = "<group>"; };
+		D72BFAA1AC7E3EC14FF03E96 /* YabaiLiveStateMaintenance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiLiveStateMaintenance.swift; sourceTree = "<group>"; };
+		DBD6CE9E54225E845AF1FC76 /* NotchSurfaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotchSurfaceView.swift; sourceTree = "<group>"; };
+		DCBE5D65751B35DAE9D95282 /* YabaiDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiDiagnostics.swift; sourceTree = "<group>"; };
+		DDC2BD86EB6FF25F0677DA82 /* LoginItemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItemManager.swift; sourceTree = "<group>"; };
+		DF73BBDF86941985868CE88B /* StatusItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemController.swift; sourceTree = "<group>"; };
+		EE549E5FDA090E336A47333D /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
+		F0B9E7C5A12EC6B8913803AE /* SettingsBackupManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsBackupManager.swift; sourceTree = "<group>"; };
+		F32C64AEEEDFEFA7B435E664 /* VibeNotchCoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = VibeNotchCoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		F74BB27546599A9A726AEBFA /* VibeNotchCore.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VibeNotchCore.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F8AC25BE00726C89F48FB749 /* YabaiNotchViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiNotchViews.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0927E62B6269C40A107EFDD1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5A97655743BF98F4B44B1C67 /* VibeNotchCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		689763B8E9DC8EC38633B844 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				862B8E9599E9E7CD619E02A9 /* VibeNotchCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9051CB34E15EFC1FEEA66195 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BAE2BB8EC478C50A368862DC /* VibeNotchCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		5751BECB7EDE1F9E96825299 /* VibeNotch */ = {
+			isa = PBXGroup;
+			children = (
+				13130CECD862DBCA87EEA7D4 /* AIQuotaModule.swift */,
+				275CAC034865A5FB5C9C9004 /* AIQuotaViews.swift */,
+				9F97AF6DB96E290BABDA8C38 /* AppDelegate.swift */,
+				A3C31411BEFE60113FBC775F /* AppInstallationManager.swift */,
+				28DFFC7519054867CA277F12 /* AppModel.swift */,
+				8FB2BE24FF689C05740F3090 /* JiraModule.swift */,
+				8FB8C106A681B4FCAFCEF7BF /* JiraViews.swift */,
+				DDC2BD86EB6FF25F0677DA82 /* LoginItemManager.swift */,
+				2FF7D3D828221ED17B832B4C /* NotchSurfaceController.swift */,
+				DBD6CE9E54225E845AF1FC76 /* NotchSurfaceView.swift */,
+				997D2AD8D25A3F9EA96FBF55 /* NSScreen+DisplayUUID.swift */,
+				B58AB7E8D36E3D9AC8338380 /* SettingsView.swift */,
+				EE549E5FDA090E336A47333D /* SettingsWindowController.swift */,
+				DF73BBDF86941985868CE88B /* StatusItemController.swift */,
+				A22B7717D0F0B9BB86C905CF /* TodoListModule.swift */,
+				08003C62659AA39A7CB95FDD /* TodoListViews.swift */,
+				5E060F06467177F6E5230DD4 /* VibeNotchApp.swift */,
+				153227BBF9DCD455FD617D83 /* YabaiIntegrationManager.swift */,
+				C5011C2BC692D2787C2BBED2 /* YabaiModule.swift */,
+				F8AC25BE00726C89F48FB749 /* YabaiNotchViews.swift */,
+				74C4E57FA1B5397947B82BD2 /* YabaiRuntimeMonitor.swift */,
+			);
+			path = VibeNotch;
+			sourceTree = "<group>";
+		};
+		6CB63B683E1E6AA5DEE181BC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5D22A21BBE9B8F06C231C7F9 /* VibeNotch.app */,
+				F74BB27546599A9A726AEBFA /* VibeNotchCore.framework */,
+				F32C64AEEEDFEFA7B435E664 /* VibeNotchCoreTests.xctest */,
+				90AAFF70D4C2D4FF1647993E /* YabaiBarSignalHelper */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7743F5E2096DE69CBB4A5B60 /* VibeNotchCore */ = {
+			isa = PBXGroup;
+			children = (
+				0A52D0945E07786AD30701FD /* AIQuotaClient.swift */,
+				3656FEAC2FAACCA28B7A26B5 /* CommandRunner.swift */,
+				5EFE9E630DE6C3C8D83D5584 /* JiraClient.swift */,
+				A7285D1779E022C5DD1F9127 /* ModuleProtocol.swift */,
+				B5419029CC31214D96530E1A /* ModuleRegistry.swift */,
+				F0B9E7C5A12EC6B8913803AE /* SettingsBackupManager.swift */,
+				16942D9A02A5CC125DAA0C63 /* YabaiClient.swift */,
+				DCBE5D65751B35DAE9D95282 /* YabaiDiagnostics.swift */,
+				47382822F9F26BDF7AEE37F2 /* YabaiIntegrationRenderer.swift */,
+				31614FD55ECD9C4C0FBC4006 /* YabaiLiveState.swift */,
+				D72BFAA1AC7E3EC14FF03E96 /* YabaiLiveStateMaintenance.swift */,
+				6B3FD949372B00671E7E5D13 /* YabaiModels.swift */,
+				9B60F33256C7B7ECB43BDA0A /* YabaiSignalHandler.swift */,
+			);
+			path = VibeNotchCore;
+			sourceTree = "<group>";
+		};
+		7F0A8D445236AC10F748CDDF /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2CE20AB36698E439DBC60EAC /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		87CC1704E1BFFA994C6702F5 /* YabaiBarSignalHelper */ = {
+			isa = PBXGroup;
+			children = (
+				9049079C15A068C243CE2A9D /* main.swift */,
+			);
+			path = YabaiBarSignalHelper;
+			sourceTree = "<group>";
+		};
+		A51146511F5A4FC26C2F80A8 = {
+			isa = PBXGroup;
+			children = (
+				7F0A8D445236AC10F748CDDF /* Resources */,
+				B344B90328E0BE97DB1CE792 /* Sources */,
+				F9F01CE45042555FCB2947C9 /* Tests */,
+				6CB63B683E1E6AA5DEE181BC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B344B90328E0BE97DB1CE792 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				5751BECB7EDE1F9E96825299 /* VibeNotch */,
+				7743F5E2096DE69CBB4A5B60 /* VibeNotchCore */,
+				87CC1704E1BFFA994C6702F5 /* YabaiBarSignalHelper */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		B8746E4DFF345A453D22E049 /* VibeNotchCoreTests */ = {
+			isa = PBXGroup;
+			children = (
+				6A30A668B12853D19BD71AB8 /* YabaiDiagnosticsTests.swift */,
+				C67E75F536E2053A64ED04F0 /* YabaiIntegrationRendererTests.swift */,
+				17575BC96B0E5454200442FB /* YabaiSnapshotBuilderTests.swift */,
+			);
+			path = VibeNotchCoreTests;
+			sourceTree = "<group>";
+		};
+		F9F01CE45042555FCB2947C9 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				B8746E4DFF345A453D22E049 /* VibeNotchCoreTests */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		35E997642C1DC616D5CF14D9 /* VibeNotch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F7F2A18C9A32A27B4A5493C9 /* Build configuration list for PBXNativeTarget "VibeNotch" */;
+			buildPhases = (
+				DB6E29896CB8003F4158F882 /* Sources */,
+				BCF71001D48887C7D50752A4 /* Resources */,
+				689763B8E9DC8EC38633B844 /* Frameworks */,
+				D5DA997DA7B29EEB71BC9D07 /* Embed Frameworks */,
+				48066AB0731BDA9D2AE3FBDA /* Copy YabaiBarSignalHelper */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4DD6B4336C75FF6548067F0B /* PBXTargetDependency */,
+				D2B3F8418B7B08B40D17868D /* PBXTargetDependency */,
+			);
+			name = VibeNotch;
+			packageProductDependencies = (
+			);
+			productName = VibeNotch;
+			productReference = 5D22A21BBE9B8F06C231C7F9 /* VibeNotch.app */;
+			productType = "com.apple.product-type.application";
+		};
+		529581F02D96CA7ABBD35023 /* YabaiBarSignalHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 69B39DF9B670F4DEE4E803E1 /* Build configuration list for PBXNativeTarget "YabaiBarSignalHelper" */;
+			buildPhases = (
+				621C2191C0241B8CDDDA75E0 /* Sources */,
+				9051CB34E15EFC1FEEA66195 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				4C02284B66D749726476AE0B /* PBXTargetDependency */,
+			);
+			name = YabaiBarSignalHelper;
+			packageProductDependencies = (
+			);
+			productName = YabaiBarSignalHelper;
+			productReference = 90AAFF70D4C2D4FF1647993E /* YabaiBarSignalHelper */;
+			productType = "com.apple.product-type.tool";
+		};
+		832B724D0F0D9474CF59388E /* VibeNotchCore */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7AAB984718A263C1D317A477 /* Build configuration list for PBXNativeTarget "VibeNotchCore" */;
+			buildPhases = (
+				A865E4424BF20DB375F41F46 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VibeNotchCore;
+			packageProductDependencies = (
+			);
+			productName = VibeNotchCore;
+			productReference = F74BB27546599A9A726AEBFA /* VibeNotchCore.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		F55148EAADBF6C7A166DE093 /* VibeNotchCoreTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D84399BF51E625D0D9BF8957 /* Build configuration list for PBXNativeTarget "VibeNotchCoreTests" */;
+			buildPhases = (
+				5B112A2AFC2F2230117F397A /* Sources */,
+				0927E62B6269C40A107EFDD1 /* Frameworks */,
+				294EED53505554DB44C86CE7 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				456FAF0D97275D70332907A6 /* PBXTargetDependency */,
+			);
+			name = VibeNotchCoreTests;
+			packageProductDependencies = (
+			);
+			productName = VibeNotchCoreTests;
+			productReference = F32C64AEEEDFEFA7B435E664 /* VibeNotchCoreTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8BA9446F7B5895EA6738BD5B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					35E997642C1DC616D5CF14D9 = {
+						ProvisioningStyle = Automatic;
+					};
+					529581F02D96CA7ABBD35023 = {
+						ProvisioningStyle = Automatic;
+					};
+					832B724D0F0D9474CF59388E = {
+						ProvisioningStyle = Automatic;
+					};
+					F55148EAADBF6C7A166DE093 = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = CA41098416F15B1A41B8A54E /* Build configuration list for PBXProject "VibeNotch" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = A51146511F5A4FC26C2F80A8;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 6CB63B683E1E6AA5DEE181BC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				35E997642C1DC616D5CF14D9 /* VibeNotch */,
+				832B724D0F0D9474CF59388E /* VibeNotchCore */,
+				F55148EAADBF6C7A166DE093 /* VibeNotchCoreTests */,
+				529581F02D96CA7ABBD35023 /* YabaiBarSignalHelper */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		BCF71001D48887C7D50752A4 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6194C487EE2855FC16CAFAA /* Assets.xcassets in Resources */,
+				4C83846A347F86D7D69D6A1C /* YabaiBarSignalHelper in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		48066AB0731BDA9D2AE3FBDA /* Copy YabaiBarSignalHelper */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy YabaiBarSignalHelper";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "HELPER=\"${BUILT_PRODUCTS_DIR}/YabaiBarSignalHelper\"\nDEST=\"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/YabaiBarSignalHelper\"\n/bin/rm -f \"${DEST}\"\n/usr/bin/ditto \"${HELPER}\" \"${DEST}\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5B112A2AFC2F2230117F397A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7FCAF02FD20AB8142F5046C5 /* YabaiDiagnosticsTests.swift in Sources */,
+				5C2C74F259E3DA5DB615DAF8 /* YabaiIntegrationRendererTests.swift in Sources */,
+				066EA08C4FC8193CBBBB9044 /* YabaiSnapshotBuilderTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		621C2191C0241B8CDDDA75E0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3B1F129F6D1A1AC3BDA3D63B /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A865E4424BF20DB375F41F46 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				85FFE151BEA1D950207891B2 /* AIQuotaClient.swift in Sources */,
+				623118A4D471CCB3528D09E1 /* CommandRunner.swift in Sources */,
+				56B5E0963CEA0B04B16E3F6D /* JiraClient.swift in Sources */,
+				8DFAD701A814E1BB21DE2A66 /* ModuleProtocol.swift in Sources */,
+				5C1432810A46F99ED6F1B5D0 /* ModuleRegistry.swift in Sources */,
+				06AE826849AAF2CB8430526E /* SettingsBackupManager.swift in Sources */,
+				6FDDF23D3FA1FF653899224D /* YabaiClient.swift in Sources */,
+				2D2D7E8E39E3AE2B09AAEBD5 /* YabaiDiagnostics.swift in Sources */,
+				951030643CE0C163B6AECF1E /* YabaiIntegrationRenderer.swift in Sources */,
+				6A270FB394AA52F210DF74C6 /* YabaiLiveState.swift in Sources */,
+				3B0CB1FB5910B254322A1ED0 /* YabaiLiveStateMaintenance.swift in Sources */,
+				373EBC73E2C6478171158A97 /* YabaiModels.swift in Sources */,
+				A8BA8375F921E57C3F0DE6CF /* YabaiSignalHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DB6E29896CB8003F4158F882 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EA09A04DEEE8AECC3F8C3DCA /* AIQuotaModule.swift in Sources */,
+				5A449EFA1588EBC185C50873 /* AIQuotaViews.swift in Sources */,
+				99B9D903010A950B491693F1 /* AppDelegate.swift in Sources */,
+				E0F5E91E36D10D087578F503 /* AppInstallationManager.swift in Sources */,
+				B09EEAC5B6C7FA63A6031D78 /* AppModel.swift in Sources */,
+				0DBAEEB357C8CAD6CF0A571E /* JiraModule.swift in Sources */,
+				3C5BEF4620F39011AF01BD5D /* JiraViews.swift in Sources */,
+				CC2F34D7BBAADFFA81E14C13 /* LoginItemManager.swift in Sources */,
+				7708CDCD1B90EA277124A624 /* NSScreen+DisplayUUID.swift in Sources */,
+				4BA2CBB5D1BF29473BFBB1BB /* NotchSurfaceController.swift in Sources */,
+				6E5C614C9C3D69C6B6AB4EC4 /* NotchSurfaceView.swift in Sources */,
+				A44AAE2D46111009DA6723ED /* SettingsView.swift in Sources */,
+				819F499DBEEF0FF209AD5376 /* SettingsWindowController.swift in Sources */,
+				B8C2BC51220ECC316853F74B /* StatusItemController.swift in Sources */,
+				93C0DD1A918B0DA2E403B749 /* TodoListModule.swift in Sources */,
+				2A0F947854098A0FA86EBDA0 /* TodoListViews.swift in Sources */,
+				F72AF3B7DF661C56D5714741 /* VibeNotchApp.swift in Sources */,
+				3BA40076C97FDEF2182C063D /* YabaiIntegrationManager.swift in Sources */,
+				E7DF3135673DDA9F83DA6F40 /* YabaiModule.swift in Sources */,
+				222F66FDE36CC49D4E908844 /* YabaiNotchViews.swift in Sources */,
+				5910EAAECEA0B9292AD06DB4 /* YabaiRuntimeMonitor.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		456FAF0D97275D70332907A6 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 832B724D0F0D9474CF59388E /* VibeNotchCore */;
+			targetProxy = 16028706DCED9C85A91AD1A3 /* PBXContainerItemProxy */;
+		};
+		4C02284B66D749726476AE0B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 832B724D0F0D9474CF59388E /* VibeNotchCore */;
+			targetProxy = C38EF0F99A5EDC012E82D12C /* PBXContainerItemProxy */;
+		};
+		4DD6B4336C75FF6548067F0B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 832B724D0F0D9474CF59388E /* VibeNotchCore */;
+			targetProxy = C56625B4752AA700170B87E6 /* PBXContainerItemProxy */;
+		};
+		D2B3F8418B7B08B40D17868D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 529581F02D96CA7ABBD35023 /* YabaiBarSignalHelper */;
+			targetProxy = 2D1FBBABFCA54BADED8AE5AA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		156E8ED8DA59996E2F81DD9F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		29577CC11109C6241E1371A0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.kevinbarfleur.YabaiBarSignalHelper;
+				PRODUCT_NAME = YabaiBarSignalHelper;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		2C44CCF0AF5757A3E6A11DBF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = VibeNotch;
+				INFOPLIST_KEY_LSUIElement = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 0.5.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kevinbarfleur.VibeNotch;
+				PRODUCT_NAME = VibeNotch;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		4964FF12A5AA376C656EF89A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.kevinbarfleur.VibeNotchTests;
+				PRODUCT_NAME = VibeNotchTests;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		5E5467ADDE5E588B9DE72AFE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.kevinbarfleur.VibeNotchCore;
+				PRODUCT_NAME = VibeNotchCore;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		64B704B198F803BF6B0EF644 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = VibeNotch;
+				INFOPLIST_KEY_LSUIElement = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 0.5.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kevinbarfleur.VibeNotch;
+				PRODUCT_NAME = VibeNotch;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		69AADC4F0D5F231CB164BA09 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.kevinbarfleur.VibeNotchTests;
+				PRODUCT_NAME = VibeNotchTests;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		7E9026A62A8D1A9D8EE9D77F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.kevinbarfleur.YabaiBarSignalHelper;
+				PRODUCT_NAME = YabaiBarSignalHelper;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		844C206A8A802F85DCFB8310 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		889BA008928807336375849E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GENERATE_INFOPLIST_FILE = YES;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.kevinbarfleur.VibeNotchCore;
+				PRODUCT_NAME = VibeNotchCore;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		69B39DF9B670F4DEE4E803E1 /* Build configuration list for PBXNativeTarget "YabaiBarSignalHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7E9026A62A8D1A9D8EE9D77F /* Debug */,
+				29577CC11109C6241E1371A0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		7AAB984718A263C1D317A477 /* Build configuration list for PBXNativeTarget "VibeNotchCore" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5E5467ADDE5E588B9DE72AFE /* Debug */,
+				889BA008928807336375849E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CA41098416F15B1A41B8A54E /* Build configuration list for PBXProject "VibeNotch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				156E8ED8DA59996E2F81DD9F /* Debug */,
+				844C206A8A802F85DCFB8310 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		D84399BF51E625D0D9BF8957 /* Build configuration list for PBXNativeTarget "VibeNotchCoreTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4964FF12A5AA376C656EF89A /* Debug */,
+				69AADC4F0D5F231CB164BA09 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		F7F2A18C9A32A27B4A5493C9 /* Build configuration list for PBXNativeTarget "VibeNotch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				64B704B198F803BF6B0EF644 /* Debug */,
+				2C44CCF0AF5757A3E6A11DBF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8BA9446F7B5895EA6738BD5B /* Project object */;
+}

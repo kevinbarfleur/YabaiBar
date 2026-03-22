@@ -1,4 +1,4 @@
-# /opennotch:status — État du projet
+# /vibenotch:status — État du projet
 
 Résumer l'état actuel :
 1. `git status` — fichiers modifiés

@@ -1,0 +1,26 @@
+# VibeNotch — Cursor Rules
+
+Modular notch platform for macOS. See `.cursor/rules/` for detailed rules.
+
+## Quick Reference
+
+- **Build**: `swift build` (quick) · `bash scripts/build-app.sh` (full .app)
+- **Test**: `swift test`
+- **Deploy**: Kill app → build → copy to /Applications → open
+- **Never** use `swift run` — always build the .app bundle
+
+## Critical Conventions
+
+- Swift 6.2 strict concurrency (`@MainActor` on UI, `Sendable` on data types)
+- Module-first architecture: all features = modules conforming to `VibeNotchModule`
+- Spring animations only (never linear/easeIn) — see `.cursor/rules/animation.mdc`
+- macOS native APIs: NSPanel, NSStatusItem, NSHapticFeedbackManager
+
+## Adding a Module
+
+1. Create `{Name}Module.swift` conforming to `VibeNotchModule` (only override methods you need)
+2. Create `{Name}Views.swift` for UI components
+3. Register in `AppModel.startIfNeeded()`
+4. `swift build && swift test && bash scripts/build-app.sh`
+
+See `.cursor/rules/module-system.mdc` for the full protocol and examples.

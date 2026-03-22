@@ -1,9 +1,9 @@
-# /opennotch:feature — Nouvelle fonctionnalité
+# /vibenotch:feature — Nouvelle fonctionnalité
 
-Tu démarres une **feature** pour OpenNotch.
+Tu démarres une **feature** pour VibeNotch.
 
 ## Contexte requis
-- Skill: opennotch-architecture
+- Skill: vibenotch-architecture
 - Rule: philosophy.md, swift-patterns.md
 
 ## Workflow
@@ -27,12 +27,12 @@ swift test     # 100% pass
 
 ### Phase 4: Deploy & Test
 ```bash
-pkill -9 -f "OpenNotch" 2>/dev/null; sleep 1
+pkill -9 -f "VibeNotch" 2>/dev/null; sleep 1
 bash scripts/build-app.sh
-rm -rf /Applications/OpenNotch.app
-cp -R dist/OpenNotch.app /Applications/OpenNotch.app
-open /Applications/OpenNotch.app
+rm -rf /Applications/VibeNotch.app
+cp -R dist/VibeNotch.app /Applications/VibeNotch.app
+open /Applications/VibeNotch.app
 ```
 
 ### Phase 5: Land
-Utilise `/opennotch:land` pour commit.
+Utilise `/vibenotch:land` pour commit.

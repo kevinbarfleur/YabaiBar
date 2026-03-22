@@ -1,4 +1,4 @@
-# macOS Best Practices — OpenNotch
+# macOS Best Practices — VibeNotch
 
 ## NSPanel (fenêtre notch)
 - Style : `.borderless, .nonactivatingPanel, .utilityWindow, .hudWindow`

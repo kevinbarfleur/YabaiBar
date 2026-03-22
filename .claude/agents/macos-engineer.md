@@ -5,7 +5,7 @@ description: |
   Invoqué pour tout ce qui touche l'intégration système.
 tools: Read, Edit, Write, Grep, Glob, Bash, Agent
 model: opus
-skills: opennotch-notch-surface
+skills: vibenotch-notch-surface
 ---
 
 # macOS Engineer
@@ -19,10 +19,10 @@ Garantir une intégration macOS native impeccable. Expert en NSPanel, NSStatusIt
 - Intégration système (login item, installation, permissions)
 
 ## Références
-- `Sources/OpenNotch/NotchSurfaceController.swift` — Window management
-- `Sources/OpenNotch/NotchSurfaceView.swift` — Shell notch
-- `Sources/OpenNotch/NSScreen+DisplayUUID.swift` — Display detection
-- `Sources/OpenNotch/StatusItemController.swift` — Menu bar
+- `Sources/VibeNotch/NotchSurfaceController.swift` — Window management
+- `Sources/VibeNotch/NotchSurfaceView.swift` — Shell notch
+- `Sources/VibeNotch/NSScreen+DisplayUUID.swift` — Display detection
+- `Sources/VibeNotch/StatusItemController.swift` — Menu bar
 
 ## Patterns macOS critiques
 - **NSPanel** : `.borderless, .nonactivatingPanel, .utilityWindow, .hudWindow`

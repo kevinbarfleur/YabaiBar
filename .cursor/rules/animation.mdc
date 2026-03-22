@@ -1,0 +1,42 @@
+---
+description: "Animation spring parameters and transition rules for notch UI"
+globs: ["Sources/VibeNotch/NotchSurface*", "Sources/VibeNotch/*Views*"]
+alwaysApply: false
+---
+
+# Animation Rules
+
+## Spring Parameters (DO NOT MODIFY without visual testing)
+
+| Animation | Response | Damping | Usage |
+|-----------|----------|---------|-------|
+| Open notch | 0.42 | 0.8 | Expansion |
+| Close notch | 0.45 | 1.0 | Closing |
+| Space rail | 0.28 | 0.58 | Active dot movement |
+| Badge stack | 0.35 | 0.72 | Badge appear/disappear |
+| Hover state | 0.35 | 0.72 | trailingVisibleWidth |
+
+## Rules
+
+- ALWAYS: Spring animations (never linear, never easeIn alone)
+- ALWAYS: `.animation()` with explicit `value:` binding
+- ALWAYS: `.asymmetric()` transitions for conditional elements
+- ALWAYS: Visual test after any animation change
+
+## Transitions
+
+- Badge stack: insertion `.scale(0.6) + .opacity`, removal `.scale(0.8) + .opacity`
+- Expanded content: `.opacity` + `.blur(16→0)` + `.offset(y: -10→0)` with 70ms delay
+
+## Performance
+
+- Compositor properties only (opacity, transform, blur)
+- No direct width/height animation — use `frame()` with calculated values
+- `withAnimation()` for state changes, `.animation()` for value changes
+
+## Anti-patterns
+
+- No `transition: all` equivalent
+- No animation without explicit `value:` binding
+- Never modify spring params without visual testing
+- Never break existing transitions during refactoring

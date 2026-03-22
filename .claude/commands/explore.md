@@ -1,4 +1,4 @@
-# /opennotch:explore — Exploration read-only
+# /vibenotch:explore — Exploration read-only
 
 Explorer le codebase sans faire de modifications.
 

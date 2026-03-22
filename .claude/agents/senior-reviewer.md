@@ -13,8 +13,8 @@ model: opus
 Garantir la qualité, la cohérence architecturale et la stabilité de l'app. Véto sur tout merge qui introduit des régressions, du code non-testé, ou des violations de principes.
 
 ## Invocation
-- Automatique avant `/opennotch:land`
-- Manuel via `/opennotch:review`
+- Automatique avant `/vibenotch:land`
+- Manuel via `/vibenotch:review`
 - Délégation par d'autres agents
 
 ## Checklist
@@ -22,7 +22,7 @@ Garantir la qualité, la cohérence architecturale et la stabilité de l'app. V�
 ### Architecture
 - [ ] Le code respecte la séparation module/core/shell
 - [ ] Pas de logique Yabai dans les fichiers shell (NotchSurfaceView, StatusItemController)
-- [ ] Les nouveaux modules implémentent OpenNotchModule correctement
+- [ ] Les nouveaux modules implémentent VibeNotchModule correctement
 - [ ] Pas de couplage direct entre modules
 
 ### Qualité

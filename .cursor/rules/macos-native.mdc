@@ -1,0 +1,53 @@
+---
+description: "macOS native patterns: NSPanel, NSStatusItem, display detection, notch geometry"
+globs: ["Sources/VibeNotch/NotchSurface*", "Sources/VibeNotch/StatusItem*", "Sources/VibeNotch/AppDelegate*"]
+alwaysApply: false
+---
+
+# macOS Native Patterns
+
+## NSPanel (Notch Window)
+
+- Style: `.borderless, .nonactivatingPanel, .utilityWindow, .hudWindow`
+- Level: `.mainMenu + 3` (above everything except dock)
+- `canBecomeKey: false`, `canBecomeMain: false` — never steals focus
+- `hidesOnDeactivate: false` — stays visible when app loses focus
+- `collectionBehavior: [.canJoinAllSpaces, .stationary, .fullScreenAuxiliary, .ignoresCycle]`
+
+## NSStatusItem (Menu Bar)
+
+- Create: `NSStatusBar.system.statusItem(withLength:)`
+- Remove: `NSStatusBar.system.removeStatusItem()`
+- Always cancel tracking before removing
+- `isTemplate = true` for images (auto light/dark adaptation)
+
+## Multi-Display
+
+- `NSScreen.screens` to list displays
+- Display UUID via `CGDisplayCreateUUIDFromDisplayID`
+- One NotchWindowController per screen
+- Zombie pattern: 8s grace period for temporarily disconnected displays
+
+## Notch Detection
+
+- `screen.auxiliaryTopLeftArea` for hardware notch presence
+- `screen.safeAreaInsets.top` for notch height
+- Fallback to menu bar height
+
+## App Lifecycle
+
+- `NSApp.setActivationPolicy(.accessory)` — no dock icon
+- `SMAppService` for login item (macOS 13+)
+- Must install in /Applications for login item to work
+
+## Haptics
+
+- `NSHapticFeedbackManager.defaultPerformer.perform(.alignment, performanceTime: .default)`
+- Only on closed notch hover
+- User-configurable (can be disabled)
+
+## System Wake Recovery
+
+- `NSWorkspace.didWakeNotification` for wake detection
+- Multi-attempt recovery: [300, 800, 1500, 3000]ms delays
+- Reconcile all controllers each attempt

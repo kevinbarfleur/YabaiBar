@@ -1,7 +1,7 @@
-# Philosophie OpenNotch
+# Philosophie VibeNotch
 
 ## Vision
-OpenNotch est une plateforme notch modulaire. Le notch est le produit, les modules sont les fonctionnalités.
+VibeNotch est une plateforme notch modulaire. Le notch est le produit, les modules sont les fonctionnalités.
 
 ## Principes (NON-NEGOCIABLE)
 

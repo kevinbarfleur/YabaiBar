@@ -34,10 +34,10 @@ REQUIS : BUILD SUCCEEDED
 
 ### 4. Deploy & Verify
 ```bash
-pkill -9 -f "OpenNotch" 2>/dev/null; sleep 1
-rm -rf /Applications/OpenNotch.app
-cp -R dist/OpenNotch.app /Applications/OpenNotch.app
-open /Applications/OpenNotch.app
+pkill -9 -f "VibeNotch" 2>/dev/null; sleep 1
+rm -rf /Applications/VibeNotch.app
+cp -R dist/VibeNotch.app /Applications/VibeNotch.app
+open /Applications/VibeNotch.app
 ```
 
 ## Format de sortie

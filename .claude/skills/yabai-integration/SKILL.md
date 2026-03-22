@@ -8,7 +8,7 @@ yabairc signal block calls YabaiBarSignalHelper --signal <event>
   ↓
 YabaiSignalHandler processes event (reducer pattern)
   ↓
-Writes state.json to ~/Library/Application Support/OpenNotch/runtime/
+Writes state.json to ~/Library/Application Support/VibeNotch/runtime/
   ↓
 YabaiRuntimeMonitor (kqueue/DispatchSource) detects file change
   ↓
@@ -35,15 +35,15 @@ Chaque attempt : `fetchActiveSpaceIndex + fetchActiveStackSummary + fetchActiveD
 ## Live State Persistence
 - `YabaiLiveState` : activeSpaceIndex, activeDisplayUUID, spaces dict
 - `TrackedStackState` : per-space stack tracking (currentIndex, total, focusedWindowID)
-- Persisté en JSON à `~/Library/Application Support/OpenNotch/runtime/state.json`
+- Persisté en JSON à `~/Library/Application Support/VibeNotch/runtime/state.json`
 - File-based locking avec `flock()` pour les écritures concurrentes
 
 ## Integration Markers in yabairc
 ```bash
-# >>> OpenNotch >>>
-# Managed by OpenNotch. Changes inside this block will be replaced.
+# >>> VibeNotch >>>
+# Managed by VibeNotch. Changes inside this block will be replaced.
 yabai -m signal --add event=space_changed action='...' label=yabaibar-space-changed
 # ... (8 signal types)
-# <<< OpenNotch <<<
+# <<< VibeNotch <<<
 ```
 Legacy markers `# >>> YabaiBar >>>` sont aussi détectés pour la migration.

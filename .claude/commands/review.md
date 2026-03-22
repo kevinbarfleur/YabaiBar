@@ -1,4 +1,4 @@
-# /opennotch:review — Review de code
+# /vibenotch:review — Review de code
 
 Invoquer le **senior-reviewer** pour une review complète.
 

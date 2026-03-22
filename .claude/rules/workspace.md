@@ -1,4 +1,4 @@
-# Workspace — OpenNotch
+# Workspace — VibeNotch
 
 ## Structure du projet
 - `Package.swift` — SPM targets (build rapide, tests)
@@ -15,11 +15,11 @@ swift test
 
 ### Cycle complet (test en conditions réelles)
 ```bash
-pkill -9 -f "OpenNotch" 2>/dev/null; sleep 1
+pkill -9 -f "VibeNotch" 2>/dev/null; sleep 1
 bash scripts/build-app.sh
-rm -rf /Applications/OpenNotch.app
-cp -R dist/OpenNotch.app /Applications/OpenNotch.app
-open /Applications/OpenNotch.app
+rm -rf /Applications/VibeNotch.app
+cp -R dist/VibeNotch.app /Applications/VibeNotch.app
+open /Applications/VibeNotch.app
 ```
 
 ### Quality Gate (obligatoire avant land)

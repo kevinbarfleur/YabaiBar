@@ -1,5 +1,5 @@
 import Foundation
-import OpenNotchCore
+import VibeNotchCore
 
 if let exitCode = YabaiSignalHandler.runIfNeeded(arguments: CommandLine.arguments) {
     exit(exitCode)

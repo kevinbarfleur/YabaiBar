@@ -1,0 +1,63 @@
+---
+description: "VibeNotch project overview, build commands, and Swift conventions"
+globs:
+alwaysApply: true
+---
+
+# VibeNotch
+
+Modular notch platform for macOS. Transforms the MacBook notch into a configurable hub powered by built-in modules.
+
+## Architecture
+
+```
+Package.swift / project.yml → 3 targets:
+  VibeNotchCore (library)       — Module protocol, registry, CommandRunner, Yabai models
+  VibeNotch (executable/app)    — Shell notch/statusbar/settings + modules
+  YabaiBarSignalHelper (tool)   — CLI helper for yabai signals
+```
+
+## Build Commands
+
+```bash
+swift build          # Quick compilation check
+swift test           # Run unit tests
+bash scripts/build-app.sh  # Full .app bundle (xcodegen → xcodebuild → dist/)
+```
+
+## Deploy & Test (CRITICAL)
+
+After ANY code change:
+```bash
+pkill -9 -f "VibeNotch" 2>/dev/null; sleep 1
+bash scripts/build-app.sh
+rm -rf /Applications/VibeNotch.app
+cp -R dist/VibeNotch.app /Applications/VibeNotch.app
+open /Applications/VibeNotch.app
+```
+
+Never use `swift run` — always build and install the .app bundle.
+
+## Swift 6.2 Conventions
+
+- `@MainActor` on all UI classes (views, controllers, view models)
+- `@Published private(set)` for observable properties
+- `Sendable` on shared data types
+- `@unchecked Sendable` only for AppKit wrappers (e.g., NotchSlotContent with AnyView)
+- Combine: always `.receive(on: RunLoop.main)` before `.sink`
+- No `import Foundation` if `import AppKit` suffices
+
+## Naming
+
+- Files: PascalCase (AppModel.swift, NotchSurfaceView.swift)
+- Module types: `{Name}Module` prefix (YabaiModule, JiraModule)
+- Core types: `Notch` or `VibeNotch` prefix (NotchSurfaceView, VibeNotchModule)
+- Module IDs: `com.vibenotch.{name}`
+
+## Philosophy
+
+- Module-first: all user features = modules. Core only handles display, windows, orchestration
+- No abstraction before 3 usages
+- Spring animations only (never linear/easeIn)
+- macOS native APIs (NSPanel, NSStatusItem, NSHapticFeedbackManager)
+- Delete unused code, no feature flags

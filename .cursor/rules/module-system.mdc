@@ -1,0 +1,87 @@
+---
+description: "VibeNotch module system: protocol, registry, and how to create modules"
+globs: ["Sources/**/*Module*.swift", "Sources/VibeNotchCore/Module*.swift"]
+alwaysApply: false
+---
+
+# Module System
+
+## Protocol (ModuleProtocol.swift)
+
+Every module conforms to `VibeNotchModule`. All methods have default implementations returning nil/empty, so you only override what you need.
+
+**Required properties:**
+```swift
+var identifier: ModuleIdentifier { get }
+var displayName: String { get }
+var icon: String { get }                    // SF Symbol name
+var objectDidChange: (() -> Void)? { get set }
+```
+
+**Optional overrides:**
+```swift
+func activate() / deactivate()              // Lifecycle
+func refresh() / displayChanged()           // Reactive updates
+func closedLeadingView(for displayUUID: String) -> NotchSlotContent?   // Left slot in closed notch
+func closedTrailingView(for displayUUID: String) -> NotchSlotContent?  // Right slot in closed notch
+func expandedWidgets(for displayUUID: String) -> [NotchExpandedWidget] // Widgets in expanded panel
+func statusBarContent() -> StatusBarContent?                           // Menu bar icon/label
+func menuSections() -> [ModuleMenuSection]                             // Context menu items
+func makeSettingsView() -> AnyView?                                    // Settings panel
+```
+
+## Data Flow
+
+```
+Module.closedLeadingView(displayUUID) → NotchSlotContent
+  ↓
+ModuleRegistry.aggregatedLeadingSlots(displayUUID)
+  ↓
+NotchSurfaceController → YabaiNotchViewModel
+  ↓
+NotchSurfaceView renders
+```
+
+## Creating a New Module
+
+### 1. Create module class (`Sources/VibeNotch/{Name}Module.swift`)
+```swift
+@MainActor
+final class MyModule: ObservableObject, VibeNotchModule {
+    let identifier = ModuleIdentifier("com.vibenotch.mymodule")
+    let displayName = "My Module"
+    let icon = "star.fill"
+    var objectDidChange: (() -> Void)?
+
+    // Only override methods you need:
+    func expandedWidgets(for displayUUID: String) -> [NotchExpandedWidget] { ... }
+    func makeSettingsView() -> AnyView? { AnyView(MySettingsView(module: self)) }
+}
+```
+
+### 2. Create views (`Sources/VibeNotch/{Name}Views.swift`)
+Self-contained views. Use `@ObservedObject var module: MyModule` for data binding.
+
+### 3. Register in AppModel.startIfNeeded()
+```swift
+let myModule = MyModule()
+moduleRegistry.register(myModule)
+```
+
+### 4. Build & test
+```bash
+swift build && swift test && bash scripts/build-app.sh
+```
+
+## Key Types
+
+- `NotchSlotContent` — AnyView + width for closed notch slots
+- `NotchExpandedWidget` — id, moduleID, estimatedHeight, content for expanded panel
+- `StatusBarContent` — icon, label, tooltip, length for menu bar
+- `ModuleMenuSection` — title + [NSMenuItem] for context menu
+
+## Reference Modules
+
+- **TodoListModule** — Simplest, self-contained, no external APIs (~180 lines)
+- **JiraModule** — API integration pattern with timer refresh
+- **AIQuotaModule** — Status bar + trailing slot indicator pattern

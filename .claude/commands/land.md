@@ -1,4 +1,4 @@
-# /opennotch:land — Commit et finalize
+# /vibenotch:land — Commit et finalize
 
 ## Pré-requis (Quality Gate)
 ```bash

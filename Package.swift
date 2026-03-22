@@ -4,25 +4,25 @@
 import PackageDescription
 
 let package = Package(
-    name: "OpenNotch",
+    name: "VibeNotch",
     platforms: [
         .macOS(.v14),
     ],
     products: [
-        .executable(name: "OpenNotch", targets: ["OpenNotch"]),
-        .library(name: "OpenNotchCore", targets: ["OpenNotchCore"]),
+        .executable(name: "VibeNotch", targets: ["VibeNotch"]),
+        .library(name: "VibeNotchCore", targets: ["VibeNotchCore"]),
     ],
     targets: [
         .target(
-            name: "OpenNotchCore"
+            name: "VibeNotchCore"
         ),
         .executableTarget(
-            name: "OpenNotch",
-            dependencies: ["OpenNotchCore"]
+            name: "VibeNotch",
+            dependencies: ["VibeNotchCore"]
         ),
         .testTarget(
-            name: "OpenNotchCoreTests",
-            dependencies: ["OpenNotchCore"]
+            name: "VibeNotchCoreTests",
+            dependencies: ["VibeNotchCore"]
         ),
     ]
 )
