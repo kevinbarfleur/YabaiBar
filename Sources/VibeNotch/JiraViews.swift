@@ -17,18 +17,21 @@ struct JiraExpandedContent: View {
 
             if !isCollapsed {
                 content
+                    .transition(.asymmetric(
+                        insertion: .opacity.animation(.easeOut(duration: 0.2).delay(0.05)),
+                        removal: .opacity.animation(.easeIn(duration: 0.12))
+                    ))
             }
         }
         .padding(.horizontal, 14)
         .padding(.top, 11)
         .padding(.bottom, isCollapsed ? 6 : 12)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .animation(.spring(response: 0.35, dampingFraction: 0.82), value: isCollapsed)
     }
 
     private var header: some View {
         HStack(spacing: 8) {
-            Button(action: onToggleCollapse) {
+            Button { withAnimation { onToggleCollapse() } } label: {
                 HStack(spacing: 8) {
                     Text("Jira")
                         .font(.system(size: 13, weight: .semibold))

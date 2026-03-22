@@ -125,20 +125,24 @@ struct YabaiExpandedContent: View {
             focusedAppHeader
 
             if !isCollapsed {
-                if !state.stackItems.isEmpty {
-                    stackRows
-                        .padding(.top, 8)
-                } else if !state.visibleSpaceApps.isEmpty {
-                    bspAppList
-                        .padding(.top, 8)
+                Group {
+                    if !state.stackItems.isEmpty {
+                        stackRows
+                    } else if !state.visibleSpaceApps.isEmpty {
+                        bspAppList
+                    }
                 }
+                .padding(.top, 8)
+                .transition(.asymmetric(
+                    insertion: .opacity.animation(.easeOut(duration: 0.2).delay(0.05)),
+                    removal: .opacity.animation(.easeIn(duration: 0.12))
+                ))
             }
         }
         .padding(.horizontal, 14)
         .padding(.top, 11)
         .padding(.bottom, isCollapsed ? 6 : 12)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .animation(.spring(response: 0.35, dampingFraction: 0.82), value: isCollapsed)
     }
 
     @ViewBuilder
@@ -147,7 +151,7 @@ struct YabaiExpandedContent: View {
 
         VStack(alignment: .leading, spacing: 2) {
             HStack(spacing: 8) {
-                Button(action: onToggleCollapse) {
+                Button { withAnimation { onToggleCollapse() } } label: {
                     HStack(spacing: 8) {
                         if let focusedItem {
                             AppIconView(appName: focusedItem.app)

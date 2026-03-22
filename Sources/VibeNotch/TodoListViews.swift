@@ -17,10 +17,16 @@ struct TodoListExpandedContent: View {
                 .padding(.bottom, isCollapsed ? 0 : 8)
 
             if !isCollapsed {
-                inputField
-                    .padding(.bottom, 8)
+                VStack(alignment: .leading, spacing: 0) {
+                    inputField
+                        .padding(.bottom, 8)
 
-                itemsList
+                    itemsList
+                }
+                .transition(.asymmetric(
+                    insertion: .opacity.animation(.easeOut(duration: 0.2).delay(0.05)),
+                    removal: .opacity.animation(.easeIn(duration: 0.12))
+                ))
             }
         }
         .padding(.horizontal, 14)
