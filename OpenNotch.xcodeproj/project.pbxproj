@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2007A562BFB8187A5221C8CE /* JiraModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE96D37FE0567F126D33E124 /* JiraModule.swift */; };
+		224D2C366AD2FA3484A29047 /* TodoListViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A58DEA6C0F9324800337736 /* TodoListViews.swift */; };
 		2484C917991BAA0336EB5B51 /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788C8824EDEEA8DCE5136239 /* SettingsWindowController.swift */; };
 		36CB6012557729CC7277DA2B /* YabaiDiagnosticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F96438FB6D70485D223B00C1 /* YabaiDiagnosticsTests.swift */; };
 		39CFEF65C2C43FE7973883D1 /* OpenNotchApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB363C8836E6D0C732DA9FB9 /* OpenNotchApp.swift */; };
@@ -17,6 +19,7 @@
 		4E9D338AF2801FC8B1A9ABB6 /* YabaiIntegrationRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFFD076551BEF8FFEA9BE2C3 /* YabaiIntegrationRenderer.swift */; };
 		50059B1D178774BDE2B63E3F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A8CDBCBBB7417828D359FA4 /* AppDelegate.swift */; };
 		504C5FB06A03B4DBEB6F11CE /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE707D21CDE55CFEE083168 /* main.swift */; };
+		53797D6189C1B5BDE2F47851 /* JiraViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 117822872D5579A05D9069E7 /* JiraViews.swift */; };
 		57B92B85928F61F8AA7F9B0D /* LoginItemManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25638F57C7057770E9CE3EED /* LoginItemManager.swift */; };
 		5B67ABCBB56B9BC301961707 /* OpenNotchCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7744AEC887034E408BD66239 /* OpenNotchCore.framework */; };
 		72946210C0B30FDE94470AF6 /* StatusItemController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BE7400DE745F16436E9AB9D /* StatusItemController.swift */; };
@@ -24,6 +27,7 @@
 		76076B69A833497EABA35077 /* YabaiNotchViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33A68DFB58B7FF8B53F18FCC /* YabaiNotchViews.swift */; };
 		78F7F147566D1B7D5FE4B045 /* YabaiRuntimeMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8C6A9BE70134C39AD3C0504B /* YabaiRuntimeMonitor.swift */; };
 		8186E50FBDE3AFA60206F464 /* YabaiDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBCECD862819376F4D1C9FA /* YabaiDiagnostics.swift */; };
+		820917AEC646A4FFE1DCC9E5 /* TodoListModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B531EDC9AB2B7FD8CCC42562 /* TodoListModule.swift */; };
 		881888ACC976F218F10637F7 /* OpenNotchCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7744AEC887034E408BD66239 /* OpenNotchCore.framework */; };
 		8F1D0F1FCBE919F72242A61F /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4C5AC101B105D8E005272E0 /* SettingsView.swift */; };
 		91E81868C070F9C7C4FB796F /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46679D94B69E39186A0A3384 /* AppModel.swift */; };
@@ -32,6 +36,7 @@
 		94FB1261ACB08DBC2556A52F /* NotchSurfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B442689D2FBEC4C79367EA3 /* NotchSurfaceController.swift */; };
 		965744497323364929C1BC9F /* YabaiLiveStateMaintenance.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA498D3174B99B45DF520C09 /* YabaiLiveStateMaintenance.swift */; };
 		A15D12E0B0512FC48F9F47EB /* YabaiModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D43DD8A22C7BC9284C6E16 /* YabaiModels.swift */; };
+		B466349BB884034CF8F0D313 /* JiraClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E85DA991533F8D1C86157A75 /* JiraClient.swift */; };
 		BBE10F87D2379259B3428C8A /* AppInstallationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58F6ABC7005A1E0D7B0FCF89 /* AppInstallationManager.swift */; };
 		C62026A74E994733455AE454 /* YabaiSnapshotBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC203310BEA0835AFE1A2CA7 /* YabaiSnapshotBuilderTests.swift */; };
 		C787C61EAA0276255C8008C8 /* NotchSurfaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D6120DA59ACE03F53E024C6 /* NotchSurfaceView.swift */; };
@@ -107,6 +112,7 @@
 /* Begin PBXFileReference section */
 		04F9CBF1DD7E20042C316305 /* YabaiSignalHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiSignalHandler.swift; sourceTree = "<group>"; };
 		0CE707D21CDE55CFEE083168 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		117822872D5579A05D9069E7 /* JiraViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JiraViews.swift; sourceTree = "<group>"; };
 		232ADC854B5AA7D2817A7FF4 /* NSScreen+DisplayUUID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSScreen+DisplayUUID.swift"; sourceTree = "<group>"; };
 		25638F57C7057770E9CE3EED /* LoginItemManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItemManager.swift; sourceTree = "<group>"; };
 		3218824FA2C0891C791EF514 /* OpenNotch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenNotch.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -128,14 +134,18 @@
 		8CF93D19516ABC63D4F6E73E /* AIQuotaModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIQuotaModule.swift; sourceTree = "<group>"; };
 		8D11E6B8C97B0CE9EEDD9E46 /* YabaiModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiModule.swift; sourceTree = "<group>"; };
 		981290F1A53E685D805F5E6D /* ModuleRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleRegistry.swift; sourceTree = "<group>"; };
+		9A58DEA6C0F9324800337736 /* TodoListViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViews.swift; sourceTree = "<group>"; };
 		9BE7400DE745F16436E9AB9D /* StatusItemController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusItemController.swift; sourceTree = "<group>"; };
 		9EA368F5CC49651CDA5BBE0E /* YabaiIntegrationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiIntegrationManager.swift; sourceTree = "<group>"; };
+		B531EDC9AB2B7FD8CCC42562 /* TodoListModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListModule.swift; sourceTree = "<group>"; };
 		BDBCECD862819376F4D1C9FA /* YabaiDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiDiagnostics.swift; sourceTree = "<group>"; };
 		C1F6CEA1747C8C07DF3634A5 /* YabaiIntegrationRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiIntegrationRendererTests.swift; sourceTree = "<group>"; };
 		CB363C8836E6D0C732DA9FB9 /* OpenNotchApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenNotchApp.swift; sourceTree = "<group>"; };
 		D010967E596A79B052ABCCF1 /* AIQuotaClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIQuotaClient.swift; sourceTree = "<group>"; };
 		DC203310BEA0835AFE1A2CA7 /* YabaiSnapshotBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiSnapshotBuilderTests.swift; sourceTree = "<group>"; };
+		DE96D37FE0567F126D33E124 /* JiraModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JiraModule.swift; sourceTree = "<group>"; };
 		E4C5AC101B105D8E005272E0 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		E85DA991533F8D1C86157A75 /* JiraClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JiraClient.swift; sourceTree = "<group>"; };
 		EA498D3174B99B45DF520C09 /* YabaiLiveStateMaintenance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YabaiLiveStateMaintenance.swift; sourceTree = "<group>"; };
 		F5B3070E8CD2CDFF22FE25BF /* YabaiBarSignalHelper */ = {isa = PBXFileReference; includeInIndex = 0; path = YabaiBarSignalHelper; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6651CD70E3553049F5C814D /* AIQuotaViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIQuotaViews.swift; sourceTree = "<group>"; };
@@ -203,6 +213,7 @@
 			children = (
 				D010967E596A79B052ABCCF1 /* AIQuotaClient.swift */,
 				83703D1B3BDBDAFEFDBADA3C /* CommandRunner.swift */,
+				E85DA991533F8D1C86157A75 /* JiraClient.swift */,
 				5A227F58A0545F9D2D2C4804 /* ModuleProtocol.swift */,
 				981290F1A53E685D805F5E6D /* ModuleRegistry.swift */,
 				702DDCAA648EA89AE7DA5BB3 /* YabaiClient.swift */,
@@ -224,6 +235,8 @@
 				8A8CDBCBBB7417828D359FA4 /* AppDelegate.swift */,
 				58F6ABC7005A1E0D7B0FCF89 /* AppInstallationManager.swift */,
 				46679D94B69E39186A0A3384 /* AppModel.swift */,
+				DE96D37FE0567F126D33E124 /* JiraModule.swift */,
+				117822872D5579A05D9069E7 /* JiraViews.swift */,
 				25638F57C7057770E9CE3EED /* LoginItemManager.swift */,
 				7B442689D2FBEC4C79367EA3 /* NotchSurfaceController.swift */,
 				3D6120DA59ACE03F53E024C6 /* NotchSurfaceView.swift */,
@@ -232,6 +245,8 @@
 				E4C5AC101B105D8E005272E0 /* SettingsView.swift */,
 				788C8824EDEEA8DCE5136239 /* SettingsWindowController.swift */,
 				9BE7400DE745F16436E9AB9D /* StatusItemController.swift */,
+				B531EDC9AB2B7FD8CCC42562 /* TodoListModule.swift */,
+				9A58DEA6C0F9324800337736 /* TodoListViews.swift */,
 				9EA368F5CC49651CDA5BBE0E /* YabaiIntegrationManager.swift */,
 				8D11E6B8C97B0CE9EEDD9E46 /* YabaiModule.swift */,
 				33A68DFB58B7FF8B53F18FCC /* YabaiNotchViews.swift */,
@@ -446,6 +461,7 @@
 			files = (
 				FB3D6A83011E0DB8AB333348 /* AIQuotaClient.swift in Sources */,
 				755289AF398045DD5C64454B /* CommandRunner.swift in Sources */,
+				B466349BB884034CF8F0D313 /* JiraClient.swift in Sources */,
 				FA7171DC41D4C7EEF545DE5A /* ModuleProtocol.swift in Sources */,
 				F7489A431046781843F1532F /* ModuleRegistry.swift in Sources */,
 				EF8EFCE8E2289AC6E4531B46 /* YabaiClient.swift in Sources */,
@@ -485,6 +501,8 @@
 				50059B1D178774BDE2B63E3F /* AppDelegate.swift in Sources */,
 				BBE10F87D2379259B3428C8A /* AppInstallationManager.swift in Sources */,
 				91E81868C070F9C7C4FB796F /* AppModel.swift in Sources */,
+				2007A562BFB8187A5221C8CE /* JiraModule.swift in Sources */,
+				53797D6189C1B5BDE2F47851 /* JiraViews.swift in Sources */,
 				57B92B85928F61F8AA7F9B0D /* LoginItemManager.swift in Sources */,
 				DB667D4E0BAAEC34ED556F38 /* NSScreen+DisplayUUID.swift in Sources */,
 				94FB1261ACB08DBC2556A52F /* NotchSurfaceController.swift in Sources */,
@@ -493,6 +511,8 @@
 				8F1D0F1FCBE919F72242A61F /* SettingsView.swift in Sources */,
 				2484C917991BAA0336EB5B51 /* SettingsWindowController.swift in Sources */,
 				72946210C0B30FDE94470AF6 /* StatusItemController.swift in Sources */,
+				820917AEC646A4FFE1DCC9E5 /* TodoListModule.swift in Sources */,
+				224D2C366AD2FA3484A29047 /* TodoListViews.swift in Sources */,
 				FBFB50CD081317889CB4AAF7 /* YabaiIntegrationManager.swift in Sources */,
 				FA515AB698847BE97B1E4363 /* YabaiModule.swift in Sources */,
 				76076B69A833497EABA35077 /* YabaiNotchViews.swift in Sources */,

@@ -66,7 +66,7 @@ final class YabaiRuntimeMonitor {
         }
 
         reloadWorkItem = workItem
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05, execute: workItem)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.01, execute: workItem)
     }
 
     private func loadCurrentState() {

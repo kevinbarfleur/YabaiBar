@@ -514,6 +514,6 @@ private final class YabaiNotchWindow: NSPanel {
         hidesOnDeactivate = false
     }
 
-    override var canBecomeKey: Bool { false }
+    override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { false }
 }

@@ -26,37 +26,53 @@ struct AIQuotaClosedIndicator: View {
 
 struct AIQuotaExpandedContent: View {
     @ObservedObject var module: AIQuotaModule
+    let isCollapsed: Bool
+    let onToggleCollapse: () -> Void
     let onRefresh: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             header
-                .padding(.bottom, 8)
+                .padding(.bottom, isCollapsed ? 0 : 8)
 
-            if !module.hasAnyData {
-                emptyState
-            } else {
-                VStack(alignment: .leading, spacing: 10) {
-                    if let claude = module.claudeUsage {
-                        subscriptionSection("Claude Code", usage: claude)
-                    }
-                    if let codex = module.codexUsage {
-                        codexSection(codex)
+            if !isCollapsed {
+                if !module.hasAnyData {
+                    emptyState
+                } else {
+                    VStack(alignment: .leading, spacing: 10) {
+                        if let claude = module.claudeUsage {
+                            subscriptionSection("Claude Code", usage: claude)
+                        }
+                        if let codex = module.codexUsage {
+                            codexSection(codex)
+                        }
                     }
                 }
             }
         }
         .padding(.horizontal, 14)
         .padding(.top, 11)
-        .padding(.bottom, 12)
+        .padding(.bottom, isCollapsed ? 6 : 12)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .animation(.spring(response: 0.35, dampingFraction: 0.82), value: isCollapsed)
     }
 
     private var header: some View {
         HStack(spacing: 8) {
-            Text("AI Usage")
-                .font(.system(size: 13, weight: .semibold))
-                .foregroundStyle(.white.opacity(0.96))
+            Button(action: onToggleCollapse) {
+                HStack(spacing: 8) {
+                    Text("AI Usage")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(.white.opacity(0.96))
+
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 9, weight: .semibold))
+                        .foregroundStyle(.white.opacity(0.22))
+                        .rotationEffect(.degrees(isCollapsed ? 0 : 90))
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
 
             Spacer(minLength: 0)
 

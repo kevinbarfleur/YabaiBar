@@ -1,7 +1,14 @@
 import AppKit
 import OpenNotchCore
 import SwiftUI
-import OpenNotchCore
+
+func isWidgetCollapsed(_ widgetID: String) -> Bool {
+    UserDefaults.standard.bool(forKey: "Widget.collapsed.\(widgetID)")
+}
+
+func setWidgetCollapsed(_ widgetID: String, _ collapsed: Bool) {
+    UserDefaults.standard.set(collapsed, forKey: "Widget.collapsed.\(widgetID)")
+}
 
 @MainActor
 final class YabaiModule: OpenNotchModule {
@@ -75,17 +82,25 @@ final class YabaiModule: OpenNotchModule {
         } else {
             listItemCount = min(state.visibleSpaceApps.count, 6)
         }
+        let widgetID = "yabai-space-detail"
+        let collapsed = isWidgetCollapsed(widgetID)
+
         let listHeight = CGFloat(listItemCount) * 30
-        let estimatedHeight: CGFloat = 60 + listHeight
+        let estimatedHeight: CGFloat = collapsed ? 40 : (60 + listHeight)
 
         return [
             NotchExpandedWidget(
-                id: "yabai-space-detail",
+                id: widgetID,
                 moduleID: identifier,
                 estimatedHeight: estimatedHeight,
                 content: AnyView(
                     YabaiExpandedContent(
                         state: state,
+                        isCollapsed: collapsed,
+                        onToggleCollapse: { [weak self] in
+                            setWidgetCollapsed(widgetID, !collapsed)
+                            self?.objectDidChange?()
+                        },
                         onOpenSettings: { [weak appModel] in appModel?.openSettings() },
                         onRefresh: { [weak appModel] in appModel?.refresh() },
                         onFocusWindow: { [weak appModel] id in appModel?.focusWindow(id) }

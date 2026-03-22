@@ -273,6 +273,12 @@ final class AppModel: ObservableObject {
         let aiQuotaModule = AIQuotaModule()
         moduleRegistry.register(aiQuotaModule)
 
+        let jiraModule = JiraModule()
+        moduleRegistry.register(jiraModule)
+
+        let todoListModule = TodoListModule()
+        moduleRegistry.register(todoListModule)
+
         installationManager.removeLegacyLaunchAgentIfNeeded()
         refreshInstallationAndLoginItemState()
         promptForInstallationIfNeeded()
@@ -1004,6 +1010,11 @@ final class AppModel: ObservableObject {
         if snapshot != nil || state.activeSpaceIndex != nil {
             isUnavailable = false
             statusMessage = nil
+        }
+
+        activeSpaceIndex = state.activeSpaceIndex
+        if let summary = state.activeStackSummary {
+            activeStackSummary = summary
         }
 
         reconcileDisplayedState(

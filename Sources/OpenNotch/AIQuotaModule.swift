@@ -138,16 +138,23 @@ final class AIQuotaModule: ObservableObject, OpenNotchModule {
     }
 
     func expandedWidgets(for displayUUID: String) -> [NotchExpandedWidget] {
-        let estimatedHeight: CGFloat = 40 + (claudeUsage != nil ? 70 : 0) + (codexUsage != nil ? 70 : 0)
+        let widgetID = "aiquota-detail"
+        let collapsed = isWidgetCollapsed(widgetID)
+        let estimatedHeight: CGFloat = collapsed ? 40 : (40 + (claudeUsage != nil ? 70 : 0) + (codexUsage != nil ? 70 : 0))
 
         return [
             NotchExpandedWidget(
-                id: "aiquota-detail",
+                id: widgetID,
                 moduleID: identifier,
                 estimatedHeight: estimatedHeight,
                 content: AnyView(
                     AIQuotaExpandedContent(
                         module: self,
+                        isCollapsed: collapsed,
+                        onToggleCollapse: { [weak self] in
+                            setWidgetCollapsed(widgetID, !collapsed)
+                            self?.objectDidChange?()
+                        },
                         onRefresh: { [weak self] in self?.refresh() }
                     )
                 )

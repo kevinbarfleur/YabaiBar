@@ -116,9 +116,11 @@ struct NotchSurfaceView: View {
                 .onHover { hovering in
                     viewModel.handleHover(hovering)
                 }
-                .onTapGesture {
-                    viewModel.openFromTap()
-                }
+                .simultaneousGesture(
+                    viewModel.notchState == .closed
+                        ? TapGesture().onEnded { viewModel.openFromTap() }
+                        : nil
+                )
         }
         .animation(viewModel.notchState == .open ? viewModel.openAnimation : viewModel.closeAnimation, value: viewModel.notchState)
         .animation(.easeOut(duration: 0.16), value: viewModel.closedVisibleWidth)

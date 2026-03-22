@@ -50,6 +50,10 @@ public final class ModuleRegistry: ObservableObject {
         modules.append(module)
         let id = module.identifier.rawValue
 
+        module.objectDidChange = { [weak self] in
+            self?.objectWillChange.send()
+        }
+
         if enabledModuleIDs.isEmpty, modules.count == 1 {
             enabledModuleIDs.insert(id)
         }

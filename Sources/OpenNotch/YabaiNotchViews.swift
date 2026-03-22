@@ -114,6 +114,8 @@ struct YabaiStackBadgeSlot: View {
 
 struct YabaiExpandedContent: View {
     let state: DisplayNotchState
+    let isCollapsed: Bool
+    let onToggleCollapse: () -> Void
     let onOpenSettings: () -> Void
     let onRefresh: () -> Void
     let onFocusWindow: (Int) -> Void
@@ -122,18 +124,21 @@ struct YabaiExpandedContent: View {
         VStack(alignment: .leading, spacing: 0) {
             focusedAppHeader
 
-            if !state.stackItems.isEmpty {
-                stackRows
-                    .padding(.top, 8)
-            } else if !state.visibleSpaceApps.isEmpty {
-                bspAppList
-                    .padding(.top, 8)
+            if !isCollapsed {
+                if !state.stackItems.isEmpty {
+                    stackRows
+                        .padding(.top, 8)
+                } else if !state.visibleSpaceApps.isEmpty {
+                    bspAppList
+                        .padding(.top, 8)
+                }
             }
         }
         .padding(.horizontal, 14)
         .padding(.top, 11)
-        .padding(.bottom, 12)
+        .padding(.bottom, isCollapsed ? 6 : 12)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .animation(.spring(response: 0.35, dampingFraction: 0.82), value: isCollapsed)
     }
 
     @ViewBuilder
@@ -142,40 +147,51 @@ struct YabaiExpandedContent: View {
 
         VStack(alignment: .leading, spacing: 2) {
             HStack(spacing: 8) {
-                if let focusedItem {
-                    AppIconView(appName: focusedItem.app)
+                Button(action: onToggleCollapse) {
+                    HStack(spacing: 8) {
+                        if let focusedItem {
+                            AppIconView(appName: focusedItem.app)
 
-                    HStack(spacing: 5) {
-                        Text(focusedItem.app)
-                            .font(.system(size: 13, weight: .semibold))
-                            .foregroundStyle(.white.opacity(0.96))
-                            .lineLimit(1)
+                            HStack(spacing: 5) {
+                                Text(focusedItem.app)
+                                    .font(.system(size: 13, weight: .semibold))
+                                    .foregroundStyle(.white.opacity(0.96))
+                                    .lineLimit(1)
 
-                        let trimmedTitle = focusedItem.title.trimmingCharacters(in: .whitespacesAndNewlines)
-                        if !trimmedTitle.isEmpty, trimmedTitle != focusedItem.app {
-                            Text(trimmedTitle)
-                                .font(.system(size: 11, weight: .regular))
-                                .foregroundStyle(.white.opacity(0.34))
-                                .lineLimit(1)
+                                let trimmedTitle = focusedItem.title.trimmingCharacters(in: .whitespacesAndNewlines)
+                                if !trimmedTitle.isEmpty, trimmedTitle != focusedItem.app {
+                                    Text(trimmedTitle)
+                                        .font(.system(size: 11, weight: .regular))
+                                        .foregroundStyle(.white.opacity(0.34))
+                                        .lineLimit(1)
+                                }
+                            }
+                        } else {
+                            HStack(spacing: 6) {
+                                Text("Space \(state.visibleSpaceIndex.map(String.init) ?? "--")")
+                                    .font(.system(size: 13, weight: .semibold))
+                                    .foregroundStyle(.white.opacity(0.96))
+
+                                if let type = state.visibleSpaceType?.uppercased(), !state.visibleSpaceApps.isEmpty {
+                                    Circle()
+                                        .fill(.white.opacity(0.18))
+                                        .frame(width: 2.5, height: 2.5)
+
+                                    Text(type)
+                                        .font(.system(size: 10, weight: .medium))
+                                        .foregroundStyle(.white.opacity(0.34))
+                                }
+                            }
                         }
-                    }
-                } else {
-                    HStack(spacing: 6) {
-                        Text("Space \(state.visibleSpaceIndex.map(String.init) ?? "--")")
-                            .font(.system(size: 13, weight: .semibold))
-                            .foregroundStyle(.white.opacity(0.96))
 
-                        if let type = state.visibleSpaceType?.uppercased(), !state.visibleSpaceApps.isEmpty {
-                            Circle()
-                                .fill(.white.opacity(0.18))
-                                .frame(width: 2.5, height: 2.5)
-
-                            Text(type)
-                                .font(.system(size: 10, weight: .medium))
-                                .foregroundStyle(.white.opacity(0.34))
-                        }
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 9, weight: .semibold))
+                            .foregroundStyle(.white.opacity(0.22))
+                            .rotationEffect(.degrees(isCollapsed ? 0 : 90))
                     }
+                    .contentShape(Rectangle())
                 }
+                .buttonStyle(.plain)
 
                 Spacer(minLength: 0)
 
